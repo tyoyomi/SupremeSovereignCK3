@@ -150,8 +150,6 @@ Supreme_Sovereign = {
 	genetic = yes
     good = yes
 
-    inherit_chance = 5
-
     # Localization
     custom_tooltip = trait_Supreme_Sovereign_tooltip
 }

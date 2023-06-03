@@ -1,0 +1,24 @@
+give_supreme_sovereign_trait_interaction = {
+	from_potential = {
+		is_ai = no
+	}
+
+	to_potential = {
+		NOT = { has_trait = Supreme_Sovereign }
+	}
+
+	allow = {
+		always = yes
+	}
+
+	effect = {
+		add_trait = Supreme_Sovereign
+	}
+
+	ai_will_do = {
+		factor = 0
+	}
+
+	interaction_tooltip = supreme_sovereign_trait_interaction_tooltip
+	interaction_description = supreme_sovereign_trait_interaction_description
+}
