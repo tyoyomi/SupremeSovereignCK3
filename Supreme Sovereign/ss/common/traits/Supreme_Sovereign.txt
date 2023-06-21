@@ -1,0 +1,152 @@
+﻿Supreme_Sovereign = {
+    index = 46535646 # Unique index number
+	is_positive = yes 
+    ai_rulers_use = no # If AI rulers can use the trait
+
+    # Character changes
+    random_creation = 0
+	
+	monthly_prestige = 30
+	monthly_dynasty_prestige = 30
+	monthly_piety = 1000
+	monthly_income = 1000
+	
+	dread_baseline_add = 200
+	dread_loss_mult = -100
+	monthly_dread = 100
+	
+	health = 50000
+	negate_health_penalty_add = 100
+	
+	attraction_opinion = 100
+	ignore_negative_culture_opinion = yes
+	general_opinion = 1000
+	same_opinion = 500
+	
+	cultural_head_fascination_add = 10000
+	cultural_head_fascination_mult = 100
+	
+	years_of_fertility = 100
+	fertility = 5000
+	
+	# Schemes
+	scheme_power = 1000
+	scheme_resistance = 1000
+	scheme_secrecy = 1000
+	scheme_success_chance = 1000
+	hostile_scheme_power_mult = 1000
+	hostile_scheme_power_add = 1000
+	scheme_secrecy = 1000
+	personal_scheme_power_add = 1000
+	personal_scheme_power_mult = 1000
+	hostile_scheme_resistance_mult = 1000
+	diplomacy_scheme_power = 1000
+	intrigue_scheme_power = 1000
+	scheme_discovery_chance_mult = 1000
+	max_personal_schemes_add = 10				
+	max_hostile_schemes_add = 10				
+	owned_hostile_scheme_success_chance_add	= 1000			
+	owned_personal_scheme_success_chance_add = 1000							
+	enemy_personal_scheme_success_chance_add = -1000
+	enemy_hostile_scheme_success_chance_add = -1000
+	murder_scheme_power_add = 1000
+	murder_scheme_power_mult = 1000
+	abduct_scheme_power_add = 1000
+	abduct_scheme_power_mult = 1000
+	befriend_scheme_power_add = 1000
+	befriend_scheme_power_mult = 1000
+	claim_throne_scheme_power_add = 1000
+	claim_throne_scheme_power_mult = 1000
+	convert_to_witchcraft_scheme_power_add = 1000
+	convert_to_witchcraft_scheme_power_mult = 1000
+	courting_scheme_power_add = 1000
+	courting_scheme_power_mult = 1000
+	elope_scheme_power_add = 1000
+	elope_scheme_power_mult = 1000
+	fabricate_hook_scheme_power_add = 1000
+	fabricate_hook_scheme_power_mult = 1000
+	seduce_scheme_power_add = 1000
+	seduce_scheme_power_mult = 1000
+	sway_scheme_power_add = 1000
+	sway_scheme_power_mult = 1000
+	
+	# Immortality
+	immortal = yes
+	
+	# Control
+	monthly_county_control_change_add_even_if_baron = 100
+	county_opinion_add_even_if_baron = 100
+	development_growth = 100
+	development_growth_factor = 10
+	build_speed = -100
+	holding_build_speed = -100
+	build_gold_cost = -100
+	holding_build_gold_cost = -100
+	
+	# Military
+	advantage = 100
+	siege_phase_time = -1
+	siege_morale_loss = 1
+	movement_speed = 1
+	naval_movement_speed_mult = 1
+	enemy_terrain_advantage = -1
+	hard_casualty_modifier = -1
+	enemy_hard_casualty_modifier = 1
+	supply_duration = 10
+	supply_limit_mult = 1
+	supply_capacity_mult = 1
+	hard_casualty_modifier = -1	
+	retreat_losses = -1					
+	no_water_crossing_penalty = yes
+	enemy_terrain_advantage = -1
+	raid_speed = 1
+	min_combat_roll = 20
+	max_combat_roll = 40
+	siege_weapon_max_size_mult = 3
+	hostile_county_attrition = -1
+	defender_advantage = 100
+	attacker_advantage = 100
+	heavy_cavalry_damage_mult = 200
+	heavy_cavalry_toughness_mult = 200
+	archers_damage_mult = 200
+	archers_toughness_mult = 200
+	skirmishers_damage_mult = 200
+	skirmishers_toughness_mult = 200
+	light_cavalry_pursuit_add = 100
+	light_cavalry_screen_add = 100
+	heavy_cavalry_pursuit_add = 100
+	heavy_cavalry_screen_add = 100
+	garrison_size = 25
+	levy_size = 100
+	levy_reinforcement_rate = 10000
+	levy_reinforcement_rate_same_faith = 10000
+	levy_reinforcement_rate_different_faith = 10000
+	levy_reinforcement_rate_even_if_baron = 10000
+	levy_reinforcement_rate_same_faith_even_if_baron = 10000
+	levy_reinforcement_rate_different_faith_even_if_baron = 10000
+	levy_reinforcement_rate_friendly_territory = 10000
+	knight_effectiveness_mult = 10000
+	men_at_arms_limit = 50000
+	
+	# Lifestyle
+	monthly_lifestyle_xp_gain_mult = 1000
+	
+	learning = 100
+	diplomacy = 100
+	martial = 100
+	stewardship = 100
+	intrigue = 100
+	prowess = 100
+	no_prowess_loss_from_age = yes
+	
+	stress_gain_mult = -100
+	
+	# Vassal
+	vassal_limit = 200
+	domain_limit = 200
+	
+	genetic = yes
+    good = yes
+
+}
+
