@@ -145,7 +145,7 @@
 	vassal_limit = 200
 	domain_limit = 200
 	
-	genetic = yes
+	genetic = no
     good = yes
 
 }
