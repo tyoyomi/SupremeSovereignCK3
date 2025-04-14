@@ -93,7 +93,7 @@
 	hard_casualty_modifier = -1
 	enemy_hard_casualty_modifier = 1
 	supply_duration = 10
-	supply_limit_mult = 1
+	supply_limit_mult = 100
 	supply_capacity_mult = 1
 	hard_casualty_modifier = -1	
 	retreat_losses = -1					
@@ -147,6 +147,10 @@
 	
 	genetic = no
     good = yes
+
+	monthly_legitimacy_level_gain = 5 # Significant boost to legitimacy gain
+	plague_resistance_add = 1000  # Effectively immune to plagues
+	monthly_influence_gain_add = 100 # Large boost to influence gain
 
 }
 
