@@ -1,5 +1,5 @@
-﻿# Supreme Sovereign Settings — single manage hub (player-only)
-# Cycles live in ss_settings.1001; claim actions stay in ss_sovereign_op_decisions.txt
+# Supreme Sovereign Settings — single manage hub (player-only)
+# Cycles live in ss_settings.1001-1003 (paged); claim actions stay in ss_sovereign_op_decisions.txt
 
 ss_manage_sovereign_settings_decision = {
 	picture = {
