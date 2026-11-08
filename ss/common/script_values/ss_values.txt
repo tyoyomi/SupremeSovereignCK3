@@ -5,6 +5,8 @@
 #   ss_cfg_unlimited_titles: 0=Off, 1=On (default 1) — Keep All Titles domain/vassal package
 #   ss_cfg_kingdom_conquest: 0=Off, 1=On (default 1) — Kingdom Conquest CB availability
 #   ss_cfg_extra_conquests: 0=Off, 1=On (default 1) — Extra Conquests CBs (duchy/empire/realm annex/faith)
+# Conquest CB declare costs (gold + prestige, scale by tier):
+#   duchy 500/500 · kingdom/faith 1000/1000 · empire 2000/2000 · realm annex 3000/3000
 #   ss_cfg_legacy_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
 #   ss_cfg_empire_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
 #   ss_cfg_all_languages: 0=Off, 1=On (default 1)
@@ -115,3 +117,15 @@ ss_piggy_dynasty_drip_value = {
 		max = 5000
 	}
 }
+
+# --- Conquest CB declare costs (tier-scaled gold + prestige) ---
+ss_duchy_conquest_gold_cost = 500
+ss_duchy_conquest_prestige_cost = 500
+ss_kingdom_conquest_gold_cost = 1000
+ss_kingdom_conquest_prestige_cost = 1000
+ss_faith_conquest_gold_cost = 1000
+ss_faith_conquest_prestige_cost = 1000
+ss_empire_conquest_gold_cost = 2000
+ss_empire_conquest_prestige_cost = 2000
+ss_realm_annex_gold_cost = 3000
+ss_realm_annex_prestige_cost = 3000
