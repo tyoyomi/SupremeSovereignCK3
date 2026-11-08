@@ -134,9 +134,12 @@ ss_su_unity_choice_pending_on_self = {
 }
 
 # this = title; root = actor
+# DTC15: never distribute titles at/above actor primary tier (avoids independent peers)
 ss_is_distributable_title = {
 	exists = holder
 	holder = root
+	exists = root.primary_title
+	tier < root.primary_title.tier
 	NOR = {
 		this = root.primary_title
 		AND = {

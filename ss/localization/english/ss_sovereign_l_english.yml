@@ -257,16 +257,16 @@
  ss_op.1001.d:0 "Intrigue"
  ss_op.1001.e:0 "Learning"
 
- # Distribute titles to children (CM-35)
+ # Distribute titles to children (CM-35 / CM-40 tier ceiling)
  ss_distribute_titles_to_children_decision:0 "Supreme Sovereign: Distribute Titles to Children"
- ss_distribute_titles_to_children_decision_desc:0 "Grant every unnecessary title you personally hold to your living children. You keep your primary title, your capital county, and baronies under the capital. All other counties, duchies, and non-primary kingdoms or empires are split fair — heir first each pass, then oldest to youngest.\n\nFree. Cooldown: one year. Soft Glue / Succession Unity still handle succession; this is mid-reign housecleaning only."
- ss_distribute_titles_to_children_decision_tooltip:0 "Grant spare titles to your children; keep primary and capital"
+ ss_distribute_titles_to_children_decision_desc:0 "Grant every unnecessary title below your primary rank to your living children. You keep your primary title, any other crowns at that same rank, your capital county, and baronies under the capital. Lower titles — counties, duchies, and kingdoms under an emperor — are split fair so the children stay your vassals: heir first each pass, then oldest to youngest.\n\nFree. Cooldown: one year. Soft Glue / Succession Unity still handle succession; this is mid-reign housecleaning only."
+ ss_distribute_titles_to_children_decision_tooltip:0 "Grant below-rank spare titles to your children; keep primary-rank crowns and capital"
  ss_distribute_titles_to_children_decision_confirm:0 "Distribute Titles"
- ss_distribute_titles_to_children_decision_effect_tt:0 "Spare titles are granted to your children in one resolve; you keep primary and capital"
- ss_tt_can_distribute_titles_to_children:0 "You have at least one living child who can receive titles, at least one spare title beyond primary and capital, and no Succession Unity choice pending"
+ ss_distribute_titles_to_children_decision_effect_tt:0 "Below-rank spare titles are granted to your children in one resolve; crowns at your rank and your capital stay with you"
+ ss_tt_can_distribute_titles_to_children:0 "You have at least one living child who can receive titles, at least one spare title below your primary rank (beyond capital), and no Succession Unity choice pending"
 
  ss_op.2101.t:0 "Titles Distributed"
- ss_op.2101.desc:0 "You granted [ROOT.Var('ss_distribute_title_count').GetValue] titles to [ROOT.Var('ss_distribute_child_count').GetValue] of your children. Your primary title and capital remain yours."
+ ss_op.2101.desc:0 "You granted [ROOT.Var('ss_distribute_title_count').GetValue] titles below your rank to [ROOT.Var('ss_distribute_child_count').GetValue] of your children. Crowns at your rank and your capital remain yours."
  ss_op.2101.a:0 "As it should be"
 
  # Kingdom Conquest CB (CM-19)
