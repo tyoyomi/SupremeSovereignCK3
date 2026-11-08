@@ -1,0 +1,191 @@
+﻿l_english:
+ # Grant interaction (Option A)
+ ss_grant_supreme_sovereign_interaction:0 "Grant Supreme Sovereign"
+ ss_grant_supreme_sovereign_interaction_desc:0 "Bestow the Supreme Sovereign blessing upon [recipient.GetShortUIName], your child. They do not inherit it automatically — you choose who carries the mantle."
+ ss_grant_supreme_sovereign_interaction_extra_icon:0 "$ss_grant_supreme_sovereign_interaction$"
+
+ ss_tt_actor_may_grant:0 "You are a Supreme Sovereign and may grant the blessing"
+ ss_tt_can_receive_sovereign:0 "Target is your living child without Supreme Sovereign"
+
+ # Settings hub decision
+ ss_manage_sovereign_settings_decision:0 "Manage Sovereign Settings"
+ ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub. Every active tier is listed before you change anything — Lifestyle XP, Longevity, Wealth, Prestige, Domain & Vassals, Keep All Titles, Military, Schemes, Legacy Pulse, Perk Gift Size, and Reshape Heir Power.\n\nClick a setting to cycle its tier; the hub refreshes so you always see the current value."
+ ss_manage_sovereign_settings_decision_tooltip:0 "Open Sovereign Settings and view or cycle each tier"
+ ss_manage_sovereign_settings_decision_confirm:0 "Open Settings"
+ ss_manage_sovereign_settings_decision_effect_tt:0 "Opens the Sovereign Settings hub showing current tiers"
+
+ # Settings hub event
+ ss_settings.1001.t:0 "Sovereign Settings"
+ ss_settings.1001.desc_intro:0 "Current Sovereign tiers. Choose a setting to cycle it forward; the list refreshes after each change."
+ ss_settings.1001.desc_blank:0 "\n"
+ ss_settings.1001.desc_footer:0 "Perk claims stay on the Decisions menu. Grant Supreme Sovereign and Reshape Heir are character interactions."
+ ss_settings.1001.close:0 "Done"
+ # Hub option hover tooltips (current effect + cycle)
+ ss_settings.tt.lifestyle:0 "Lifestyle XP — Sovereign monthly lifestyle experience multiplier.\n\nOff (0): no Sovereign XP bonus (other XP sources unchanged).\nLow (1): ×2 lifestyle XP.\nMedium (2): ×5 lifestyle XP.\nHigh (3): ×10 lifestyle XP.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
+ ss_settings.tt.longevity:0 "Longevity — extraordinary long life (not immortality): health, vitality, fertility years.\n\nLow (1): modest health and fertility extension.\nMedium (2): strong health and long fertility.\nHigh (3): maximum health, vitality, and centuries of fertility.\n\nClick to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.wealth:0 "Wealth — monthly gold income and piety from the Sovereign blessing.\n\nLow (1): +50 income, +25 piety / month.\nMedium (2): +100 income, +50 piety / month.\nHigh (3): +200 income, +100 piety / month.\n\nClick to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.prestige:0 "Prestige — monthly personal prestige and dynasty prestige from the Sovereign blessing.\n\nLow (1): +50 prestige, +5,000 dynasty prestige / month.\nMedium (2): +150 prestige, +10,000 dynasty prestige / month.\nHigh (3): +500 prestige, +25,000 dynasty prestige / month.\n\nClick to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.domain:0 "Domain & Vassals — extra domain limit and vassal limit from the Sovereign blessing.\n\nLow (1): +10 domain, +25 vassals.\nMedium (2): +25 domain, +50 vassals.\nHigh (3): +50 domain, +100 vassals.\n\nApplies only while Keep All Titles is Off. Click to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.unlimited_titles:0 "Keep All Titles — hold every duchy and domain without title-count punishment.\n\nWhile Supreme Sovereign is in the playset, too-many-duchies opinion and \"liege holds my duchy\" opinion are disabled for all kings/emperors (engine defines; turning this Off mid-game cannot restore them — unload the mod).\n\nOn (1): +500 domain limit and +500 vassal limit for you (Domain & Vassals tiers are skipped).\nOff (0): domain/vassal bonuses revert to your Domain & Vassals tier.\n\nClick to cycle On ↔ Off. Your current value is on the button."
+ ss_settings.tt.military:0 "Military — combat advantage, sieges, supply, levies, knights, and men-at-arms package.\n\nLow (1): mild battlefield and levy boosts.\nMedium (2): strong advantage, MAA, and reinforcement.\nHigh (3): overwhelming combat, levy, knight, and MAA bonuses.\n\nClick to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.schemes:0 "Schemes — scheme success, secrecy, enemy-scheme defense, and max scheme slots.\n\nLow (1): +50 success/secrecy, −25 enemy success, +5 personal and hostile scheme slots.\nMedium (2): +100 success/secrecy, −50 enemy success, +15 slots each.\nHigh (3): +200 success/secrecy, −75 enemy success, +50 slots each.\n\nClick to cycle Low → Medium → High → Low. Your current tier is on the button."
+ ss_settings.tt.legacy:0 "Legacy Pulse — every five years: personal prestige, dynasty renown, and favor hooks on vassals or councillors.\n\nOff (0): no pulses.\nLow (1): modest prestige/renown, up to 1 favor hook.\nMedium (2): strong pulse, up to 2 hooks.\nHigh (3): massive pulse, up to 3 hooks.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
+ ss_settings.tt.perk:0 "Perk Gift Size — free lifestyle perk points from Claim decisions on the Decisions menu (yearly cooldown).\n\nOff (0): claim decisions hidden.\n1 point (1): each claim grants 1 perk point.\n3 points (2): each claim grants 3; unlocks Claim All Lifestyles.\n5 points (3): each claim grants 5; Claim All remains available.\n\nClick to cycle Off → 1 → 3 → 5 → Off. Your current tier is on the button."
+ ss_settings.tt.reshape:0 "Reshape Heir Power — once-per-lifetime character interaction on a child (does not grant Supreme Sovereign).\n\nOff (0): interaction hidden.\nXP only (1): large lifestyle XP to all five lifestyles.\nXP + claims (2): XP plus copies your claims onto the child.\nFull (3): XP, claims, and free perk points per lifestyle.\n\nClick to cycle Off → XP → XP+Claims → Full → Off. Your current tier is on the button."
+ ss_settings.tt.close:0 "Close the Sovereign Settings hub without changing anything."
+
+ # Status-board / option labels — Lifestyle (0–3)
+ ss_settings.tier.lifestyle_0:0 "Lifestyle XP: Off (0)"
+ ss_settings.tier.lifestyle_1:0 "Lifestyle XP: Low (1)"
+ ss_settings.tier.lifestyle_2:0 "Lifestyle XP: Medium (2)"
+ ss_settings.tier.lifestyle_3:0 "Lifestyle XP: High (3)"
+ ss_settings.opt.lifestyle_0:0 "Lifestyle XP: Off (0) — cycle"
+ ss_settings.opt.lifestyle_1:0 "Lifestyle XP: Low (1) — cycle"
+ ss_settings.opt.lifestyle_2:0 "Lifestyle XP: Medium (2) — cycle"
+ ss_settings.opt.lifestyle_3:0 "Lifestyle XP: High (3) — cycle"
+
+ # Longevity (1–3)
+ ss_settings.tier.longevity_1:0 "Longevity: Low (1)"
+ ss_settings.tier.longevity_2:0 "Longevity: Medium (2)"
+ ss_settings.tier.longevity_3:0 "Longevity: High (3)"
+ ss_settings.opt.longevity_1:0 "Longevity: Low (1) — cycle"
+ ss_settings.opt.longevity_2:0 "Longevity: Medium (2) — cycle"
+ ss_settings.opt.longevity_3:0 "Longevity: High (3) — cycle"
+
+ # Wealth (1–3)
+ ss_settings.tier.wealth_1:0 "Wealth: Low (1)"
+ ss_settings.tier.wealth_2:0 "Wealth: Medium (2)"
+ ss_settings.tier.wealth_3:0 "Wealth: High (3)"
+ ss_settings.opt.wealth_1:0 "Wealth: Low (1) — cycle"
+ ss_settings.opt.wealth_2:0 "Wealth: Medium (2) — cycle"
+ ss_settings.opt.wealth_3:0 "Wealth: High (3) — cycle"
+
+ # Prestige (1–3)
+ ss_settings.tier.prestige_1:0 "Prestige: Low (1)"
+ ss_settings.tier.prestige_2:0 "Prestige: Medium (2)"
+ ss_settings.tier.prestige_3:0 "Prestige: High (3)"
+ ss_settings.opt.prestige_1:0 "Prestige: Low (1) — cycle"
+ ss_settings.opt.prestige_2:0 "Prestige: Medium (2) — cycle"
+ ss_settings.opt.prestige_3:0 "Prestige: High (3) — cycle"
+
+ # Domain / vassal (1–3)
+ ss_settings.tier.domain_1:0 "Domain & Vassals: Low (1)"
+ ss_settings.tier.domain_2:0 "Domain & Vassals: Medium (2)"
+ ss_settings.tier.domain_3:0 "Domain & Vassals: High (3)"
+ ss_settings.opt.domain_1:0 "Domain & Vassals: Low (1) — cycle"
+ ss_settings.opt.domain_2:0 "Domain & Vassals: Medium (2) — cycle"
+ ss_settings.opt.domain_3:0 "Domain & Vassals: High (3) — cycle"
+
+ # Keep All Titles (0–1)
+ ss_settings.tier.unlimited_0:0 "Keep All Titles: Off (0)"
+ ss_settings.tier.unlimited_1:0 "Keep All Titles: On (1)"
+ ss_settings.opt.unlimited_0:0 "Keep All Titles: Off (0) — cycle"
+ ss_settings.opt.unlimited_1:0 "Keep All Titles: On (1) — cycle"
+
+ # Military (1–3)
+ ss_settings.tier.military_1:0 "Military: Low (1)"
+ ss_settings.tier.military_2:0 "Military: Medium (2)"
+ ss_settings.tier.military_3:0 "Military: High (3)"
+ ss_settings.opt.military_1:0 "Military: Low (1) — cycle"
+ ss_settings.opt.military_2:0 "Military: Medium (2) — cycle"
+ ss_settings.opt.military_3:0 "Military: High (3) — cycle"
+
+ # Schemes (1–3)
+ ss_settings.tier.schemes_1:0 "Schemes: Low (1)"
+ ss_settings.tier.schemes_2:0 "Schemes: Medium (2)"
+ ss_settings.tier.schemes_3:0 "Schemes: High (3)"
+ ss_settings.opt.schemes_1:0 "Schemes: Low (1) — cycle"
+ ss_settings.opt.schemes_2:0 "Schemes: Medium (2) — cycle"
+ ss_settings.opt.schemes_3:0 "Schemes: High (3) — cycle"
+
+ # Legacy pulse (0–3)
+ ss_settings.tier.legacy_0:0 "Legacy Pulse: Off (0)"
+ ss_settings.tier.legacy_1:0 "Legacy Pulse: Low (1)"
+ ss_settings.tier.legacy_2:0 "Legacy Pulse: Medium (2)"
+ ss_settings.tier.legacy_3:0 "Legacy Pulse: High (3)"
+ ss_settings.opt.legacy_0:0 "Legacy Pulse: Off (0) — cycle"
+ ss_settings.opt.legacy_1:0 "Legacy Pulse: Low (1) — cycle"
+ ss_settings.opt.legacy_2:0 "Legacy Pulse: Medium (2) — cycle"
+ ss_settings.opt.legacy_3:0 "Legacy Pulse: High (3) — cycle"
+
+ # Perk gift (0–3 → Off / 1pt / 3pts / 5pts)
+ ss_settings.tier.perk_0:0 "Perk Gift Size: Off (0)"
+ ss_settings.tier.perk_1:0 "Perk Gift Size: 1 point (1)"
+ ss_settings.tier.perk_2:0 "Perk Gift Size: 3 points (2)"
+ ss_settings.tier.perk_3:0 "Perk Gift Size: 5 points (3)"
+ ss_settings.opt.perk_0:0 "Perk Gift Size: Off (0) — cycle"
+ ss_settings.opt.perk_1:0 "Perk Gift Size: 1 point (1) — cycle"
+ ss_settings.opt.perk_2:0 "Perk Gift Size: 3 points (2) — cycle"
+ ss_settings.opt.perk_3:0 "Perk Gift Size: 5 points (3) — cycle"
+
+ # Reshape heir (0–3)
+ ss_settings.tier.reshape_0:0 "Reshape Heir: Off (0)"
+ ss_settings.tier.reshape_1:0 "Reshape Heir: XP only (1)"
+ ss_settings.tier.reshape_2:0 "Reshape Heir: XP + claims (2)"
+ ss_settings.tier.reshape_3:0 "Reshape Heir: XP + claims + perks (3)"
+ ss_settings.opt.reshape_0:0 "Reshape Heir: Off (0) — cycle"
+ ss_settings.opt.reshape_1:0 "Reshape Heir: XP only (1) — cycle"
+ ss_settings.opt.reshape_2:0 "Reshape Heir: XP + claims (2) — cycle"
+ ss_settings.opt.reshape_3:0 "Reshape Heir: XP + claims + perks (3) — cycle"
+
+ # Modifier names (UI)
+ ss_lifestyle_xp_low_modifier:0 "Sovereign Lifestyle XP (Low)"
+ ss_lifestyle_xp_med_modifier:0 "Sovereign Lifestyle XP (Medium)"
+ ss_lifestyle_xp_high_modifier:0 "Sovereign Lifestyle XP (High)"
+ ss_longevity_low_modifier:0 "Sovereign Longevity (Low)"
+ ss_longevity_med_modifier:0 "Sovereign Longevity (Medium)"
+ ss_longevity_high_modifier:0 "Sovereign Longevity (High)"
+ ss_wealth_low_modifier:0 "Sovereign Wealth (Low)"
+ ss_wealth_med_modifier:0 "Sovereign Wealth (Medium)"
+ ss_wealth_high_modifier:0 "Sovereign Wealth (High)"
+ ss_prestige_low_modifier:0 "Sovereign Prestige (Low)"
+ ss_prestige_med_modifier:0 "Sovereign Prestige (Medium)"
+ ss_prestige_high_modifier:0 "Sovereign Prestige (High)"
+ ss_domain_vassal_low_modifier:0 "Sovereign Domain (Low)"
+ ss_domain_vassal_med_modifier:0 "Sovereign Domain (Medium)"
+ ss_domain_vassal_high_modifier:0 "Sovereign Domain (High)"
+ ss_unlimited_titles_modifier:0 "Sovereign Keep All Titles"
+ ss_military_low_modifier:0 "Sovereign Military (Low)"
+ ss_military_med_modifier:0 "Sovereign Military (Medium)"
+ ss_military_high_modifier:0 "Sovereign Military (High)"
+ ss_schemes_low_modifier:0 "Sovereign Schemes (Low)"
+ ss_schemes_med_modifier:0 "Sovereign Schemes (Medium)"
+ ss_schemes_high_modifier:0 "Sovereign Schemes (High)"
+
+ # OP pass: perk claim decisions
+ ss_claim_lifestyle_perk_points_decision:0 "Supreme Sovereign: Claim Lifestyle Perk Points"
+ ss_claim_lifestyle_perk_points_decision_desc:0 "Claim free lifestyle perk points for your current lifestyle focus. If you have no focus, you will choose a lifestyle.\n\nSpend the points in the lifestyle window. Cooldown: one year.\n\nGift size is set under Manage Sovereign Settings."
+ ss_claim_lifestyle_perk_points_decision_tooltip:0 "Claim perk points for your current lifestyle (or pick one)"
+ ss_claim_lifestyle_perk_points_decision_confirm:0 "Claim Perk Points"
+ ss_claim_lifestyle_perk_points_decision_effect_tt:0 "Grants perk points to your current lifestyle, or opens a lifestyle picker"
+ ss_tt_can_claim_perk_gift:0 "Perk gifts are enabled in Sovereign settings"
+
+ ss_claim_all_lifestyle_perk_points_decision:0 "Supreme Sovereign: Claim All Lifestyle Perk Points"
+ ss_claim_all_lifestyle_perk_points_decision_desc:0 "Claim free lifestyle perk points for all five lifestyles at once. Requires Perk Gift Size at Medium or High (set under Manage Sovereign Settings). Cooldown: one year."
+ ss_claim_all_lifestyle_perk_points_decision_tooltip:0 "Claim perk points for every lifestyle"
+ ss_claim_all_lifestyle_perk_points_decision_confirm:0 "Claim All Perk Points"
+ ss_claim_all_lifestyle_perk_points_decision_effect_tt:0 "Grants perk points to diplomacy, martial, stewardship, intrigue, and learning"
+ ss_tt_can_claim_all_perk_gifts:0 "Perk Gift Size is Medium or High"
+
+ # OP pass: reshape heir interaction
+ ss_reshape_heir_interaction:0 "Reshape Heir"
+ ss_reshape_heir_interaction_desc:0 "Once in your lifetime, pour lifestyle mastery into [recipient.GetShortUIName]. Grants large lifestyle experience (and claims / perk points depending on Reshape Heir settings).\n\nDoes not grant Supreme Sovereign — use Grant Supreme Sovereign separately if desired.\n\nChildren may receive the gift, but lifestyle XP is most useful once adult."
+ ss_reshape_heir_interaction_extra_icon:0 "$ss_reshape_heir_interaction$"
+ ss_tt_actor_may_reshape:0 "You are a Supreme Sovereign who has not yet reshaped an heir"
+ ss_tt_can_receive_reshape:0 "Target is your living child"
+ ss_tt_reshape_child_xp_warn:0 "Target is not yet adult — lifestyle XP waits until adulthood is useful"
+ ss_reshape_heir_toast_title:0 "Heir Reshaped"
+ ss_reshape_heir_toast_tt:0 "Your child has been reshaped with Sovereign mastery"
+
+ # OP pass: legacy pulse toast
+ ss_legacy_pulse_toast_title:0 "Legacy Pulse"
+ ss_legacy_pulse_toast_tt:0 "Your dynasty receives a pulse of prestige, renown, and favor"
+
+ # OP pass: lifestyle picker event
+ ss_op.1001.t:0 "Choose a Lifestyle"
+ ss_op.1001.desc:0 "You have no lifestyle focus set. Choose which lifestyle receives free perk points."
+ ss_op.1001.a:0 "Diplomacy"
+ ss_op.1001.b:0 "Martial"
+ ss_op.1001.c:0 "Stewardship"
+ ss_op.1001.d:0 "Intrigue"
+ ss_op.1001.e:0 "Learning"

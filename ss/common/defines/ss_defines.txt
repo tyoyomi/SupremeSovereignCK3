@@ -1,0 +1,9 @@
+# Supreme Sovereign — additive NOpinion overrides (global while mod is loaded).
+# Negates too-many-duchies opinion and count-liege-holds-my-duchy opinion.
+# Mid-game Off of Keep All Titles cannot restore these without unloading SS.
+
+NOpinion = {
+	MAX_DUCHIES_BEFORE_PENALTY = 9999
+	TOO_MANY_DUCHIES_OPINION = 0
+	COUNT_LIEGE_HOLDS_MY_DUCHY = 0
+}

@@ -1,0 +1,6 @@
+# Supreme Sovereign — LIOS override of vanilla has_too_many_held_duchies_trigger.
+# Suppresses action_too_many_held_duchies while SS is loaded (zzz_ wins vs 00_title_triggers).
+
+has_too_many_held_duchies_trigger = {
+	always = no
+}

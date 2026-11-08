@@ -1,0 +1,408 @@
+﻿# Supreme Sovereign — scripted effects
+# Config vars: ss_cfg_lifestyle 0–3; others 1–3 (High = 3 default)
+
+ss_clear_sovereign_modifiers_effect = {
+	remove_character_modifier = ss_lifestyle_xp_low_modifier
+	remove_character_modifier = ss_lifestyle_xp_med_modifier
+	remove_character_modifier = ss_lifestyle_xp_high_modifier
+	remove_character_modifier = ss_longevity_low_modifier
+	remove_character_modifier = ss_longevity_med_modifier
+	remove_character_modifier = ss_longevity_high_modifier
+	remove_character_modifier = ss_wealth_low_modifier
+	remove_character_modifier = ss_wealth_med_modifier
+	remove_character_modifier = ss_wealth_high_modifier
+	remove_character_modifier = ss_prestige_low_modifier
+	remove_character_modifier = ss_prestige_med_modifier
+	remove_character_modifier = ss_prestige_high_modifier
+	remove_character_modifier = ss_domain_vassal_low_modifier
+	remove_character_modifier = ss_domain_vassal_med_modifier
+	remove_character_modifier = ss_domain_vassal_high_modifier
+	remove_character_modifier = ss_unlimited_titles_modifier
+	remove_character_modifier = ss_military_low_modifier
+	remove_character_modifier = ss_military_med_modifier
+	remove_character_modifier = ss_military_high_modifier
+	remove_character_modifier = ss_schemes_low_modifier
+	remove_character_modifier = ss_schemes_med_modifier
+	remove_character_modifier = ss_schemes_high_modifier
+}
+
+ss_ensure_sovereign_defaults_effect = {
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_lifestyle } }
+		set_variable = { name = ss_cfg_lifestyle value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_longevity } }
+		set_variable = { name = ss_cfg_longevity value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_wealth } }
+		set_variable = { name = ss_cfg_wealth value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_prestige } }
+		set_variable = { name = ss_cfg_prestige value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_domain_vassal } }
+		set_variable = { name = ss_cfg_domain_vassal value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_unlimited_titles } }
+		set_variable = { name = ss_cfg_unlimited_titles value = 1 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_military } }
+		set_variable = { name = ss_cfg_military value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_schemes } }
+		set_variable = { name = ss_cfg_schemes value = 3 }
+	}
+	# OP pass defaults (CM-5)
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_legacy_pulse } }
+		set_variable = { name = ss_cfg_legacy_pulse value = 2 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_perk_gift } }
+		set_variable = { name = ss_cfg_perk_gift value = 2 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_reshape_heir } }
+		set_variable = { name = ss_cfg_reshape_heir value = 2 }
+	}
+}
+
+ss_refresh_sovereign_modifiers = {
+	if = {
+		limit = { has_trait = Supreme_Sovereign }
+		ss_ensure_sovereign_defaults_effect = yes
+		ss_clear_sovereign_modifiers_effect = yes
+
+		# Lifestyle: 0=off (no modifier), 1/2/3 = low/med/high
+		if = {
+			limit = { var:ss_cfg_lifestyle = 1 }
+			add_character_modifier = {
+				modifier = ss_lifestyle_xp_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_lifestyle = 2 }
+			add_character_modifier = {
+				modifier = ss_lifestyle_xp_med_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_lifestyle = 3 }
+			add_character_modifier = {
+				modifier = ss_lifestyle_xp_high_modifier
+				days = -1
+			}
+		}
+
+		# Longevity
+		if = {
+			limit = { var:ss_cfg_longevity = 1 }
+			add_character_modifier = {
+				modifier = ss_longevity_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_longevity = 2 }
+			add_character_modifier = {
+				modifier = ss_longevity_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = ss_longevity_high_modifier
+				days = -1
+			}
+		}
+
+		# Wealth
+		if = {
+			limit = { var:ss_cfg_wealth = 1 }
+			add_character_modifier = {
+				modifier = ss_wealth_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_wealth = 2 }
+			add_character_modifier = {
+				modifier = ss_wealth_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = ss_wealth_high_modifier
+				days = -1
+			}
+		}
+
+		# Prestige
+		if = {
+			limit = { var:ss_cfg_prestige = 1 }
+			add_character_modifier = {
+				modifier = ss_prestige_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_prestige = 2 }
+			add_character_modifier = {
+				modifier = ss_prestige_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = ss_prestige_high_modifier
+				days = -1
+			}
+		}
+
+		# Keep All Titles — On: extreme domain/vassal; Off: Domain & Vassals tiers
+		if = {
+			limit = { var:ss_cfg_unlimited_titles = 1 }
+			add_character_modifier = {
+				modifier = ss_unlimited_titles_modifier
+				days = -1
+			}
+		}
+		else = {
+			# Domain / vassal tiers (only when Keep All Titles is Off)
+			if = {
+				limit = { var:ss_cfg_domain_vassal = 1 }
+				add_character_modifier = {
+					modifier = ss_domain_vassal_low_modifier
+					days = -1
+				}
+			}
+			else_if = {
+				limit = { var:ss_cfg_domain_vassal = 2 }
+				add_character_modifier = {
+					modifier = ss_domain_vassal_med_modifier
+					days = -1
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = ss_domain_vassal_high_modifier
+					days = -1
+				}
+			}
+		}
+
+		# Military
+		if = {
+			limit = { var:ss_cfg_military = 1 }
+			add_character_modifier = {
+				modifier = ss_military_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_military = 2 }
+			add_character_modifier = {
+				modifier = ss_military_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = ss_military_high_modifier
+				days = -1
+			}
+		}
+
+		# Schemes
+		if = {
+			limit = { var:ss_cfg_schemes = 1 }
+			add_character_modifier = {
+				modifier = ss_schemes_low_modifier
+				days = -1
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_schemes = 2 }
+			add_character_modifier = {
+				modifier = ss_schemes_med_modifier
+				days = -1
+			}
+		}
+		else = {
+			add_character_modifier = {
+				modifier = ss_schemes_high_modifier
+				days = -1
+			}
+		}
+	}
+}
+
+ss_apply_sovereign_runtime_effects = {
+	if = {
+		limit = { has_trait = Supreme_Sovereign }
+		ss_ensure_sovereign_defaults_effect = yes
+		ss_refresh_sovereign_modifiers = yes
+	}
+}
+
+# Grant to child: this = recipient
+ss_grant_supreme_sovereign_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			NOT = { has_trait = Supreme_Sovereign }
+		}
+		add_trait = Supreme_Sovereign
+		ss_apply_sovereign_runtime_effects = yes
+		if = {
+			limit = {
+				exists = scope:actor
+				scope:actor = { is_alive = yes is_ai = no }
+			}
+			scope:actor = {
+				save_scope_as = ss_granter
+			}
+			save_scope_as = ss_grantee
+			# Lightweight confirm via custom tooltip only; optional event omitted in v1
+		}
+	}
+}
+
+# Cycle helpers — this = sovereign character
+ss_cycle_lifestyle_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_lifestyle = 0 }
+		set_variable = { name = ss_cfg_lifestyle value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_lifestyle = 1 }
+		set_variable = { name = ss_cfg_lifestyle value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_lifestyle = 2 }
+		set_variable = { name = ss_cfg_lifestyle value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_lifestyle value = 0 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_longevity_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_longevity = 1 }
+		set_variable = { name = ss_cfg_longevity value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_longevity = 2 }
+		set_variable = { name = ss_cfg_longevity value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_longevity value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_wealth_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_wealth = 1 }
+		set_variable = { name = ss_cfg_wealth value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_wealth = 2 }
+		set_variable = { name = ss_cfg_wealth value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_wealth value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_prestige_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_prestige = 1 }
+		set_variable = { name = ss_cfg_prestige value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_prestige = 2 }
+		set_variable = { name = ss_cfg_prestige value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_prestige value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_domain_vassal_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_domain_vassal = 1 }
+		set_variable = { name = ss_cfg_domain_vassal value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_domain_vassal = 2 }
+		set_variable = { name = ss_cfg_domain_vassal value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_domain_vassal value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_unlimited_titles_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_unlimited_titles = 1 }
+		set_variable = { name = ss_cfg_unlimited_titles value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_unlimited_titles value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_military_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_military = 1 }
+		set_variable = { name = ss_cfg_military value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_military = 2 }
+		set_variable = { name = ss_cfg_military value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_military value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_schemes_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_schemes = 1 }
+		set_variable = { name = ss_cfg_schemes value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_schemes = 2 }
+		set_variable = { name = ss_cfg_schemes value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_schemes value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}

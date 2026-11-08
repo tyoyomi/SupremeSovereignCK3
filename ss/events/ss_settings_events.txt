@@ -1,0 +1,498 @@
+namespace = ss_settings
+
+# Sovereign Settings hub â€” status board + cycle options (re-opens after each cycle)
+ss_settings.1001 = {
+	type = character_event
+	title = ss_settings.1001.t
+	theme = education
+
+	desc = {
+		desc = ss_settings.1001.desc_intro
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_lifestyle = 0 }
+				desc = ss_settings.tier.lifestyle_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_lifestyle = 1 }
+				desc = ss_settings.tier.lifestyle_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_lifestyle = 2 }
+				desc = ss_settings.tier.lifestyle_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_lifestyle = 3 }
+				desc = ss_settings.tier.lifestyle_3
+			}
+			desc = ss_settings.tier.lifestyle_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_longevity = 1 }
+				desc = ss_settings.tier.longevity_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_longevity = 2 }
+				desc = ss_settings.tier.longevity_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_longevity = 3 }
+				desc = ss_settings.tier.longevity_3
+			}
+			desc = ss_settings.tier.longevity_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_wealth = 1 }
+				desc = ss_settings.tier.wealth_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_wealth = 2 }
+				desc = ss_settings.tier.wealth_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_wealth = 3 }
+				desc = ss_settings.tier.wealth_3
+			}
+			desc = ss_settings.tier.wealth_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_prestige = 1 }
+				desc = ss_settings.tier.prestige_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_prestige = 2 }
+				desc = ss_settings.tier.prestige_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_prestige = 3 }
+				desc = ss_settings.tier.prestige_3
+			}
+			desc = ss_settings.tier.prestige_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_domain_vassal = 1 }
+				desc = ss_settings.tier.domain_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_domain_vassal = 2 }
+				desc = ss_settings.tier.domain_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_domain_vassal = 3 }
+				desc = ss_settings.tier.domain_3
+			}
+			desc = ss_settings.tier.domain_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_unlimited_titles = 0 }
+				desc = ss_settings.tier.unlimited_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_unlimited_titles = 1 }
+				desc = ss_settings.tier.unlimited_1
+			}
+			desc = ss_settings.tier.unlimited_1
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_military = 1 }
+				desc = ss_settings.tier.military_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_military = 2 }
+				desc = ss_settings.tier.military_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_military = 3 }
+				desc = ss_settings.tier.military_3
+			}
+			desc = ss_settings.tier.military_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_schemes = 1 }
+				desc = ss_settings.tier.schemes_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_schemes = 2 }
+				desc = ss_settings.tier.schemes_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_schemes = 3 }
+				desc = ss_settings.tier.schemes_3
+			}
+			desc = ss_settings.tier.schemes_3
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_legacy_pulse = 0 }
+				desc = ss_settings.tier.legacy_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_legacy_pulse = 1 }
+				desc = ss_settings.tier.legacy_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_legacy_pulse = 2 }
+				desc = ss_settings.tier.legacy_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_legacy_pulse = 3 }
+				desc = ss_settings.tier.legacy_3
+			}
+			desc = ss_settings.tier.legacy_2
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_perk_gift = 0 }
+				desc = ss_settings.tier.perk_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_perk_gift = 1 }
+				desc = ss_settings.tier.perk_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_perk_gift = 2 }
+				desc = ss_settings.tier.perk_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_perk_gift = 3 }
+				desc = ss_settings.tier.perk_3
+			}
+			desc = ss_settings.tier.perk_2
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_reshape_heir = 0 }
+				desc = ss_settings.tier.reshape_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_reshape_heir = 1 }
+				desc = ss_settings.tier.reshape_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_reshape_heir = 2 }
+				desc = ss_settings.tier.reshape_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_reshape_heir = 3 }
+				desc = ss_settings.tier.reshape_3
+			}
+			desc = ss_settings.tier.reshape_2
+		}
+		desc = ss_settings.1001.desc_blank
+		desc = ss_settings.1001.desc_footer
+	}
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_lifestyle = 0 }
+						desc = ss_settings.opt.lifestyle_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_lifestyle = 1 }
+						desc = ss_settings.opt.lifestyle_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_lifestyle = 2 }
+						desc = ss_settings.opt.lifestyle_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_lifestyle = 3 }
+						desc = ss_settings.opt.lifestyle_3
+					}
+					desc = ss_settings.opt.lifestyle_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.lifestyle
+		ss_cycle_lifestyle_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_longevity = 1 }
+						desc = ss_settings.opt.longevity_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_longevity = 2 }
+						desc = ss_settings.opt.longevity_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_longevity = 3 }
+						desc = ss_settings.opt.longevity_3
+					}
+					desc = ss_settings.opt.longevity_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.longevity
+		ss_cycle_longevity_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_wealth = 1 }
+						desc = ss_settings.opt.wealth_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_wealth = 2 }
+						desc = ss_settings.opt.wealth_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_wealth = 3 }
+						desc = ss_settings.opt.wealth_3
+					}
+					desc = ss_settings.opt.wealth_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.wealth
+		ss_cycle_wealth_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_prestige = 1 }
+						desc = ss_settings.opt.prestige_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_prestige = 2 }
+						desc = ss_settings.opt.prestige_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_prestige = 3 }
+						desc = ss_settings.opt.prestige_3
+					}
+					desc = ss_settings.opt.prestige_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.prestige
+		ss_cycle_prestige_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_domain_vassal = 1 }
+						desc = ss_settings.opt.domain_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_domain_vassal = 2 }
+						desc = ss_settings.opt.domain_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_domain_vassal = 3 }
+						desc = ss_settings.opt.domain_3
+					}
+					desc = ss_settings.opt.domain_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.domain
+		ss_cycle_domain_vassal_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_unlimited_titles = 0 }
+						desc = ss_settings.opt.unlimited_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_unlimited_titles = 1 }
+						desc = ss_settings.opt.unlimited_1
+					}
+					desc = ss_settings.opt.unlimited_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.unlimited_titles
+		ss_cycle_unlimited_titles_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_military = 1 }
+						desc = ss_settings.opt.military_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_military = 2 }
+						desc = ss_settings.opt.military_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_military = 3 }
+						desc = ss_settings.opt.military_3
+					}
+					desc = ss_settings.opt.military_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.military
+		ss_cycle_military_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_schemes = 1 }
+						desc = ss_settings.opt.schemes_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_schemes = 2 }
+						desc = ss_settings.opt.schemes_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_schemes = 3 }
+						desc = ss_settings.opt.schemes_3
+					}
+					desc = ss_settings.opt.schemes_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.schemes
+		ss_cycle_schemes_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_legacy_pulse = 0 }
+						desc = ss_settings.opt.legacy_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_legacy_pulse = 1 }
+						desc = ss_settings.opt.legacy_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_legacy_pulse = 2 }
+						desc = ss_settings.opt.legacy_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_legacy_pulse = 3 }
+						desc = ss_settings.opt.legacy_3
+					}
+					desc = ss_settings.opt.legacy_2
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.legacy
+		ss_cycle_legacy_pulse_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_perk_gift = 0 }
+						desc = ss_settings.opt.perk_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_perk_gift = 1 }
+						desc = ss_settings.opt.perk_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_perk_gift = 2 }
+						desc = ss_settings.opt.perk_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_perk_gift = 3 }
+						desc = ss_settings.opt.perk_3
+					}
+					desc = ss_settings.opt.perk_2
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.perk
+		ss_cycle_perk_gift_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_reshape_heir = 0 }
+						desc = ss_settings.opt.reshape_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_reshape_heir = 1 }
+						desc = ss_settings.opt.reshape_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_reshape_heir = 2 }
+						desc = ss_settings.opt.reshape_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_reshape_heir = 3 }
+						desc = ss_settings.opt.reshape_3
+					}
+					desc = ss_settings.opt.reshape_2
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.reshape
+		ss_cycle_reshape_heir_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = ss_settings.1001.close
+		custom_tooltip = ss_settings.tt.close
+	}
+}

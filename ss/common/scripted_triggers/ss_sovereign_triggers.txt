@@ -1,0 +1,80 @@
+﻿# Supreme Sovereign — scripted triggers
+
+ss_is_sovereign = {
+	has_trait = Supreme_Sovereign
+}
+
+# Actor may grant: living player Sovereign (player-only fantasy)
+ss_can_actor_grant_sovereign = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+}
+
+# Recipient: living direct child without the trait
+ss_can_receive_sovereign = {
+	is_alive = yes
+	NOT = { has_trait = Supreme_Sovereign }
+	exists = scope:actor
+	is_child_of = scope:actor
+}
+
+ss_has_sovereign_cfg_vars = {
+	exists = var:ss_cfg_lifestyle
+	exists = var:ss_cfg_longevity
+	exists = var:ss_cfg_wealth
+	exists = var:ss_cfg_prestige
+	exists = var:ss_cfg_domain_vassal
+	exists = var:ss_cfg_unlimited_titles
+	exists = var:ss_cfg_military
+	exists = var:ss_cfg_schemes
+}
+
+# --- OP pass ---
+# Missing cfg vars count as defaults (legacy/perk/reshape default Med=2) until ensure runs.
+
+ss_can_legacy_pulse = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	exists = dynasty
+	NAND = {
+		exists = var:ss_cfg_legacy_pulse
+		var:ss_cfg_legacy_pulse = 0
+	}
+}
+
+ss_can_claim_perk_gift = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	NAND = {
+		exists = var:ss_cfg_perk_gift
+		var:ss_cfg_perk_gift = 0
+	}
+}
+
+ss_can_claim_all_perk_gifts = {
+	ss_can_claim_perk_gift = yes
+	OR = {
+		NOT = { exists = var:ss_cfg_perk_gift }
+		var:ss_cfg_perk_gift >= 2
+	}
+}
+
+ss_can_reshape_heir_actor = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	NOT = { has_character_flag = ss_used_reshape_heir }
+	NAND = {
+		exists = var:ss_cfg_reshape_heir
+		var:ss_cfg_reshape_heir = 0
+	}
+}
+
+ss_can_receive_reshape = {
+	is_alive = yes
+	exists = scope:actor
+	is_child_of = scope:actor
+}

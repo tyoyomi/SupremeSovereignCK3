@@ -1,0 +1,129 @@
+﻿# Supreme Sovereign — grant to direct child (Option A)
+# Craft shape reused from Exalted Advisor bestow interaction.
+# AI fully off: no ai_targets (chance must be (0-1]; omit when never AI).
+
+@ss_grant_prestige_cost = 500
+
+ss_grant_supreme_sovereign_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 70
+	common_interaction = yes
+
+	desc = ss_grant_supreme_sovereign_interaction_desc
+
+	auto_accept = yes
+
+	cooldown = { days = 365 }
+	cooldown_against_recipient = { days = 3650 }
+
+	is_shown = {
+		scope:actor = {
+			is_alive = yes
+			is_ai = no
+			has_trait = Supreme_Sovereign
+		}
+		scope:recipient = {
+			is_alive = yes
+			NOT = { has_trait = Supreme_Sovereign }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_grant
+				ss_can_actor_grant_sovereign = yes
+			}
+			prestige >= @ss_grant_prestige_cost
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_sovereign
+				ss_can_receive_sovereign = yes
+			}
+		}
+	}
+
+	cost = {
+		prestige = @ss_grant_prestige_cost
+	}
+
+	on_accept = {
+		scope:recipient = {
+			ss_grant_supreme_sovereign_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+# Once-per-lifetime reshape heir (OP pass) — does NOT grant Supreme_Sovereign
+@ss_reshape_heir_prestige_cost = 1000
+
+ss_reshape_heir_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 69
+	common_interaction = yes
+
+	desc = ss_reshape_heir_interaction_desc
+
+	auto_accept = yes
+
+	is_shown = {
+		scope:actor = {
+			is_alive = yes
+			is_ai = no
+			has_trait = Supreme_Sovereign
+			NOT = { has_character_flag = ss_used_reshape_heir }
+			NAND = {
+				exists = var:ss_cfg_reshape_heir
+				var:ss_cfg_reshape_heir = 0
+			}
+		}
+		scope:recipient = {
+			is_alive = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_reshape
+				ss_can_reshape_heir_actor = yes
+			}
+			prestige >= @ss_reshape_heir_prestige_cost
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_reshape
+				ss_can_receive_reshape = yes
+			}
+		}
+	}
+
+	cost = {
+		prestige = @ss_reshape_heir_prestige_cost
+	}
+
+	on_accept = {
+		scope:recipient = {
+			ss_reshape_heir_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

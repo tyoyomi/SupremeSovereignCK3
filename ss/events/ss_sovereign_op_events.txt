@@ -1,0 +1,34 @@
+﻿namespace = ss_op
+
+# Lifestyle picker when claiming perk points without a current focus
+ss_op.1001 = {
+	type = character_event
+	title = ss_op.1001.t
+	desc = ss_op.1001.desc
+	theme = education
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = ss_op.1001.a
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = diplomacy }
+	}
+	option = {
+		name = ss_op.1001.b
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = martial }
+	}
+	option = {
+		name = ss_op.1001.c
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = stewardship }
+	}
+	option = {
+		name = ss_op.1001.d
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = intrigue }
+	}
+	option = {
+		name = ss_op.1001.e
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = learning }
+	}
+}

@@ -1,0 +1,164 @@
+﻿# Supreme Sovereign — runtime character modifiers (tiers).
+# Applied/removed by ss_refresh_sovereign_modifiers.
+# Hygiene: character-scoped keys only (1.20). Scheme-only keys pruned.
+
+### Lifestyle XP (Must) — Off removes boost (Sovereign bonus only)
+ss_lifestyle_xp_low_modifier = {
+	monthly_lifestyle_xp_gain_mult = 2
+}
+ss_lifestyle_xp_med_modifier = {
+	monthly_lifestyle_xp_gain_mult = 5
+}
+ss_lifestyle_xp_high_modifier = {
+	monthly_lifestyle_xp_gain_mult = 10
+}
+
+### Longevity (Must) — long life, not immortal
+ss_longevity_low_modifier = {
+	health = 25
+	negate_health_penalty_add = 10
+	years_of_fertility = 50
+	fertility = 50
+}
+ss_longevity_med_modifier = {
+	health = 50
+	negate_health_penalty_add = 25
+	years_of_fertility = 150
+	fertility = 200
+}
+ss_longevity_high_modifier = {
+	health = 100
+	negate_health_penalty_add = 50
+	years_of_fertility = 300
+	fertility = 500
+}
+
+### Wealth (Must) — income + piety (prestige is its own setting)
+ss_wealth_low_modifier = {
+	monthly_income = 50
+	monthly_piety = 25
+}
+ss_wealth_med_modifier = {
+	monthly_income = 100
+	monthly_piety = 50
+}
+ss_wealth_high_modifier = {
+	monthly_income = 200
+	monthly_piety = 100
+}
+
+### Prestige (Must) — personal + dynasty monthly prestige
+# Raised vs old trait baseline (20 / 2000). Default High = clearly OP.
+ss_prestige_low_modifier = {
+	monthly_prestige = 50
+	monthly_dynasty_prestige = 5000
+}
+ss_prestige_med_modifier = {
+	monthly_prestige = 150
+	monthly_dynasty_prestige = 10000
+}
+ss_prestige_high_modifier = {
+	monthly_prestige = 500
+	monthly_dynasty_prestige = 25000
+}
+
+### Domain / vassal limits (Must)
+ss_domain_vassal_low_modifier = {
+	domain_limit = 10
+	vassal_limit = 25
+}
+ss_domain_vassal_med_modifier = {
+	domain_limit = 25
+	vassal_limit = 50
+}
+ss_domain_vassal_high_modifier = {
+	domain_limit = 50
+	vassal_limit = 100
+}
+
+### Keep All Titles (CM-17) — extreme domain/vassal when hub toggle On
+ss_unlimited_titles_modifier = {
+	domain_limit = 500
+	vassal_limit = 500
+}
+
+### Military (Should) — character-valid keys only
+ss_military_low_modifier = {
+	advantage = 15
+	siege_phase_time = -0.25
+	movement_speed = 0.15
+	supply_duration = 1
+	supply_limit_mult = 0.15
+	levy_size = 10
+	levy_reinforcement_rate = 1
+	knight_effectiveness_mult = 10
+	men_at_arms_limit = 100
+	men_at_arms_cap = 5
+	maa_damage_mult = 1
+}
+ss_military_med_modifier = {
+	advantage = 30
+	siege_phase_time = -0.5
+	movement_speed = 0.3
+	supply_duration = 3
+	supply_limit_mult = 0.3
+	levy_size = 50
+	levy_reinforcement_rate = 2
+	knight_effectiveness_mult = 100
+	men_at_arms_limit = 1000
+	men_at_arms_cap = 25
+	maa_damage_mult = 5
+	garrison_size = 100
+}
+ss_military_high_modifier = {
+	advantage = 50
+	siege_phase_time = -0.75
+	movement_speed = 0.5
+	supply_duration = 5
+	supply_limit_mult = 0.5
+	min_combat_roll = 15
+	max_combat_roll = 30
+	maa_damage_mult = 100
+	heavy_cavalry_damage_mult = 1000
+	heavy_cavalry_toughness_mult = 1000
+	archers_damage_mult = 1000
+	archers_toughness_mult = 1000
+	skirmishers_damage_mult = 1000
+	skirmishers_toughness_mult = 1000
+	garrison_size = 1000
+	levy_size = 100
+	levy_reinforcement_rate = 10000
+	knight_effectiveness_mult = 10000
+	men_at_arms_limit = 100000
+	men_at_arms_cap = 100
+}
+
+### Schemes (Should) — character-scoped scheme keys only
+# (scheme_power / scheme_resistance / scheme_secrecy are scheme-modifier types)
+ss_schemes_low_modifier = {
+	owned_hostile_scheme_success_chance_add = 50
+	owned_personal_scheme_success_chance_add = 50
+	owned_scheme_secrecy_add = 50
+	enemy_hostile_scheme_success_chance_add = -25
+	enemy_hostile_scheme_phase_duration_add = 30
+	max_personal_schemes_add = 5
+	max_hostile_schemes_add = 5
+}
+ss_schemes_med_modifier = {
+	owned_hostile_scheme_success_chance_add = 100
+	owned_personal_scheme_success_chance_add = 100
+	owned_scheme_secrecy_add = 100
+	enemy_hostile_scheme_success_chance_add = -50
+	enemy_hostile_scheme_phase_duration_add = 60
+	max_personal_schemes_add = 15
+	max_hostile_schemes_add = 15
+}
+ss_schemes_high_modifier = {
+	owned_hostile_scheme_success_chance_add = 200
+	owned_personal_scheme_success_chance_add = 200
+	owned_scheme_secrecy_add = 200
+	enemy_hostile_scheme_success_chance_add = -75
+	enemy_hostile_scheme_phase_duration_add = 90
+	max_personal_schemes_add = 50
+	max_hostile_schemes_add = 50
+}

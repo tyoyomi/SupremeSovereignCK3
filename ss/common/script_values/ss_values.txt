@@ -1,0 +1,70 @@
+﻿# Supreme Sovereign — shared script values
+# Tier codes documented for DEV/TEST:
+#   ss_cfg_lifestyle: 0=Off, 1=Low, 2=Med, 3=High
+#   ss_cfg_longevity / wealth / prestige / domain_vassal / military / schemes: 1=Low, 2=Med, 3=High
+#   ss_cfg_unlimited_titles: 0=Off, 1=On (default 1) — Keep All Titles domain/vassal package
+#   ss_cfg_legacy_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
+#   ss_cfg_perk_gift: 0=Off, 1=1pt, 2=3pts, 3=5pts (default 2)
+#   ss_cfg_reshape_heir: 0=Off, 1=XP, 2=XP+claims, 3=XP+claims+perks (default 2)
+
+ss_cfg_lifestyle_display_value = {
+	value = 0
+	if = {
+		limit = { exists = var:ss_cfg_lifestyle }
+		value = var:ss_cfg_lifestyle
+	}
+}
+
+ss_cfg_longevity_display_value = {
+	value = 3
+	if = {
+		limit = { exists = var:ss_cfg_longevity }
+		value = var:ss_cfg_longevity
+	}
+}
+
+ss_grant_prestige_cost_value = {
+	value = 500
+}
+
+# --- OP pass: legacy pulse prestige ---
+ss_legacy_pulse_prestige_low_value = 200
+ss_legacy_pulse_prestige_med_value = 500
+ss_legacy_pulse_prestige_high_value = 1000
+
+ss_legacy_pulse_hook_cap_low = 1
+ss_legacy_pulse_hook_cap_med = 2
+ss_legacy_pulse_hook_cap_high = 3
+
+# --- OP pass: perk gift ---
+ss_perk_gift_points_value = {
+	value = 0
+	if = {
+		limit = {
+			exists = var:ss_cfg_perk_gift
+			var:ss_cfg_perk_gift = 1
+		}
+		value = 1
+	}
+	else_if = {
+		limit = {
+			exists = var:ss_cfg_perk_gift
+			var:ss_cfg_perk_gift = 2
+		}
+		value = 3
+	}
+	else_if = {
+		limit = {
+			exists = var:ss_cfg_perk_gift
+			var:ss_cfg_perk_gift = 3
+		}
+		value = 5
+	}
+}
+
+ss_perk_gift_cooldown_days = 365
+
+# --- OP pass: reshape heir ---
+ss_reshape_heir_prestige_cost = 1000
+ss_reshape_lifestyle_xp_value = 4000
+ss_reshape_perk_points = 3

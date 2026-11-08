@@ -1,0 +1,56 @@
+﻿# Supreme Sovereign — append-only vanilla hooks
+# Applies runtime modifiers for RD / existing saves. No birth auto-grant (Option A).
+
+on_game_start = {
+	on_actions = { ss_on_game_start }
+}
+
+ss_on_game_start = {
+	effect = {
+		every_living_character = {
+			limit = { has_trait = Supreme_Sovereign }
+			ss_apply_sovereign_runtime_effects = yes
+		}
+	}
+}
+
+on_game_start_after_lobby = {
+	on_actions = { ss_on_game_start_after_lobby }
+}
+
+ss_on_game_start_after_lobby = {
+	effect = {
+		every_living_character = {
+			limit = { has_trait = Supreme_Sovereign }
+			ss_apply_sovereign_runtime_effects = yes
+		}
+	}
+}
+
+random_yearly_everyone_pulse = {
+	on_actions = { ss_yearly_sovereign_refresh }
+}
+
+ss_yearly_sovereign_refresh = {
+	trigger = {
+		has_trait = Supreme_Sovereign
+	}
+	effect = {
+		# Safety net for RD / console / missed grant refresh; idempotent from vars
+		ss_apply_sovereign_runtime_effects = yes
+	}
+}
+
+# OP pass — dynasty legacy pulse (append only; never overwrite vanilla effect/trigger)
+five_year_playable_pulse = {
+	on_actions = { ss_legacy_pulse_on_action }
+}
+
+ss_legacy_pulse_on_action = {
+	trigger = {
+		ss_can_legacy_pulse = yes
+	}
+	effect = {
+		ss_legacy_pulse_effect = yes
+	}
+}

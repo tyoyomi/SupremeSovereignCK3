@@ -1,0 +1,392 @@
+﻿# Supreme Sovereign — OP pass scripted effects (CM-5)
+# Legacy pulse / perk gift / reshape heir. Player-only fantasy.
+
+@ss_legacy_pulse_prestige_low = 200
+@ss_legacy_pulse_prestige_med = 500
+@ss_legacy_pulse_prestige_high = 1000
+@ss_reshape_heir_prestige_cost = 1000
+@ss_reshape_lifestyle_xp = 4000
+@ss_reshape_perk_points = 3
+
+# -----------------------------------------------------------------------------
+# Settings cycle helpers (OP cfg — no modifier refresh required)
+# -----------------------------------------------------------------------------
+
+ss_cycle_legacy_pulse_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_legacy_pulse = 0 }
+		set_variable = { name = ss_cfg_legacy_pulse value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_legacy_pulse = 1 }
+		set_variable = { name = ss_cfg_legacy_pulse value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_legacy_pulse = 2 }
+		set_variable = { name = ss_cfg_legacy_pulse value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_legacy_pulse value = 0 }
+	}
+}
+
+ss_cycle_perk_gift_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_perk_gift = 0 }
+		set_variable = { name = ss_cfg_perk_gift value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_perk_gift = 1 }
+		set_variable = { name = ss_cfg_perk_gift value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_perk_gift = 2 }
+		set_variable = { name = ss_cfg_perk_gift value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_perk_gift value = 0 }
+	}
+}
+
+ss_cycle_reshape_heir_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_reshape_heir = 0 }
+		set_variable = { name = ss_cfg_reshape_heir value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_reshape_heir = 1 }
+		set_variable = { name = ss_cfg_reshape_heir value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_reshape_heir = 2 }
+		set_variable = { name = ss_cfg_reshape_heir value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_reshape_heir value = 0 }
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Feature 1 — Dynasty legacy pulse
+# -----------------------------------------------------------------------------
+
+ss_legacy_pulse_try_add_one_hook_effect = {
+	# Prefer powerful vassals / councillors
+	if = {
+		limit = {
+			any_vassal = {
+				is_alive = yes
+				OR = {
+					is_powerful_vassal = yes
+					is_councillor_of = root
+				}
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+		}
+		random_vassal = {
+			limit = {
+				is_alive = yes
+				OR = {
+					is_powerful_vassal = yes
+					is_councillor_of = root
+				}
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+			root = {
+				add_hook = {
+					type = favor_hook
+					target = prev
+				}
+			}
+		}
+	}
+	# Fallback: any direct vassal
+	else_if = {
+		limit = {
+			any_vassal = {
+				is_alive = yes
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+		}
+		random_vassal = {
+			limit = {
+				is_alive = yes
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+			root = {
+				add_hook = {
+					type = favor_hook
+					target = prev
+				}
+			}
+		}
+	}
+	# Fallback: councillor (may not be a vassal)
+	else_if = {
+		limit = {
+			any_councillor = {
+				is_alive = yes
+				NOT = { this = root }
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+		}
+		random_councillor = {
+			limit = {
+				is_alive = yes
+				NOT = { this = root }
+				root = {
+					can_add_hook = {
+						type = favor_hook
+						target = prev
+					}
+				}
+			}
+			root = {
+				add_hook = {
+					type = favor_hook
+					target = prev
+				}
+			}
+		}
+	}
+}
+
+ss_legacy_pulse_hooks_effect = {
+	if = {
+		limit = { var:ss_cfg_legacy_pulse = 1 }
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+	}
+	else_if = {
+		limit = { var:ss_cfg_legacy_pulse = 2 }
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+	}
+	else_if = {
+		limit = { var:ss_cfg_legacy_pulse = 3 }
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+		ss_legacy_pulse_try_add_one_hook_effect = yes
+	}
+}
+
+ss_legacy_pulse_effect = {
+	if = {
+		limit = { ss_can_legacy_pulse = yes }
+		ss_ensure_sovereign_defaults_effect = yes
+		if = {
+			limit = { var:ss_cfg_legacy_pulse = 1 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_legacy_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_legacy_pulse_toast_tt
+				add_prestige = @ss_legacy_pulse_prestige_low
+				dynasty = {
+					add_dynasty_prestige = minor_dynasty_prestige_gain
+				}
+				ss_legacy_pulse_hooks_effect = yes
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_legacy_pulse = 2 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_legacy_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_legacy_pulse_toast_tt
+				add_prestige = @ss_legacy_pulse_prestige_med
+				dynasty = {
+					add_dynasty_prestige = medium_dynasty_prestige_gain
+				}
+				ss_legacy_pulse_hooks_effect = yes
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_legacy_pulse = 3 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_legacy_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_legacy_pulse_toast_tt
+				add_prestige = @ss_legacy_pulse_prestige_high
+				dynasty = {
+					add_dynasty_prestige = major_dynasty_prestige_gain
+				}
+				ss_legacy_pulse_hooks_effect = yes
+			}
+		}
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Feature 2 — Instant lifestyle perk points
+# -----------------------------------------------------------------------------
+
+ss_grant_perk_points_to_lifestyle_effect = {
+	# $LIFESTYLE$ = diplomacy / martial / stewardship / intrigue / learning
+	if = {
+		limit = { exists = var:ss_cfg_perk_gift }
+		if = {
+			limit = { var:ss_cfg_perk_gift = 1 }
+			add_$LIFESTYLE$_lifestyle_perk_points = 1
+		}
+		else_if = {
+			limit = { var:ss_cfg_perk_gift = 2 }
+			add_$LIFESTYLE$_lifestyle_perk_points = 3
+		}
+		else_if = {
+			limit = { var:ss_cfg_perk_gift = 3 }
+			add_$LIFESTYLE$_lifestyle_perk_points = 5
+		}
+	}
+}
+
+ss_claim_current_lifestyle_perk_points_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { has_lifestyle = diplomacy_lifestyle }
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = diplomacy }
+	}
+	else_if = {
+		limit = { has_lifestyle = martial_lifestyle }
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = martial }
+	}
+	else_if = {
+		limit = { has_lifestyle = stewardship_lifestyle }
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = stewardship }
+	}
+	else_if = {
+		limit = { has_lifestyle = intrigue_lifestyle }
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = intrigue }
+	}
+	else_if = {
+		limit = { has_lifestyle = learning_lifestyle }
+		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = learning }
+	}
+	else = {
+		# No focus — open lifestyle picker event
+		trigger_event = ss_op.1001
+	}
+}
+
+ss_claim_all_lifestyle_perk_points_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = diplomacy }
+	ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = martial }
+	ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = stewardship }
+	ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = intrigue }
+	ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = learning }
+}
+
+# -----------------------------------------------------------------------------
+# Feature 3 — Once-per-lifetime reshape heir
+# this / scope:recipient = child; scope:actor = sovereign
+# -----------------------------------------------------------------------------
+
+ss_reshape_heir_copy_claims_effect = {
+	# Copy actor claims onto child as pressed; do not strip actor
+	scope:actor = {
+		every_claim = {
+			limit = {
+				scope:recipient = {
+					NOR = {
+						has_claim_on = prev
+						has_title = prev
+					}
+				}
+			}
+			scope:recipient = {
+				add_pressed_claim = prev
+			}
+		}
+	}
+}
+
+ss_reshape_heir_effect = {
+	if = {
+		limit = {
+			exists = scope:actor
+			scope:actor = { ss_can_reshape_heir_actor = yes }
+			ss_can_receive_reshape = yes
+		}
+		scope:actor = {
+			ss_ensure_sovereign_defaults_effect = yes
+			save_scope_as = ss_reshaper
+		}
+		save_scope_as = ss_heir
+
+		# Lifestyle XP dump (all five)
+		add_diplomacy_lifestyle_xp = @ss_reshape_lifestyle_xp
+		add_martial_lifestyle_xp = @ss_reshape_lifestyle_xp
+		add_stewardship_lifestyle_xp = @ss_reshape_lifestyle_xp
+		add_intrigue_lifestyle_xp = @ss_reshape_lifestyle_xp
+		add_learning_lifestyle_xp = @ss_reshape_lifestyle_xp
+
+		# Claims when cfg >= 2 (missing var = default Med)
+		if = {
+			limit = {
+				scope:actor = {
+					OR = {
+						NOT = { exists = var:ss_cfg_reshape_heir }
+						var:ss_cfg_reshape_heir >= 2
+					}
+				}
+			}
+			ss_reshape_heir_copy_claims_effect = yes
+		}
+
+		# Perk points when cfg >= 3
+		if = {
+			limit = {
+				scope:actor = {
+					exists = var:ss_cfg_reshape_heir
+					var:ss_cfg_reshape_heir >= 3
+				}
+			}
+			add_diplomacy_lifestyle_perk_points = @ss_reshape_perk_points
+			add_martial_lifestyle_perk_points = @ss_reshape_perk_points
+			add_stewardship_lifestyle_perk_points = @ss_reshape_perk_points
+			add_intrigue_lifestyle_perk_points = @ss_reshape_perk_points
+			add_learning_lifestyle_perk_points = @ss_reshape_perk_points
+		}
+
+		# Once-per-lifetime on actor
+		scope:actor = {
+			add_character_flag = ss_used_reshape_heir
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_reshape_heir_toast_title
+				left_icon = scope:ss_heir
+				custom_tooltip = ss_reshape_heir_toast_tt
+			}
+		}
+	}
+}

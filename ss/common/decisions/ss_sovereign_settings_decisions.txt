@@ -1,0 +1,33 @@
+﻿# Supreme Sovereign Settings — single manage hub (player-only)
+# Cycles live in ss_settings.1001; claim actions stay in ss_sovereign_op_decisions.txt
+
+ss_manage_sovereign_settings_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = ss_manage_sovereign_settings_decision_desc
+	selection_tooltip = ss_manage_sovereign_settings_decision_tooltip
+	confirm_text = ss_manage_sovereign_settings_decision_confirm
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		has_trait = Supreme_Sovereign
+	}
+
+	is_valid = {
+		always = yes
+	}
+
+	effect = {
+		custom_tooltip = ss_manage_sovereign_settings_decision_effect_tt
+		ss_ensure_sovereign_defaults_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

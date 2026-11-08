@@ -1,0 +1,59 @@
+﻿# Supreme Sovereign — identity + fixed baseline.
+# Configurable families (lifestyle / longevity / wealth / prestige / domain-vassal /
+# military / schemes) live on character modifiers via ss_refresh_sovereign_modifiers.
+# Public trait key kept unprefixed for save/Steam continuity.
+# Hygiene: only known character/trait modifier keys (1.20); longevity not immortal.
+
+@ss_trait_skill = 100
+@ss_trait_stress_gain_mult = -75
+
+Supreme_Sovereign = {
+	category = fame
+	random_creation = 0
+	genetic = no
+	immortal = no
+	shown_in_ruler_designer = yes
+
+	# Skills (fixed baseline)
+	learning = @ss_trait_skill
+	diplomacy = @ss_trait_skill
+	martial = @ss_trait_skill
+	stewardship = @ss_trait_skill
+	intrigue = @ss_trait_skill
+	prowess = @ss_trait_skill
+	no_prowess_loss_from_age = yes
+
+	# Legitimacy / dynasty opinion (fixed; prestige + wealth income/piety via modifiers)
+	legitimacy_gain_mult = 1.0
+	dynasty_house_opinion = 50
+	dynasty_opinion = 50
+	vassal_opinion = 50
+
+	# Dread / opinion (fixed v1)
+	dread_baseline_add = 100
+	dread_loss_mult = -50
+	monthly_dread = 50
+	attraction_opinion = 100
+	ignore_negative_culture_opinion = yes
+	general_opinion = 1000
+	same_opinion = 500
+
+	# Culture / court (fixed v1 — valid character keys only)
+	cultural_head_fascination_add = 1000
+	cultural_head_fascination_mult = 100
+	court_grandeur_baseline_add = 50
+	monthly_court_grandeur_change_add = 100
+	hostile_county_attrition = -0.5
+
+	# Stress (fixed; lifestyle XP is modifier-driven)
+	stress_gain_mult = @ss_trait_stress_gain_mult
+
+	# Domain build / development (Could-tier left on trait for v1)
+	development_growth = 500
+	development_growth_factor = 5000
+	build_speed = -75
+	holding_build_speed = -75
+	build_gold_cost = -75
+	holding_build_gold_cost = -75
+	monthly_county_control_growth_add = 500
+}
