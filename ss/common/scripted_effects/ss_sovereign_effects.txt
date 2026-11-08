@@ -56,6 +56,10 @@ ss_ensure_sovereign_defaults_effect = {
 		set_variable = { name = ss_cfg_kingdom_conquest value = 1 }
 	}
 	if = {
+		limit = { NOT = { exists = var:ss_cfg_extra_conquests } }
+		set_variable = { name = ss_cfg_extra_conquests value = 1 }
+	}
+	if = {
 		limit = { NOT = { exists = var:ss_cfg_military } }
 		set_variable = { name = ss_cfg_military value = 3 }
 	}
@@ -387,6 +391,17 @@ ss_cycle_kingdom_conquest_cfg_effect = {
 	}
 	else = {
 		set_variable = { name = ss_cfg_kingdom_conquest value = 1 }
+	}
+}
+
+ss_cycle_extra_conquests_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_extra_conquests = 1 }
+		set_variable = { name = ss_cfg_extra_conquests value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_extra_conquests value = 1 }
 	}
 }
 

@@ -119,6 +119,18 @@ ss_settings.1001 = {
 		desc = ss_settings.1001.desc_blank
 		first_valid = {
 			triggered_desc = {
+				trigger = { var:ss_cfg_extra_conquests = 0 }
+				desc = ss_settings.tier.extra_conquests_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_extra_conquests = 1 }
+				desc = ss_settings.tier.extra_conquests_1
+			}
+			desc = ss_settings.tier.extra_conquests_1
+		}
+		desc = ss_settings.1001.desc_blank
+		first_valid = {
+			triggered_desc = {
 				trigger = { var:ss_cfg_military = 1 }
 				desc = ss_settings.tier.military_1
 			}
@@ -384,6 +396,27 @@ ss_settings.1001 = {
 		}
 		custom_tooltip = ss_settings.tt.kingdom_conquest
 		ss_cycle_kingdom_conquest_cfg_effect = yes
+		trigger_event = ss_settings.1001
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_extra_conquests = 0 }
+						desc = ss_settings.opt.extra_conquests_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_extra_conquests = 1 }
+						desc = ss_settings.opt.extra_conquests_1
+					}
+					desc = ss_settings.opt.extra_conquests_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.extra_conquests
+		ss_cycle_extra_conquests_cfg_effect = yes
 		trigger_event = ss_settings.1001
 	}
 

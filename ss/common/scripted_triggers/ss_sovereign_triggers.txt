@@ -27,6 +27,7 @@ ss_has_sovereign_cfg_vars = {
 	exists = var:ss_cfg_domain_vassal
 	exists = var:ss_cfg_unlimited_titles
 	exists = var:ss_cfg_kingdom_conquest
+	exists = var:ss_cfg_extra_conquests
 	exists = var:ss_cfg_military
 	exists = var:ss_cfg_schemes
 }
@@ -40,6 +41,28 @@ ss_can_use_kingdom_conquest_cb = {
 	NAND = {
 		exists = var:ss_cfg_kingdom_conquest
 		var:ss_cfg_kingdom_conquest = 0
+	}
+}
+
+# Extra Conquests CBs — player Sovereign, Extra Conquests hub On (missing cfg = default On)
+ss_can_use_extra_conquests_cb = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	NOT = { government_has_flag = government_is_landless_adventurer }
+	NAND = {
+		exists = var:ss_cfg_extra_conquests
+		var:ss_cfg_extra_conquests = 0
+	}
+}
+
+# Faith Conquest — defender faith is hostile or evil toward attacker (no holy-war doctrine stack)
+ss_defender_faith_hostile_or_evil_trigger = {
+	scope:attacker.faith = {
+		faith_hostility_level = {
+			target = scope:defender.faith
+			value >= faith_hostile_level
+		}
 	}
 }
 

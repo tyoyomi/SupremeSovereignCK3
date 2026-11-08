@@ -1,0 +1,1094 @@
+# Supreme Sovereign — Extra Conquest CBs (additive; does not override vanilla wars)
+# Duchy / Empire / Faith: kingdom-conquest skeleton at their tiers.
+# Realm Annex: character/realm conquest annex (not vassalize).
+
+ss_duchy_conquest_cb = {
+	icon = invasion
+	group = invasion
+	ai = no
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		ss_can_use_extra_conquests_cb = yes
+	}
+
+	allowed_against_character = {
+		scope:attacker = {
+			ALL_FALSE = {
+				top_liege = scope:defender.top_liege
+				liege = scope:defender
+			}
+		}
+	}
+
+	target_titles = all
+	target_title_tier = duchy
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+
+	valid_to_start = {
+		scope:target = {
+			any_in_de_jure_hierarchy = {
+				tier = tier_county
+				neighboring_county_or_viking_conquest_trigger = { CHARACTER = root }
+			}
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						target_is_same_character_or_above = scope:defender
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_ss_duchy_conquest_war_invalidated_message
+
+	on_invalidated = {
+	}
+
+	cost = {
+		piety = {
+			value = 0
+		}
+		prestige = {
+			value = 0
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = ss_duchy_conquest_war_victory_desc_attacker
+			}
+			desc = ss_duchy_conquest_war_victory_desc
+		}
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_victory_effect = yes
+		add_influence_attacker_victory_effect = yes
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+
+		show_as_tooltip = {
+			every_in_list = {
+				list = target_titles
+				custom_tooltip = invasion_title_transfer_tt
+				custom_tooltip = invasion_title_transfer_2_tt
+				every_in_de_jure_hierarchy = {
+					limit = { holder.top_liege = scope:defender }
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+			scope:defender = {
+				every_sub_realm_county = {
+					limit = {
+						county_controller = scope:attacker
+					}
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = yes
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_victory_effect = yes
+
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_victory_effects = yes
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_duchy_conquest_war_white_peace_desc_defender
+			}
+			desc = ss_duchy_conquest_war_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_white_peace_effect = yes
+
+		scope:attacker = {
+			add_prestige = mongol_invasion_cb_prestige_white_peace
+			stress_and_fulfillment_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		scope:defender = {
+			stress_and_fulfillment_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_duchy_conquest_war_defeat_desc_defender
+			}
+			desc = ss_duchy_conquest_war_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_defeat_effect = yes
+		add_influence_attacker_defeat_effect = yes
+
+		scope:defender = {
+			mandala_peacemaker_perk_serenity_effect = yes
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = {
+				value = massive_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		setup_invasion_cb = {
+			titles = target_titles
+			attacker = scope:attacker
+			defender = scope:defender
+			claimant = scope:claimant
+			victory = no
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:defender
+			LOSER = scope:attacker
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = scale_10_war_defender_win
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_defeat_effects = yes
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "ss_DUCHY_CONQUEST_WAR_NAME"
+	war_name_base = "ss_DUCHY_CONQUEST_WAR_NAME_BASE"
+	cb_name = "ss_DUCHY_CONQUEST_CB_NAME"
+
+	interface_priority = 105
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
+
+ss_empire_conquest_cb = {
+	icon = invasion
+	group = invasion
+	ai = no
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		ss_can_use_extra_conquests_cb = yes
+	}
+
+	allowed_against_character = {
+		scope:attacker = {
+			ALL_FALSE = {
+				top_liege = scope:defender.top_liege
+				liege = scope:defender
+			}
+		}
+	}
+
+	target_titles = all
+	target_title_tier = empire
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+
+	valid_to_start = {
+		scope:target = {
+			any_in_de_jure_hierarchy = {
+				tier = tier_county
+				neighboring_county_or_viking_conquest_trigger = { CHARACTER = root }
+			}
+		}
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						target_is_same_character_or_above = scope:defender
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_ss_empire_conquest_war_invalidated_message
+
+	on_invalidated = {
+	}
+
+	cost = {
+		piety = {
+			value = 0
+		}
+		prestige = {
+			value = 0
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = ss_empire_conquest_war_victory_desc_attacker
+			}
+			desc = ss_empire_conquest_war_victory_desc
+		}
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_victory_effect = yes
+		add_influence_attacker_victory_effect = yes
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+
+		show_as_tooltip = {
+			every_in_list = {
+				list = target_titles
+				custom_tooltip = invasion_title_transfer_tt
+				custom_tooltip = invasion_title_transfer_2_tt
+				every_in_de_jure_hierarchy = {
+					limit = { holder.top_liege = scope:defender }
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+			scope:defender = {
+				every_sub_realm_county = {
+					limit = {
+						county_controller = scope:attacker
+					}
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = yes
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_victory_effect = yes
+
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_victory_effects = yes
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_empire_conquest_war_white_peace_desc_defender
+			}
+			desc = ss_empire_conquest_war_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_white_peace_effect = yes
+
+		scope:attacker = {
+			add_prestige = mongol_invasion_cb_prestige_white_peace
+			stress_and_fulfillment_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		scope:defender = {
+			stress_and_fulfillment_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_empire_conquest_war_defeat_desc_defender
+			}
+			desc = ss_empire_conquest_war_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_defeat_effect = yes
+		add_influence_attacker_defeat_effect = yes
+
+		scope:defender = {
+			mandala_peacemaker_perk_serenity_effect = yes
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = {
+				value = massive_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		setup_invasion_cb = {
+			titles = target_titles
+			attacker = scope:attacker
+			defender = scope:defender
+			claimant = scope:claimant
+			victory = no
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:defender
+			LOSER = scope:attacker
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = scale_10_war_defender_win
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_defeat_effects = yes
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "ss_EMPIRE_CONQUEST_WAR_NAME"
+	war_name_base = "ss_EMPIRE_CONQUEST_WAR_NAME_BASE"
+	cb_name = "ss_EMPIRE_CONQUEST_CB_NAME"
+
+	interface_priority = 95
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
+
+ss_faith_conquest_cb = {
+	icon = invasion
+	group = invasion
+	ai = no
+
+	combine_into_one = yes
+	should_show_war_goal_subview = yes
+	mutually_exclusive_titles = { always = yes }
+	allow_hostages = no
+
+	allowed_for_character = {
+		ss_can_use_extra_conquests_cb = yes
+	}
+
+	allowed_against_character = {
+		scope:attacker = {
+			ALL_FALSE = {
+				top_liege = scope:defender.top_liege
+				liege = scope:defender
+			}
+		}
+		ss_defender_faith_hostile_or_evil_trigger = yes
+	}
+
+	target_titles = all
+	target_title_tier = kingdom
+	target_de_jure_regions_above = yes
+	ignore_effect = change_title_holder
+
+	valid_to_start = {
+		scope:target = {
+			any_in_de_jure_hierarchy = {
+				tier = tier_county
+				neighboring_county_or_viking_conquest_trigger = { CHARACTER = root }
+			}
+		}
+		ss_defender_faith_hostile_or_evil_trigger = yes
+	}
+
+	should_invalidate = {
+		NOT = {
+			any_in_list = {
+				list = target_titles
+				any_in_de_jure_hierarchy = {
+					tier = tier_county
+					holder = {
+						target_is_same_character_or_above = scope:defender
+					}
+				}
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_ss_faith_conquest_war_invalidated_message
+
+	on_invalidated = {
+	}
+
+	cost = {
+		piety = {
+			value = 0
+		}
+		prestige = {
+			value = 0
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = ss_faith_conquest_war_victory_desc_attacker
+			}
+			desc = ss_faith_conquest_war_victory_desc
+		}
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_victory_effect = yes
+		add_influence_attacker_victory_effect = yes
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+
+		show_as_tooltip = {
+			every_in_list = {
+				list = target_titles
+				custom_tooltip = invasion_title_transfer_tt
+				custom_tooltip = invasion_title_transfer_2_tt
+				every_in_de_jure_hierarchy = {
+					limit = { holder.top_liege = scope:defender }
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+			scope:defender = {
+				every_sub_realm_county = {
+					limit = {
+						county_controller = scope:attacker
+					}
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			setup_invasion_cb = {
+				titles = target_titles
+				attacker = scope:attacker
+				defender = scope:defender
+				change = scope:change
+				take_occupied = yes
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+
+		# Soft EF: optional piety crumb if Exalted Faith trait present (missing trait = false)
+		if = {
+			limit = {
+				scope:attacker = { has_trait = ef_exalted_faithful }
+			}
+			scope:attacker = {
+				add_piety = medium_piety_value
+			}
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_victory_effect = yes
+
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_victory_effects = yes
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_faith_conquest_war_white_peace_desc_defender
+			}
+			desc = ss_faith_conquest_war_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_white_peace_effect = yes
+
+		scope:attacker = {
+			add_prestige = mongol_invasion_cb_prestige_white_peace
+			stress_and_fulfillment_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		scope:defender = {
+			stress_and_fulfillment_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_faith_conquest_war_defeat_desc_defender
+			}
+			desc = ss_faith_conquest_war_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_defeat_effect = yes
+		add_influence_attacker_defeat_effect = yes
+
+		scope:defender = {
+			mandala_peacemaker_perk_serenity_effect = yes
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = {
+				value = massive_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		setup_invasion_cb = {
+			titles = target_titles
+			attacker = scope:attacker
+			defender = scope:defender
+			claimant = scope:claimant
+			victory = no
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:defender
+			LOSER = scope:attacker
+			FAME_BASE = scope:cb_prestige_factor
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = scale_10_war_defender_win
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_defeat_effects = yes
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "ss_FAITH_CONQUEST_WAR_NAME"
+	war_name_base = "ss_FAITH_CONQUEST_WAR_NAME_BASE"
+	cb_name = "ss_FAITH_CONQUEST_CB_NAME"
+
+	interface_priority = 94
+
+	use_de_jure_wargoal_only = yes
+
+	attacker_wargoal_percentage = 0.8
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
+
+# Realm Annex — character/realm target; conquest title transfer (never vassalize)
+ss_realm_annex_cb = {
+	icon = invasion
+	group = invasion
+	ai = no
+
+	allow_hostages = no
+	ignore_effect = change_title_holder
+
+	attacker_score_from_occupation_scale = 150
+	attacker_score_from_battles_scale = 150
+	defender_score_from_battles_scale = 150
+
+	allowed_for_character = {
+		ss_can_use_extra_conquests_cb = yes
+		is_landed = yes
+	}
+
+	allowed_against_character = {
+		scope:attacker = {
+			ALL_FALSE = {
+				top_liege = scope:defender.top_liege
+				liege = scope:defender
+			}
+		}
+		scope:defender = {
+			top_liege = this
+			is_landed = yes
+			scope:attacker = {
+				any_neighboring_top_liege_realm_owner = {
+					this = scope:defender
+				}
+			}
+		}
+	}
+
+	should_invalidate = {
+		OR = {
+			scope:defender = {
+				top_liege != this
+			}
+			scope:defender = {
+				is_landed = no
+			}
+		}
+	}
+
+	on_invalidated_desc = msg_ss_realm_annex_war_invalidated_message
+
+	on_invalidated = {
+	}
+
+	cost = {
+		piety = {
+			value = 0
+		}
+		prestige = {
+			value = 0
+		}
+	}
+
+	on_declaration = {
+		on_declared_war = yes
+	}
+
+	on_victory_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:attacker = { is_local_player = yes } }
+				desc = ss_realm_annex_war_victory_desc_attacker
+			}
+			desc = ss_realm_annex_war_victory_desc
+		}
+	}
+
+	on_victory = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_victory_effect = yes
+		add_influence_attacker_victory_effect = yes
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_high_effect = yes }
+
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+
+		# Transfer every non-barony title in the defender's realm (holder top_liege = defender)
+		show_as_tooltip = {
+			scope:defender = {
+				every_sub_realm_title = {
+					limit = {
+						tier > tier_barony
+						holder = {
+							top_liege = scope:defender
+						}
+					}
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+		}
+
+		hidden_effect = {
+			scope:defender = {
+				every_sub_realm_title = {
+					limit = {
+						tier > tier_barony
+						holder = {
+							top_liege = scope:defender
+						}
+					}
+					change_title_holder = {
+						holder = scope:attacker
+						change = scope:change
+					}
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:attacker
+			LOSER = scope:defender
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = 10
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_victory_effect = yes
+
+		scope:attacker = { fp1_remember_recent_conquest_victory_effect = yes }
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_victory_effects = yes
+	}
+
+	on_white_peace_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_realm_annex_war_white_peace_desc_defender
+			}
+			desc = ss_realm_annex_war_white_peace_desc
+		}
+	}
+
+	on_white_peace = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		scope:attacker = { accolade_attacker_war_end_glory_gain_low_effect = yes }
+		scope:defender = { accolade_defender_war_end_glory_gain_med_effect = yes }
+
+		modify_allies_of_participants_fame_values = {
+			WINNER = scope:attacker
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_ALLY_FAME_SCALE = 1
+			LOSER_ALLY_FAME_SCALE = 1
+		}
+
+		add_truce_white_peace_effect = yes
+
+		scope:attacker = {
+			add_prestige = mongol_invasion_cb_prestige_white_peace
+			stress_and_fulfillment_impact = {
+				ambitious = medium_stress_impact_gain
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		scope:defender = {
+			stress_and_fulfillment_impact = {
+				arrogant = medium_stress_impact_gain
+			}
+		}
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+	}
+
+	on_defeat_desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:defender = { is_local_player = yes } }
+				desc = ss_realm_annex_war_defeat_desc_defender
+			}
+			desc = ss_realm_annex_war_defeat_desc
+		}
+	}
+
+	on_defeat = {
+		scope:attacker = { show_pow_release_message_effect = yes }
+
+		add_legitimacy_attacker_defeat_effect = yes
+		add_influence_attacker_defeat_effect = yes
+
+		scope:defender = {
+			mandala_peacemaker_perk_serenity_effect = yes
+			accolade_defender_war_end_glory_gain_high_effect = yes
+		}
+
+		scope:attacker = {
+			pay_short_term_gold_reparations_effect = {
+				GOLD_VALUE = 5
+			}
+			add_prestige = {
+				value = massive_prestige_value
+				multiply = -1.0
+			}
+		}
+
+		modify_all_participants_fame_values = {
+			WINNER = scope:defender
+			LOSER = scope:attacker
+			FAME_BASE = major_prestige_value
+			IS_RELIGIOUS_WAR = no
+			WINNER_FAME_SCALE = scale_10_war_defender_win
+			LOSER_FAME_SCALE = -10
+			WINNER_ALLY_FAME_SCALE = 10
+			LOSER_ALLY_FAME_SCALE = 10
+		}
+
+		add_truce_attacker_defeat_effect = yes
+
+		scope:attacker = {
+			save_temporary_scope_as = loser
+		}
+		on_lost_aggression_war_discontent_loss = yes
+
+		laamp_as_mercenary_payout_tooltip_effect = yes
+		mandala_war_defeat_effects = yes
+	}
+
+	transfer_behavior = transfer
+
+	on_primary_attacker_death = inherit
+	on_primary_defender_death = inherit
+
+	attacker_allies_inherit = yes
+	defender_allies_inherit = yes
+
+	war_name = "ss_REALM_ANNEX_WAR_NAME"
+	war_name_base = "ss_REALM_ANNEX_WAR_NAME_BASE"
+	cb_name = "ss_REALM_ANNEX_CB_NAME"
+
+	interface_priority = 110
+
+	max_defender_score_from_occupation = 150
+	max_attacker_score_from_occupation = 150
+}
