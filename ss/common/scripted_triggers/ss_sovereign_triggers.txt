@@ -201,3 +201,50 @@ ss_can_distribute_titles_to_children = {
 		ss_is_distributable_title = yes
 	}
 }
+
+# --- Reclaim titles from children (CM-41) ---
+# Invert distribute: take non-floor titles from living children (incl. independent peers).
+# Soft peer: reuse ss_su_unity_choice_pending_on_self (missing SU = pass).
+
+# this = title; root = actor
+# Reclaim pool: personally held by a living child; not that child's capital county;
+# baronies ride with counties (skip all baronies + capital-barony hygiene).
+ss_is_reclaimable_child_title = {
+	exists = holder
+	holder = {
+		is_alive = yes
+		NOT = { this = root }
+		is_child_of = root
+	}
+	tier >= tier_county
+	NOR = {
+		AND = {
+			exists = holder.capital_county
+			this = holder.capital_county
+		}
+		is_capital_barony = yes
+	}
+}
+
+# this = child; root = actor
+ss_eligible_reclaim_child = {
+	is_alive = yes
+	NOT = { this = root }
+	is_child_of = root
+	any_held_title = {
+		ss_is_reclaimable_child_title = yes
+	}
+}
+
+ss_can_reclaim_titles_from_children = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	is_landed = yes
+	NOT = { government_has_flag = government_is_landless_adventurer }
+	exists = primary_title
+	NOT = { ss_su_unity_choice_pending_on_self = yes }
+	any_child = {
+		ss_eligible_reclaim_child = yes
+	}
+}

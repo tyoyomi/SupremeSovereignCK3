@@ -114,3 +114,40 @@ ss_distribute_titles_to_children_decision = {
 	ai_potential = { always = no }
 	ai_will_do = { base = 0 }
 }
+
+# --- Reclaim titles from children (CM-41) ---
+
+ss_reclaim_titles_from_children_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = ss_reclaim_titles_from_children_decision_desc
+	selection_tooltip = ss_reclaim_titles_from_children_decision_tooltip
+	confirm_text = ss_reclaim_titles_from_children_decision_confirm
+
+	ai_check_interval = 0
+	cooldown = { days = ss_reclaim_titles_cooldown_days }
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		has_trait = Supreme_Sovereign
+		NOT = { government_has_flag = government_is_landless_adventurer }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = ss_tt_can_reclaim_titles_from_children
+			ss_can_reclaim_titles_from_children = yes
+		}
+	}
+
+	effect = {
+		custom_tooltip = ss_reclaim_titles_from_children_decision_effect_tt
+		ss_reclaim_titles_from_children_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

@@ -75,6 +75,10 @@ ss_perk_gift_cooldown_days = 365
 # --- Distribute titles to children (CM-35) ---
 ss_distribute_titles_cooldown_days = 365
 
+# --- Reclaim titles from children (CM-41) ---
+ss_reclaim_titles_cooldown_days = 365
+ss_reclaim_child_gold_comp = 100
+
 # --- OP pass: reshape heir ---
 ss_reshape_heir_prestige_cost = 1000
 ss_reshape_lifestyle_xp_value = 4000

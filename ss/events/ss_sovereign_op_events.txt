@@ -49,3 +49,20 @@ ss_op.2101 = {
 		name = ss_op.2101.a
 	}
 }
+
+# Summary toast after Reclaim Titles from Children (CM-41)
+ss_op.2102 = {
+	type = character_event
+	title = ss_op.2102.t
+	desc = ss_op.2102.desc
+	theme = realm
+	override_background = { reference = throne_room }
+
+	immediate = {
+		# Counts set by ss_reclaim_titles_from_children_effect for loc
+	}
+
+	option = {
+		name = ss_op.2102.a
+	}
+}

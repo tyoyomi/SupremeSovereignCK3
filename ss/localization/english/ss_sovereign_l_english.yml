@@ -269,6 +269,18 @@
  ss_op.2101.desc:0 "You granted [ROOT.Var('ss_distribute_title_count').GetValue] titles below your rank to [ROOT.Var('ss_distribute_child_count').GetValue] of your children. Crowns at your rank and your capital remain yours."
  ss_op.2101.a:0 "As it should be"
 
+ # Reclaim titles from children (CM-41)
+ ss_reclaim_titles_from_children_decision:0 "Supreme Sovereign: Reclaim Titles from Children"
+ ss_reclaim_titles_from_children_decision_desc:0 "Call home the crowns you granted your living children — empires, kingdoms, duchies, and spare counties — including peers who stand independent. Each child keeps their capital county (and its baronies). Independent children who fall below your rank swear fealty afterward.\n\nFree. Cooldown: one year. Soft Glue / Succession Unity still handle succession; this is mid-reign course-correction only."
+ ss_reclaim_titles_from_children_decision_tooltip:0 "Reclaim non-capital titles from your children; keep each child's capital county"
+ ss_reclaim_titles_from_children_decision_confirm:0 "Reclaim Titles"
+ ss_reclaim_titles_from_children_decision_effect_tt:0 "Titles held by your children (except each child's capital county) return to you in one resolve; eligible children then swear fealty if below your rank"
+ ss_tt_can_reclaim_titles_from_children:0 "You have at least one living child holding a reclaimable title (beyond their capital county), and no Succession Unity choice pending"
+
+ ss_op.2102.t:0 "Titles Reclaimed"
+ ss_op.2102.desc:0 "You reclaimed [ROOT.Var('ss_reclaim_title_count').GetValue] titles from [ROOT.Var('ss_reclaim_child_count').GetValue] of your children. Each keeps a capital county when they had one."
+ ss_op.2102.a:0 "The house stands corrected"
+
  # Kingdom Conquest CB (CM-19)
  ss_kingdom_conquest_cb:0 "Kingdom Conquest"
  ss_KINGDOM_CONQUEST_CB_NAME:0 "Kingdom Conquest"
