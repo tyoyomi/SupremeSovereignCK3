@@ -87,6 +87,15 @@ ss_ensure_sovereign_defaults_effect = {
 		limit = { NOT = { exists = var:ss_cfg_reshape_heir } }
 		set_variable = { name = ss_cfg_reshape_heir value = 2 }
 	}
+	# Expansion pack defaults
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_empire_pulse } }
+		set_variable = { name = ss_cfg_empire_pulse value = 2 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_all_languages } }
+		set_variable = { name = ss_cfg_all_languages value = 1 }
+	}
 	# Hidden piggy bank pools (excess wealth/prestige; silent yearly drip)
 	if = {
 		limit = { NOT = { exists = var:ss_piggy_gold } }
@@ -425,6 +434,7 @@ ss_apply_sovereign_runtime_effects = {
 		limit = { has_trait = Supreme_Sovereign }
 		ss_ensure_sovereign_defaults_effect = yes
 		ss_refresh_sovereign_modifiers = yes
+		ss_try_apply_all_languages_effect = yes
 	}
 }
 

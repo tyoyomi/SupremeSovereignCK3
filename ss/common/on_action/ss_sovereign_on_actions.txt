@@ -56,3 +56,17 @@ ss_legacy_pulse_on_action = {
 		ss_legacy_pulse_effect = yes
 	}
 }
+
+# Expansion — empire-wide dread/control pulse (same five-year cadence as legacy)
+five_year_playable_pulse = {
+	on_actions = { ss_empire_pulse_on_action }
+}
+
+ss_empire_pulse_on_action = {
+	trigger = {
+		ss_can_empire_pulse = yes
+	}
+	effect = {
+		ss_empire_pulse_effect = yes
+	}
+}

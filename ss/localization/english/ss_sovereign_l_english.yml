@@ -9,28 +9,33 @@
 
  # Settings hub decision
  ss_manage_sovereign_settings_decision:0 "Manage Sovereign Settings"
- ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (3 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape.\n\nDone is always first. Click a setting to cycle its tier."
+ ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (4 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape. Page 4: Empire Pulse, All Languages.\n\nDone is always first. Click a setting to cycle its tier."
  ss_manage_sovereign_settings_decision_tooltip:0 "Open Sovereign Settings and view or cycle each tier"
  ss_manage_sovereign_settings_decision_confirm:0 "Open Settings"
  ss_manage_sovereign_settings_decision_effect_tt:0 "Opens the Sovereign Settings hub showing current tiers"
 
  # Settings hub event (paged — keep option counts GUI-safe)
- ss_settings.1001.t:0 "Sovereign Settings (1/3)"
+ ss_settings.1001.t:0 "Sovereign Settings (1/4)"
  ss_settings.1001.desc_intro:0 "Page 1 — core tiers. Click a setting to cycle; Done stays at the top."
  ss_settings.1001.desc_blank:0 "\n"
- ss_settings.1001.desc_footer:0 "More opens war and legacy pages. Perk claims stay on Decisions."
+ ss_settings.1001.desc_footer:0 "More opens war, legacy, and empire pages. Perk claims stay on Decisions."
  ss_settings.1001.close:0 "Done"
  ss_settings.1001.more:0 "More…"
- ss_settings.1002.t:0 "Sovereign Settings (2/3)"
+ ss_settings.1002.t:0 "Sovereign Settings (2/4)"
  ss_settings.1002.desc_intro:0 "Page 2 — titles, conquest, military, schemes."
  ss_settings.1002.desc_footer:0 "More opens legacy / perk / reshape. Done closes the hub."
  ss_settings.1002.close:0 "Done"
  ss_settings.1002.more:0 "More…"
- ss_settings.1003.t:0 "Sovereign Settings (3/3)"
+ ss_settings.1003.t:0 "Sovereign Settings (3/4)"
  ss_settings.1003.desc_intro:0 "Page 3 — influence, legacy pulse, perk gift, reshape heir."
- ss_settings.1003.desc_footer:0 "Back returns to page 1. Grant Sovereign and Reshape Heir are character interactions."
+ ss_settings.1003.desc_footer:0 "More opens empire pulse and languages. Grant Sovereign and Reshape Heir are character interactions."
  ss_settings.1003.close:0 "Done"
- ss_settings.1003.back:0 "Back"
+ ss_settings.1003.more:0 "More…"
+ ss_settings.1004.t:0 "Sovereign Settings (4/4)"
+ ss_settings.1004.desc_intro:0 "Page 4 — empire-wide dread/control pulse and languages."
+ ss_settings.1004.desc_footer:0 "Back returns to page 1."
+ ss_settings.1004.close:0 "Done"
+ ss_settings.1004.back:0 "Back"
  # Hub option hover tooltips (current effect + cycle)
  ss_settings.tt.lifestyle:0 "Lifestyle XP — Sovereign monthly lifestyle experience multiplier.\n\nOff (0): no Sovereign XP bonus (other XP sources unchanged).\nLow (1): ×2 lifestyle XP.\nMedium (2): ×5 lifestyle XP.\nHigh (3): ×10 lifestyle XP.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
  ss_settings.tt.longevity:0 "Longevity — extraordinary long life (not immortality): health, vitality, fertility years.\n\nLow (1): health +25, fertility +25, +50 fertility years.\nMedium (2): health +50, fertility +50, +100 fertility years.\nHigh (3): health +100, fertility +75, +150 fertility years.\n\nFertility is capped to limit court bloat. Click to cycle Low → Medium → High → Low. Your current tier is on the button."
@@ -46,6 +51,8 @@
  ss_settings.tt.legacy:0 "Legacy Pulse — every five years: personal prestige, dynasty renown, and favor hooks on vassals or councillors.\n\nOff (0): no pulses.\nLow (1): modest prestige/renown, up to 1 favor hook.\nMedium (2): strong pulse, up to 2 hooks.\nHigh (3): massive pulse, up to 3 hooks.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
  ss_settings.tt.perk:0 "Perk Gift Size — free lifestyle perk points from Claim decisions on the Decisions menu (yearly cooldown).\n\nOff (0): claim decisions hidden.\n1 point (1): each claim grants 1 perk point.\n3 points (2): each claim grants 3; unlocks Claim All Lifestyles.\n5 points (3): each claim grants 5; Claim All remains available.\n\nClick to cycle Off → 1 → 3 → 5 → Off. Your current tier is on the button."
  ss_settings.tt.reshape:0 "Reshape Heir Power — once-per-lifetime character interaction on a child (does not grant Supreme Sovereign).\n\nOff (0): interaction hidden.\nXP only (1): large lifestyle XP to all five lifestyles.\nXP + claims (2): XP plus copies your claims onto the child.\nFull (3): XP, claims, and free perk points per lifestyle.\n\nClick to cycle Off → XP → XP+Claims → Full → Off. Your current tier is on the button."
+ ss_settings.tt.empire_pulse:0 "Empire Pulse — every five years: dread and county control across your sub-realm.\n\nOff (0): no pulses.\nLow (1): +10 dread, +25 control on weak counties.\nMedium (2): +25 dread, +50 control.\nHigh (3): +50 dread, snap weak counties toward full control.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
+ ss_settings.tt.languages:0 "All Languages — the Sovereign knows every culture language.\n\nOn (1): learn all languages on grant/refresh and when toggled On.\nOff (0): no auto-learn (already known languages stay).\n\nClick to cycle On ↔ Off. Your current value is on the button."
  ss_settings.tt.close:0 "Close the Sovereign Settings hub without changing anything."
  ss_settings.tt.more:0 "Open the next settings page."
  ss_settings.tt.back:0 "Return to the first settings page."
@@ -165,6 +172,25 @@
  ss_settings.opt.reshape_1:0 "Reshape: XP (1)"
  ss_settings.opt.reshape_2:0 "Reshape: XP+Claims (2)"
  ss_settings.opt.reshape_3:0 "Reshape: Full (3)"
+
+ # Empire pulse (0–3)
+ ss_settings.tier.empire_pulse_0:0 "Empire Pulse: Off (0)"
+ ss_settings.tier.empire_pulse_1:0 "Empire Pulse: Low (1)"
+ ss_settings.tier.empire_pulse_2:0 "Empire Pulse: Medium (2)"
+ ss_settings.tier.empire_pulse_3:0 "Empire Pulse: High (3)"
+ ss_settings.opt.empire_pulse_0:0 "Empire Pulse: Off (0)"
+ ss_settings.opt.empire_pulse_1:0 "Empire Pulse: Low (1)"
+ ss_settings.opt.empire_pulse_2:0 "Empire Pulse: Medium (2)"
+ ss_settings.opt.empire_pulse_3:0 "Empire Pulse: High (3)"
+
+ # All languages (0–1)
+ ss_settings.tier.languages_0:0 "All Languages: Off (0)"
+ ss_settings.tier.languages_1:0 "All Languages: On (1)"
+ ss_settings.opt.languages_0:0 "All Languages: Off (0)"
+ ss_settings.opt.languages_1:0 "All Languages: On (1)"
+
+ ss_empire_pulse_toast_title:0 "Empire Pulse"
+ ss_empire_pulse_toast_tt:0 "Your realm feels your dread; county control surges"
 
  # Modifier names (UI)
  ss_lifestyle_xp_low_modifier:0 "Sovereign Lifestyle XP (Low)"

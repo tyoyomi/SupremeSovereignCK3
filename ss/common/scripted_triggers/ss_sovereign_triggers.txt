@@ -80,6 +80,17 @@ ss_can_legacy_pulse = {
 	}
 }
 
+ss_can_empire_pulse = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	is_landed = yes
+	NAND = {
+		exists = var:ss_cfg_empire_pulse
+		var:ss_cfg_empire_pulse = 0
+	}
+}
+
 ss_can_claim_perk_gift = {
 	is_alive = yes
 	is_ai = no

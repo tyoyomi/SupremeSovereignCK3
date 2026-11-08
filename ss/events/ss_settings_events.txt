@@ -655,7 +655,114 @@ ss_settings.1003 = {
 	}
 
 	option = {
-		name = ss_settings.1003.back
+		name = ss_settings.1003.more
+		custom_tooltip = ss_settings.tt.more
+		trigger_event = ss_settings.1004
+	}
+}
+
+# Page 4/4 — empire pulse / all languages
+ss_settings.1004 = {
+	type = character_event
+	title = ss_settings.1004.t
+	theme = education
+
+	desc = {
+		desc = ss_settings.1004.desc_intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_empire_pulse = 0 }
+				desc = ss_settings.tier.empire_pulse_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_empire_pulse = 1 }
+				desc = ss_settings.tier.empire_pulse_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_empire_pulse = 2 }
+				desc = ss_settings.tier.empire_pulse_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_empire_pulse = 3 }
+				desc = ss_settings.tier.empire_pulse_3
+			}
+			desc = ss_settings.tier.empire_pulse_2
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_all_languages = 0 }
+				desc = ss_settings.tier.languages_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_all_languages = 1 }
+				desc = ss_settings.tier.languages_1
+			}
+			desc = ss_settings.tier.languages_1
+		}
+		desc = ss_settings.1004.desc_footer
+	}
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = ss_settings.1004.close
+		custom_tooltip = ss_settings.tt.close
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_empire_pulse = 0 }
+						desc = ss_settings.opt.empire_pulse_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_empire_pulse = 1 }
+						desc = ss_settings.opt.empire_pulse_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_empire_pulse = 2 }
+						desc = ss_settings.opt.empire_pulse_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_empire_pulse = 3 }
+						desc = ss_settings.opt.empire_pulse_3
+					}
+					desc = ss_settings.opt.empire_pulse_2
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.empire_pulse
+		ss_cycle_empire_pulse_cfg_effect = yes
+		trigger_event = ss_settings.1004
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_all_languages = 0 }
+						desc = ss_settings.opt.languages_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_all_languages = 1 }
+						desc = ss_settings.opt.languages_1
+					}
+					desc = ss_settings.opt.languages_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.languages
+		ss_cycle_all_languages_cfg_effect = yes
+		trigger_event = ss_settings.1004
+	}
+
+	option = {
+		name = ss_settings.1004.back
 		custom_tooltip = ss_settings.tt.back
 		trigger_event = ss_settings.1001
 	}

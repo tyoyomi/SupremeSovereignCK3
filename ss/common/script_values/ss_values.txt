@@ -6,6 +6,8 @@
 #   ss_cfg_kingdom_conquest: 0=Off, 1=On (default 1) — Kingdom Conquest CB availability
 #   ss_cfg_extra_conquests: 0=Off, 1=On (default 1) — Extra Conquests CBs (duchy/empire/realm annex/faith)
 #   ss_cfg_legacy_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
+#   ss_cfg_empire_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
+#   ss_cfg_all_languages: 0=Off, 1=On (default 1)
 #   ss_cfg_perk_gift: 0=Off, 1=1pt, 2=3pts, 3=5pts (default 2)
 #   ss_cfg_reshape_heir: 0=Off, 1=XP, 2=XP+claims, 3=XP+claims+perks (default 2)
 # Hidden piggy (character vars, no hub): ss_piggy_gold / _prestige / _piety / _dynasty
