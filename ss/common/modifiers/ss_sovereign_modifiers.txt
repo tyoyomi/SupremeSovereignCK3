@@ -1,6 +1,8 @@
 ﻿# Supreme Sovereign — runtime character modifiers (tiers).
 # Applied/removed by ss_refresh_sovereign_modifiers.
 # Hygiene: character-scoped keys only (1.20). Scheme-only keys pruned.
+# Perf: fertility / wealth / prestige / scheme slots capped; excess wealth+prestige
+# banks into hidden ss_piggy_* vars (yearly deposit + silent drip).
 
 ### Lifestyle XP (Must) — Off removes boost (Sovereign bonus only)
 ss_lifestyle_xp_low_modifier = {
@@ -13,53 +15,55 @@ ss_lifestyle_xp_high_modifier = {
 	monthly_lifestyle_xp_gain_mult = 10
 }
 
-### Longevity (Must) — long life, not immortal
+### Longevity (Must) — long life, not immortal; fertility capped to limit court bloat
 ss_longevity_low_modifier = {
 	health = 25
 	negate_health_penalty_add = 10
 	years_of_fertility = 50
-	fertility = 50
+	fertility = 25
 }
 ss_longevity_med_modifier = {
 	health = 50
 	negate_health_penalty_add = 25
-	years_of_fertility = 150
-	fertility = 200
+	years_of_fertility = 100
+	fertility = 50
 }
 ss_longevity_high_modifier = {
 	health = 100
 	negate_health_penalty_add = 50
-	years_of_fertility = 300
-	fertility = 500
+	years_of_fertility = 150
+	fertility = 75
 }
 
 ### Wealth (Must) — income + piety (prestige is its own setting)
+# Visible monthly capped; excess of old OP tiers → ss_piggy_gold / ss_piggy_piety yearly.
 ss_wealth_low_modifier = {
+	monthly_income = 25
+	monthly_piety = 15
+}
+ss_wealth_med_modifier = {
 	monthly_income = 50
 	monthly_piety = 25
 }
-ss_wealth_med_modifier = {
-	monthly_income = 100
-	monthly_piety = 50
-}
 ss_wealth_high_modifier = {
-	monthly_income = 200
-	monthly_piety = 100
+	monthly_income = 75
+	monthly_piety = 40
 }
 
 ### Prestige (Must) — personal + dynasty monthly prestige
-# Raised vs old trait baseline (20 / 2000). Default High = clearly OP.
+# Visible monthly capped hard (old High dynasty 25000 melted UI/ledger).
+# Excess → ss_piggy_prestige / ss_piggy_dynasty yearly.
 ss_prestige_low_modifier = {
-	monthly_prestige = 50
-	monthly_dynasty_prestige = 5000
+	monthly_prestige = 20
+	monthly_dynasty_prestige = 50
 }
 ss_prestige_med_modifier = {
-	monthly_prestige = 150
-	monthly_dynasty_prestige = 10000
+	monthly_prestige = 50
+	monthly_dynasty_prestige = 100
 }
 ss_prestige_high_modifier = {
-	monthly_prestige = 500
-	monthly_dynasty_prestige = 25000
+	monthly_prestige = 100
+	monthly_dynasty_prestige = 200
 }
 
 ### Domain / vassal limits (Must)
@@ -78,8 +82,8 @@ ss_domain_vassal_high_modifier = {
 
 ### Keep All Titles (CM-17) — extreme domain/vassal when hub toggle On
 ss_unlimited_titles_modifier = {
-	domain_limit = 500
-	vassal_limit = 500
+	domain_limit = 200
+	vassal_limit = 200
 }
 
 ### Military (Should) — character-valid keys only
@@ -138,14 +142,15 @@ ss_military_high_modifier = {
 
 ### Schemes (Should) — character-scoped scheme keys only
 # (scheme_power / scheme_resistance / scheme_secrecy are scheme-modifier types)
+# Slot adds capped so High does not spawn dozens of concurrent schemes.
 ss_schemes_low_modifier = {
 	owned_hostile_scheme_success_chance_add = 50
 	owned_personal_scheme_success_chance_add = 50
 	owned_scheme_secrecy_add = 50
 	enemy_hostile_scheme_success_chance_add = -25
 	enemy_hostile_scheme_phase_duration_add = 30
-	max_personal_schemes_add = 5
-	max_hostile_schemes_add = 5
+	max_personal_schemes_add = 3
+	max_hostile_schemes_add = 3
 }
 ss_schemes_med_modifier = {
 	owned_hostile_scheme_success_chance_add = 100
@@ -153,8 +158,8 @@ ss_schemes_med_modifier = {
 	owned_scheme_secrecy_add = 100
 	enemy_hostile_scheme_success_chance_add = -50
 	enemy_hostile_scheme_phase_duration_add = 60
-	max_personal_schemes_add = 15
-	max_hostile_schemes_add = 15
+	max_personal_schemes_add = 5
+	max_hostile_schemes_add = 5
 }
 ss_schemes_high_modifier = {
 	owned_hostile_scheme_success_chance_add = 200
@@ -162,6 +167,6 @@ ss_schemes_high_modifier = {
 	owned_scheme_secrecy_add = 200
 	enemy_hostile_scheme_success_chance_add = -75
 	enemy_hostile_scheme_phase_duration_add = 90
-	max_personal_schemes_add = 50
-	max_hostile_schemes_add = 50
+	max_personal_schemes_add = 10
+	max_hostile_schemes_add = 10
 }

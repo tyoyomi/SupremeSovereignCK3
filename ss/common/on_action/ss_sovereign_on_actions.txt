@@ -38,6 +38,8 @@ ss_yearly_sovereign_refresh = {
 	effect = {
 		# Safety net for RD / console / missed grant refresh; idempotent from vars
 		ss_apply_sovereign_runtime_effects = yes
+		# Hidden piggy: bank capped wealth/prestige excess, silent drip back
+		ss_piggy_yearly_effect = yes
 	}
 }
 

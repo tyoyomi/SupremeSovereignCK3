@@ -3,6 +3,7 @@
 # military / schemes) live on character modifiers via ss_refresh_sovereign_modifiers.
 # Public trait key kept unprefixed for save/Steam continuity.
 # Hygiene: only known character/trait modifier keys (1.20); longevity not immortal.
+# Perf: development / control / grandeur / dread / fascination capped for county ticks.
 
 @ss_trait_skill = 100
 @ss_trait_stress_gain_mult = -75
@@ -29,31 +30,31 @@ Supreme_Sovereign = {
 	dynasty_opinion = 50
 	vassal_opinion = 50
 
-	# Dread / opinion (fixed v1)
+	# Dread / opinion (fixed v1 — opinion numbers dialed for less noise)
 	dread_baseline_add = 100
 	dread_loss_mult = -50
-	monthly_dread = 50
+	monthly_dread = 10
 	attraction_opinion = 100
 	ignore_negative_culture_opinion = yes
-	general_opinion = 1000
-	same_opinion = 500
+	general_opinion = 200
+	same_opinion = 100
 
-	# Culture / court (fixed v1 — valid character keys only)
-	cultural_head_fascination_add = 1000
-	cultural_head_fascination_mult = 100
+	# Culture / court (fixed — valid character keys only; tick-cost capped)
+	cultural_head_fascination_add = 50
+	cultural_head_fascination_mult = 5
 	court_grandeur_baseline_add = 50
-	monthly_court_grandeur_change_add = 100
+	monthly_court_grandeur_change_add = 10
 	hostile_county_attrition = -0.5
 
 	# Stress (fixed; lifestyle XP is modifier-driven)
 	stress_gain_mult = @ss_trait_stress_gain_mult
 
-	# Domain build / development (Could-tier left on trait for v1)
-	development_growth = 500
-	development_growth_factor = 5000
+	# Domain build / development (Could-tier — county tick capped)
+	development_growth = 25
+	development_growth_factor = 25
 	build_speed = -75
 	holding_build_speed = -75
 	build_gold_cost = -75
 	holding_build_gold_cost = -75
-	monthly_county_control_growth_add = 500
+	monthly_county_control_growth_add = 25
 }

@@ -80,6 +80,133 @@ ss_ensure_sovereign_defaults_effect = {
 		limit = { NOT = { exists = var:ss_cfg_reshape_heir } }
 		set_variable = { name = ss_cfg_reshape_heir value = 2 }
 	}
+	# Hidden piggy bank pools (excess wealth/prestige; silent yearly drip)
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_gold } }
+		set_variable = { name = ss_piggy_gold value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_prestige } }
+		set_variable = { name = ss_piggy_prestige value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_piety } }
+		set_variable = { name = ss_piggy_piety value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_dynasty } }
+		set_variable = { name = ss_piggy_dynasty value = 0 }
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Virtual sovereign piggy bank — deposit capped OP excess; silent yearly drip
+# -----------------------------------------------------------------------------
+
+ss_piggy_deposit_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	# Wealth excess (legacy monthly − capped monthly) × 12
+	if = {
+		limit = { var:ss_cfg_wealth = 1 }
+		change_variable = { name = ss_piggy_gold add = 300 }
+		change_variable = { name = ss_piggy_piety add = 120 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_wealth = 2 }
+		change_variable = { name = ss_piggy_gold add = 600 }
+		change_variable = { name = ss_piggy_piety add = 300 }
+	}
+	else = {
+		change_variable = { name = ss_piggy_gold add = 1500 }
+		change_variable = { name = ss_piggy_piety add = 720 }
+	}
+	# Prestige excess — dynasty uses capped annual lumps (not full old×12)
+	if = {
+		limit = { var:ss_cfg_prestige = 1 }
+		change_variable = { name = ss_piggy_prestige add = 360 }
+		change_variable = { name = ss_piggy_dynasty add = 6000 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_prestige = 2 }
+		change_variable = { name = ss_piggy_prestige add = 1200 }
+		change_variable = { name = ss_piggy_dynasty add = 12000 }
+	}
+	else = {
+		change_variable = { name = ss_piggy_prestige add = 4800 }
+		change_variable = { name = ss_piggy_dynasty add = 24000 }
+	}
+}
+
+ss_piggy_drip_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	# Gold: floor 250, drip min(2000, pool/4) — silent (no toast)
+	if = {
+		limit = { var:ss_piggy_gold >= 250 }
+		add_gold = ss_piggy_gold_drip_value
+		change_variable = {
+			name = ss_piggy_gold
+			subtract = ss_piggy_gold_drip_value
+		}
+	}
+	# Piety: floor 100, drip min(500, pool/4)
+	if = {
+		limit = { var:ss_piggy_piety >= 100 }
+		add_piety = ss_piggy_piety_drip_value
+		change_variable = {
+			name = ss_piggy_piety
+			subtract = ss_piggy_piety_drip_value
+		}
+	}
+	# Prestige: floor 200, drip min(2000, pool/4)
+	if = {
+		limit = { var:ss_piggy_prestige >= 200 }
+		add_prestige = ss_piggy_prestige_drip_value
+		change_variable = {
+			name = ss_piggy_prestige
+			subtract = ss_piggy_prestige_drip_value
+		}
+	}
+	# Dynasty prestige: floor 500, bracketed drips (literals — dynasty scope has no ss_piggy_* vars)
+	if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 20000
+		}
+		dynasty = { add_dynasty_prestige = 5000 }
+		change_variable = { name = ss_piggy_dynasty subtract = 5000 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 8000
+		}
+		dynasty = { add_dynasty_prestige = 2000 }
+		change_variable = { name = ss_piggy_dynasty subtract = 2000 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 2000
+		}
+		dynasty = { add_dynasty_prestige = 500 }
+		change_variable = { name = ss_piggy_dynasty subtract = 500 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 500
+		}
+		dynasty = { add_dynasty_prestige = 250 }
+		change_variable = { name = ss_piggy_dynasty subtract = 250 }
+	}
+}
+
+ss_piggy_yearly_effect = {
+	if = {
+		limit = { has_trait = Supreme_Sovereign }
+		ss_piggy_deposit_effect = yes
+		ss_piggy_drip_effect = yes
+	}
 }
 
 ss_refresh_sovereign_modifiers = {
