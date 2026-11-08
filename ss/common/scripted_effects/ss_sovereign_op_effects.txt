@@ -477,6 +477,8 @@ ss_dist_build_children_effect = {
 	}
 
 	# Remaining eligible children: oldest → youngest
+	# ordered_in_list defaults to FIRST entry only (vanilla ordered_* behavior).
+	# Without max, seat ring was heir + 1 oldest sibling (= 2 kids) — CM-43.
 	every_child = {
 		limit = {
 			ss_eligible_distribute_child = yes
@@ -488,6 +490,8 @@ ss_dist_build_children_effect = {
 		list = ss_dist_child_pool
 		order_by = age
 		descending = yes
+		max = 100
+		check_range_bounds = no
 		set_variable = {
 			name = ss_dist_order
 			value = scope:ss_dist_actor.var:ss_dist_next_order
