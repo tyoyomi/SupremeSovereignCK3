@@ -26,8 +26,21 @@ ss_has_sovereign_cfg_vars = {
 	exists = var:ss_cfg_prestige
 	exists = var:ss_cfg_domain_vassal
 	exists = var:ss_cfg_unlimited_titles
+	exists = var:ss_cfg_kingdom_conquest
 	exists = var:ss_cfg_military
 	exists = var:ss_cfg_schemes
+}
+
+# Kingdom Conquest CB — player Sovereign, hub On (missing cfg = default On)
+ss_can_use_kingdom_conquest_cb = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	NOT = { government_has_flag = government_is_landless_adventurer }
+	NAND = {
+		exists = var:ss_cfg_kingdom_conquest
+		var:ss_cfg_kingdom_conquest = 0
+	}
 }
 
 # --- OP pass ---
