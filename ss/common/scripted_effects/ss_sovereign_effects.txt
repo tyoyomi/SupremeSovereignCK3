@@ -14,6 +14,9 @@ ss_clear_sovereign_modifiers_effect = {
 	remove_character_modifier = ss_prestige_low_modifier
 	remove_character_modifier = ss_prestige_med_modifier
 	remove_character_modifier = ss_prestige_high_modifier
+	remove_character_modifier = ss_influence_low_modifier
+	remove_character_modifier = ss_influence_med_modifier
+	remove_character_modifier = ss_influence_high_modifier
 	remove_character_modifier = ss_domain_vassal_low_modifier
 	remove_character_modifier = ss_domain_vassal_med_modifier
 	remove_character_modifier = ss_domain_vassal_high_modifier
@@ -42,6 +45,10 @@ ss_ensure_sovereign_defaults_effect = {
 	if = {
 		limit = { NOT = { exists = var:ss_cfg_prestige } }
 		set_variable = { name = ss_cfg_prestige value = 3 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_influence } }
+		set_variable = { name = ss_cfg_influence value = 3 }
 	}
 	if = {
 		limit = { NOT = { exists = var:ss_cfg_domain_vassal } }
@@ -304,6 +311,37 @@ ss_refresh_sovereign_modifiers = {
 			}
 		}
 
+		# Influence — Off skips; only apply when EP3/TGP DLC present (safe no-op otherwise)
+		if = {
+			limit = {
+				OR = {
+					has_ep3_dlc_trigger = yes
+					has_tgp_dlc_trigger = yes
+				}
+				NOT = { var:ss_cfg_influence = 0 }
+			}
+			if = {
+				limit = { var:ss_cfg_influence = 1 }
+				add_character_modifier = {
+					modifier = ss_influence_low_modifier
+					days = -1
+				}
+			}
+			else_if = {
+				limit = { var:ss_cfg_influence = 2 }
+				add_character_modifier = {
+					modifier = ss_influence_med_modifier
+					days = -1
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = ss_influence_high_modifier
+					days = -1
+				}
+			}
+		}
+
 		# Keep All Titles — On: extreme domain/vassal; Off: Domain & Vassals tiers
 		if = {
 			limit = { var:ss_cfg_unlimited_titles = 1 }
@@ -478,6 +516,26 @@ ss_cycle_prestige_cfg_effect = {
 	}
 	else = {
 		set_variable = { name = ss_cfg_prestige value = 1 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_influence_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_influence = 0 }
+		set_variable = { name = ss_cfg_influence value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_influence = 1 }
+		set_variable = { name = ss_cfg_influence value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_influence = 2 }
+		set_variable = { name = ss_cfg_influence value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_influence value = 0 }
 	}
 	ss_refresh_sovereign_modifiers = yes
 }

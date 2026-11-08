@@ -66,6 +66,19 @@ ss_prestige_high_modifier = {
 	monthly_dynasty_prestige = 200
 }
 
+### Influence (Should) — CK3 influence currency (Roads to Power / All Under Heaven)
+# monthly_influence is a base character key (safe without DLC); spend/UI needs an
+# influence government. Applied only when EP3 or TGP DLC triggers are present.
+ss_influence_low_modifier = {
+	monthly_influence = 5
+}
+ss_influence_med_modifier = {
+	monthly_influence = 15
+}
+ss_influence_high_modifier = {
+	monthly_influence = 40
+}
+
 ### Domain / vassal limits (Must)
 ss_domain_vassal_low_modifier = {
 	domain_limit = 10

@@ -442,7 +442,7 @@ ss_settings.1002 = {
 	}
 }
 
-# Page 3/3 — legacy pulse / perk gift / reshape heir
+# Page 3/3 — influence / legacy pulse / perk gift / reshape heir
 ss_settings.1003 = {
 	type = character_event
 	title = ss_settings.1003.t
@@ -450,6 +450,25 @@ ss_settings.1003 = {
 
 	desc = {
 		desc = ss_settings.1003.desc_intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_influence = 0 }
+				desc = ss_settings.tier.influence_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_influence = 1 }
+				desc = ss_settings.tier.influence_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_influence = 2 }
+				desc = ss_settings.tier.influence_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_influence = 3 }
+				desc = ss_settings.tier.influence_3
+			}
+			desc = ss_settings.tier.influence_3
+		}
 		first_valid = {
 			triggered_desc = {
 				trigger = { var:ss_cfg_legacy_pulse = 0 }
@@ -517,6 +536,35 @@ ss_settings.1003 = {
 	option = {
 		name = ss_settings.1003.close
 		custom_tooltip = ss_settings.tt.close
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_influence = 0 }
+						desc = ss_settings.opt.influence_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_influence = 1 }
+						desc = ss_settings.opt.influence_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_influence = 2 }
+						desc = ss_settings.opt.influence_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_influence = 3 }
+						desc = ss_settings.opt.influence_3
+					}
+					desc = ss_settings.opt.influence_3
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.influence
+		ss_cycle_influence_cfg_effect = yes
+		trigger_event = ss_settings.1003
 	}
 
 	option = {
