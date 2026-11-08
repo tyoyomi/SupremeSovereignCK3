@@ -125,3 +125,76 @@ ss_can_receive_reshape = {
 	exists = scope:actor
 	is_child_of = scope:actor
 }
+
+# --- Distribute titles to children (CM-35) ---
+# Soft peer: SU missing ⇒ has_variable fails ⇒ pending = no (always pass).
+
+ss_su_unity_choice_pending_on_self = {
+	has_variable = su_unity_choice_pending
+}
+
+# this = title; root = actor
+ss_is_distributable_title = {
+	exists = holder
+	holder = root
+	NOR = {
+		this = root.primary_title
+		AND = {
+			exists = root.capital_county
+			this = root.capital_county
+		}
+		AND = {
+			tier = tier_barony
+			exists = county
+			exists = root.capital_county
+			county = root.capital_county
+		}
+	}
+}
+
+# this = title already saved; root / scope:ss_dist_actor = actor
+ss_title_is_dist_queued = {
+	exists = scope:ss_dist_actor
+	scope:ss_dist_actor = {
+		is_target_in_variable_list = {
+			name = ss_dist_queued_titles
+			target = prev
+		}
+	}
+}
+
+# this = child; root = actor
+ss_eligible_distribute_child = {
+	is_alive = yes
+	NOT = { this = root }
+	is_child_of = root
+	OR = {
+		can_be_granted_titles_by = { RULER = root }
+		can_be_granted_theocratic_titles_by = { RULER = root }
+	}
+	NOR = {
+		has_trait = gallivanter
+		AND = {
+			has_trait = devoted
+			root = { NOT = { government_has_flag = government_is_theocracy } }
+		}
+	}
+}
+
+ss_can_distribute_titles_to_children = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	is_landed = yes
+	NOT = { government_has_flag = government_is_landless_adventurer }
+	exists = primary_title
+	exists = capital_county
+	NOT = { ss_su_unity_choice_pending_on_self = yes }
+	any_child = {
+		ss_eligible_distribute_child = yes
+	}
+	any_held_title = {
+		tier >= tier_county
+		ss_is_distributable_title = yes
+	}
+}

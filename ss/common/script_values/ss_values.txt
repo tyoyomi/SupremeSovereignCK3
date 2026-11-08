@@ -72,6 +72,9 @@ ss_perk_gift_points_value = {
 
 ss_perk_gift_cooldown_days = 365
 
+# --- Distribute titles to children (CM-35) ---
+ss_distribute_titles_cooldown_days = 365
+
 # --- OP pass: reshape heir ---
 ss_reshape_heir_prestige_cost = 1000
 ss_reshape_lifestyle_xp_value = 4000

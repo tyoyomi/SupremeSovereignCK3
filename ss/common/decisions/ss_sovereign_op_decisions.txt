@@ -1,4 +1,4 @@
-﻿# Supreme Sovereign — OP pass decisions (perk gift claims only; settings cycles live in hub)
+﻿# Supreme Sovereign — OP pass decisions (perk claims + distribute titles; settings cycles live in hub)
 
 # --- Perk gift claims ---
 
@@ -72,6 +72,43 @@ ss_claim_all_lifestyle_perk_points_decision = {
 	effect = {
 		custom_tooltip = ss_claim_all_lifestyle_perk_points_decision_effect_tt
 		ss_claim_all_lifestyle_perk_points_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}
+
+# --- Distribute titles to children (CM-35) ---
+
+ss_distribute_titles_to_children_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = major
+	desc = ss_distribute_titles_to_children_decision_desc
+	selection_tooltip = ss_distribute_titles_to_children_decision_tooltip
+	confirm_text = ss_distribute_titles_to_children_decision_confirm
+
+	ai_check_interval = 0
+	cooldown = { days = ss_distribute_titles_cooldown_days }
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		has_trait = Supreme_Sovereign
+		NOT = { government_has_flag = government_is_landless_adventurer }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = ss_tt_can_distribute_titles_to_children
+			ss_can_distribute_titles_to_children = yes
+		}
+	}
+
+	effect = {
+		custom_tooltip = ss_distribute_titles_to_children_decision_effect_tt
+		ss_distribute_titles_to_children_effect = yes
 	}
 
 	ai_potential = { always = no }

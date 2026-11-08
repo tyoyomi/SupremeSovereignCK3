@@ -390,3 +390,509 @@ ss_reshape_heir_effect = {
 		}
 	}
 }
+
+# -----------------------------------------------------------------------------
+# Distribute titles to children (CM-35)
+# Keep: primary + capital county + baronies under capital.
+# Split: highest tier first; heir seat 0 then oldest→youngest; round-robin.
+# Hygiene: one create_title_and_vassal_change type=granted → resolve.
+# -----------------------------------------------------------------------------
+
+ss_dist_clear_child_markers_effect = {
+	# this = actor
+	every_child = {
+		if = {
+			limit = { exists = var:ss_dist_order }
+			remove_variable = ss_dist_order
+		}
+		if = {
+			limit = { has_character_flag = ss_dist_received }
+			remove_character_flag = ss_dist_received
+		}
+	}
+}
+
+ss_dist_advance_seat_effect = {
+	# this = actor
+	change_variable = {
+		name = ss_dist_seat
+		add = 1
+	}
+	if = {
+		limit = {
+			exists = var:ss_dist_child_total
+			var:ss_dist_seat >= var:ss_dist_child_total
+		}
+		set_variable = {
+			name = ss_dist_seat
+			value = 0
+		}
+	}
+}
+
+ss_dist_build_children_effect = {
+	# this / scope:ss_dist_actor = actor
+	ss_dist_clear_child_markers_effect = yes
+	set_variable = {
+		name = ss_dist_next_order
+		value = 0
+	}
+
+	# Seat 0: player_heir if eligible child, else primary_heir if eligible child
+	if = {
+		limit = {
+			exists = player_heir
+			player_heir = {
+				ss_eligible_distribute_child = yes
+			}
+		}
+		player_heir = {
+			set_variable = {
+				name = ss_dist_order
+				value = 0
+			}
+		}
+		set_variable = {
+			name = ss_dist_next_order
+			value = 1
+		}
+	}
+	else_if = {
+		limit = {
+			exists = primary_heir
+			primary_heir = {
+				ss_eligible_distribute_child = yes
+			}
+		}
+		primary_heir = {
+			set_variable = {
+				name = ss_dist_order
+				value = 0
+			}
+		}
+		set_variable = {
+			name = ss_dist_next_order
+			value = 1
+		}
+	}
+
+	# Remaining eligible children: oldest → youngest
+	every_child = {
+		limit = {
+			ss_eligible_distribute_child = yes
+			NOT = { exists = var:ss_dist_order }
+		}
+		add_to_temporary_list = ss_dist_child_pool
+	}
+	ordered_in_list = {
+		list = ss_dist_child_pool
+		order_by = age
+		descending = yes
+		set_variable = {
+			name = ss_dist_order
+			value = scope:ss_dist_actor.var:ss_dist_next_order
+		}
+		scope:ss_dist_actor = {
+			change_variable = {
+				name = ss_dist_next_order
+				add = 1
+			}
+		}
+	}
+
+	set_variable = {
+		name = ss_dist_child_total
+		value = var:ss_dist_next_order
+	}
+	set_variable = {
+		name = ss_dist_seat
+		value = 0
+	}
+}
+
+ss_dist_pick_recipient_effect = {
+	# this = actor; sets scope:ss_dist_recipient from current seat
+	random_child = {
+		limit = {
+			ss_eligible_distribute_child = yes
+			exists = var:ss_dist_order
+			var:ss_dist_order = scope:ss_dist_actor.var:ss_dist_seat
+		}
+		save_scope_as = ss_dist_recipient
+	}
+}
+
+ss_dist_mark_recipient_effect = {
+	# scope:ss_dist_recipient / scope:ss_dist_actor
+	if = {
+		limit = {
+			exists = scope:ss_dist_recipient
+			scope:ss_dist_recipient = {
+				NOT = { has_character_flag = ss_dist_received }
+			}
+		}
+		scope:ss_dist_recipient = {
+			add_character_flag = ss_dist_received
+		}
+		scope:ss_dist_actor = {
+			change_variable = {
+				name = ss_distribute_child_count
+				add = 1
+			}
+		}
+	}
+}
+
+ss_dist_queue_title_grant_effect = {
+	# this = title; scopes: ss_dist_actor, ss_dist_recipient, ss_dist_change
+	if = {
+		limit = {
+			exists = scope:ss_dist_recipient
+			exists = scope:ss_dist_change
+			exists = scope:ss_dist_actor
+			holder = scope:ss_dist_actor
+			NOR = {
+				this = scope:ss_dist_actor.primary_title
+				AND = {
+					exists = scope:ss_dist_actor.capital_county
+					this = scope:ss_dist_actor.capital_county
+				}
+				AND = {
+					tier = tier_barony
+					exists = county
+					exists = scope:ss_dist_actor.capital_county
+					county = scope:ss_dist_actor.capital_county
+				}
+			}
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		save_scope_as = ss_dist_title
+		change_title_holder = {
+			holder = scope:ss_dist_recipient
+			change = scope:ss_dist_change
+		}
+		scope:ss_dist_actor = {
+			add_to_variable_list = {
+				name = ss_dist_queued_titles
+				target = scope:ss_dist_title
+			}
+			change_variable = {
+				name = ss_distribute_title_count
+				add = 1
+			}
+		}
+		ss_dist_mark_recipient_effect = yes
+		if = {
+			limit = { scope:ss_dist_title = { tier = tier_county } }
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_wave_gave_county
+					value = 1
+				}
+			}
+		}
+	}
+}
+
+ss_dist_queue_county_bundle_effect = {
+	# this = county title — baronies ride via de jure hierarchy (no nested every_held_title)
+	save_scope_as = ss_dist_county
+	ss_dist_queue_title_grant_effect = yes
+	every_in_de_jure_hierarchy = {
+		limit = {
+			tier = tier_barony
+			holder = scope:ss_dist_actor
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		ss_dist_queue_title_grant_effect = yes
+	}
+}
+
+ss_dist_queue_duchy_bundle_effect = {
+	# this = duchy title — same recipient for held de jure counties (+ baronies)
+	save_scope_as = ss_dist_duchy
+	ss_dist_queue_title_grant_effect = yes
+	every_in_de_jure_hierarchy = {
+		limit = {
+			tier = tier_county
+			holder = scope:ss_dist_actor
+			NOR = {
+				this = scope:ss_dist_actor.primary_title
+				AND = {
+					exists = scope:ss_dist_actor.capital_county
+					this = scope:ss_dist_actor.capital_county
+				}
+			}
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		ss_dist_queue_county_bundle_effect = yes
+	}
+}
+
+ss_dist_land_first_correction_effect = {
+	# If this seat got no county yet, steal one spare county (+ baronies) for the same child
+	if = {
+		limit = {
+			exists = scope:ss_dist_actor
+			exists = scope:ss_dist_recipient
+			scope:ss_dist_actor = {
+				OR = {
+					NOT = { exists = var:ss_dist_wave_gave_county }
+					var:ss_dist_wave_gave_county = 0
+				}
+				any_held_title = {
+					tier = tier_county
+					NOR = {
+						this = scope:ss_dist_actor.primary_title
+						AND = {
+							exists = scope:ss_dist_actor.capital_county
+							this = scope:ss_dist_actor.capital_county
+						}
+					}
+					NOT = {
+						scope:ss_dist_actor = {
+							is_target_in_variable_list = {
+								name = ss_dist_queued_titles
+								target = prev
+							}
+						}
+					}
+				}
+			}
+		}
+		scope:ss_dist_actor = {
+			random_held_title = {
+				limit = {
+					tier = tier_county
+					NOR = {
+						this = scope:ss_dist_actor.primary_title
+						AND = {
+							exists = scope:ss_dist_actor.capital_county
+							this = scope:ss_dist_actor.capital_county
+						}
+					}
+					NOT = {
+						scope:ss_dist_actor = {
+							is_target_in_variable_list = {
+								name = ss_dist_queued_titles
+								target = prev
+							}
+						}
+					}
+				}
+				ss_dist_queue_county_bundle_effect = yes
+			}
+		}
+	}
+}
+
+ss_dist_assign_title_to_ring_effect = {
+	# this = seat title (empire / kingdom / duchy / county); try ring once around
+	scope:ss_dist_actor = {
+		set_variable = {
+			name = ss_dist_tries
+			value = 0
+		}
+		set_variable = {
+			name = ss_dist_assigned_ok
+			value = 0
+		}
+	}
+	save_scope_as = ss_dist_seat_title
+	while = {
+		limit = {
+			scope:ss_dist_actor = {
+				var:ss_dist_assigned_ok = 0
+				exists = var:ss_dist_child_total
+				var:ss_dist_child_total > 0
+				var:ss_dist_tries < var:ss_dist_child_total
+			}
+		}
+		scope:ss_dist_actor = {
+			ss_dist_pick_recipient_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:ss_dist_recipient
+				scope:ss_dist_recipient = {
+					# Guard against stale recipient scope when random_child finds no match
+					exists = var:ss_dist_order
+					var:ss_dist_order = scope:ss_dist_actor.var:ss_dist_seat
+					OR = {
+						can_be_granted_titles_by = { RULER = scope:ss_dist_actor }
+						can_be_granted_theocratic_titles_by = { RULER = scope:ss_dist_actor }
+					}
+				}
+			}
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_wave_gave_county
+					value = 0
+				}
+			}
+			scope:ss_dist_seat_title = {
+				if = {
+					limit = { tier = tier_duchy }
+					ss_dist_queue_duchy_bundle_effect = yes
+					ss_dist_land_first_correction_effect = yes
+				}
+				else_if = {
+					limit = { tier = tier_county }
+					ss_dist_queue_county_bundle_effect = yes
+				}
+				else = {
+					# empire / kingdom (and any unexpected higher seat title)
+					ss_dist_queue_title_grant_effect = yes
+					ss_dist_land_first_correction_effect = yes
+				}
+			}
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_assigned_ok
+					value = 1
+				}
+				ss_dist_advance_seat_effect = yes
+			}
+		}
+		else = {
+			scope:ss_dist_actor = {
+				ss_dist_advance_seat_effect = yes
+				change_variable = {
+					name = ss_dist_tries
+					add = 1
+				}
+			}
+		}
+	}
+}
+
+ss_dist_process_tier_effect = {
+	# this = actor; $TIER$ = tier_empire / tier_kingdom / tier_duchy / tier_county
+	# Variable list (cleared each tier) so assign/land-first can safely scan held titles
+	clear_variable_list = ss_dist_tier_pool
+	every_held_title = {
+		limit = {
+			tier = $TIER$
+			NOR = {
+				this = root.primary_title
+				AND = {
+					exists = root.capital_county
+					this = root.capital_county
+				}
+			}
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		add_to_variable_list = {
+			name = ss_dist_tier_pool
+			target = this
+		}
+	}
+	every_in_list = {
+		variable = ss_dist_tier_pool
+		ss_dist_assign_title_to_ring_effect = yes
+	}
+	clear_variable_list = ss_dist_tier_pool
+}
+
+ss_distribute_titles_to_children_effect = {
+	# this = player Sovereign
+	if = {
+		limit = { ss_can_distribute_titles_to_children = yes }
+		save_scope_as = ss_dist_actor
+		set_variable = {
+			name = ss_distribute_title_count
+			value = 0
+		}
+		set_variable = {
+			name = ss_distribute_child_count
+			value = 0
+		}
+		clear_variable_list = ss_dist_queued_titles
+		clear_variable_list = ss_dist_tier_pool
+
+		ss_dist_build_children_effect = yes
+
+		if = {
+			limit = {
+				exists = var:ss_dist_child_total
+				var:ss_dist_child_total > 0
+				any_held_title = {
+					tier >= tier_county
+					ss_is_distributable_title = yes
+				}
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = ss_dist_change
+				add_claim_on_loss = no
+			}
+
+			# Highest tier first; baronies ride with counties (never seat alone)
+			ss_dist_process_tier_effect = { TIER = tier_empire }
+			ss_dist_process_tier_effect = { TIER = tier_kingdom }
+			ss_dist_process_tier_effect = { TIER = tier_duchy }
+			ss_dist_process_tier_effect = { TIER = tier_county }
+
+			resolve_title_and_vassal_change = scope:ss_dist_change
+		}
+
+		# Cleanup transient markers (counts kept for toast)
+		ss_dist_clear_child_markers_effect = yes
+		clear_variable_list = ss_dist_queued_titles
+		clear_variable_list = ss_dist_tier_pool
+		if = {
+			limit = { exists = var:ss_dist_next_order }
+			remove_variable = ss_dist_next_order
+		}
+		if = {
+			limit = { exists = var:ss_dist_child_total }
+			remove_variable = ss_dist_child_total
+		}
+		if = {
+			limit = { exists = var:ss_dist_seat }
+			remove_variable = ss_dist_seat
+		}
+		if = {
+			limit = { exists = var:ss_dist_tries }
+			remove_variable = ss_dist_tries
+		}
+		if = {
+			limit = { exists = var:ss_dist_assigned_ok }
+			remove_variable = ss_dist_assigned_ok
+		}
+		if = {
+			limit = { exists = var:ss_dist_wave_gave_county }
+			remove_variable = ss_dist_wave_gave_county
+		}
+
+		trigger_event = ss_op.2101
+	}
+}

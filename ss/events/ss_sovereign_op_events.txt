@@ -32,3 +32,20 @@ ss_op.1001 = {
 		ss_grant_perk_points_to_lifestyle_effect = { LIFESTYLE = learning }
 	}
 }
+
+# Summary toast after Distribute Titles to Children (CM-35)
+ss_op.2101 = {
+	type = character_event
+	title = ss_op.2101.t
+	desc = ss_op.2101.desc
+	theme = realm
+	override_background = { reference = throne_room }
+
+	immediate = {
+		# Counts set by ss_distribute_titles_to_children_effect for loc
+	}
+
+	option = {
+		name = ss_op.2101.a
+	}
+}
