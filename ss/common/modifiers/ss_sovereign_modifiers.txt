@@ -83,15 +83,18 @@ ss_unlimited_titles_modifier = {
 }
 
 ### Military (Should) — character-valid keys only
+# Cap levy/garrison/MAA mass so High stays OP in combat without melting tick rate.
+# (levy_size is additive mult: 1 = +100%. Old High levy_size=100 was +10,000%.)
 ss_military_low_modifier = {
 	advantage = 15
 	siege_phase_time = -0.25
 	movement_speed = 0.15
 	supply_duration = 1
 	supply_limit_mult = 0.15
-	levy_size = 10
+	levy_size = 2
 	levy_reinforcement_rate = 1
-	knight_effectiveness_mult = 10
+	garrison_size = 2
+	knight_effectiveness_mult = 2
 	men_at_arms_limit = 100
 	men_at_arms_cap = 5
 	maa_damage_mult = 1
@@ -102,13 +105,13 @@ ss_military_med_modifier = {
 	movement_speed = 0.3
 	supply_duration = 3
 	supply_limit_mult = 0.3
-	levy_size = 50
-	levy_reinforcement_rate = 2
-	knight_effectiveness_mult = 100
-	men_at_arms_limit = 1000
-	men_at_arms_cap = 25
-	maa_damage_mult = 5
-	garrison_size = 100
+	levy_size = 5
+	levy_reinforcement_rate = 1
+	garrison_size = 5
+	knight_effectiveness_mult = 5
+	men_at_arms_limit = 200
+	men_at_arms_cap = 10
+	maa_damage_mult = 3
 }
 ss_military_high_modifier = {
 	advantage = 50
@@ -118,19 +121,19 @@ ss_military_high_modifier = {
 	supply_limit_mult = 0.5
 	min_combat_roll = 15
 	max_combat_roll = 30
-	maa_damage_mult = 100
-	heavy_cavalry_damage_mult = 1000
-	heavy_cavalry_toughness_mult = 1000
-	archers_damage_mult = 1000
-	archers_toughness_mult = 1000
-	skirmishers_damage_mult = 1000
-	skirmishers_toughness_mult = 1000
-	garrison_size = 1000
-	levy_size = 100
-	levy_reinforcement_rate = 10000
-	knight_effectiveness_mult = 10000
-	men_at_arms_limit = 100000
-	men_at_arms_cap = 100
+	maa_damage_mult = 5
+	heavy_cavalry_damage_mult = 10
+	heavy_cavalry_toughness_mult = 10
+	archers_damage_mult = 10
+	archers_toughness_mult = 10
+	skirmishers_damage_mult = 10
+	skirmishers_toughness_mult = 10
+	garrison_size = 10
+	levy_size = 8
+	levy_reinforcement_rate = 2
+	knight_effectiveness_mult = 3
+	men_at_arms_limit = 300
+	men_at_arms_cap = 15
 }
 
 ### Schemes (Should) — character-scoped scheme keys only
