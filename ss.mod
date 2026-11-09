@@ -1,4 +1,4 @@
-version="1.22.3"
+version="1.23.0"
 tags={
 	"Gameplay"
 	"Events"

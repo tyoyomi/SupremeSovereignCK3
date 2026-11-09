@@ -14,11 +14,34 @@
  ss_manage_sovereign_settings_decision_confirm:0 "Open Settings"
  ss_manage_sovereign_settings_decision_effect_tt:0 "Opens the Sovereign Settings hub showing current tiers"
 
+ # Custom decision group (CM-46)
+ decision_group_type_ss_sovereign:0 "Supreme Sovereign"
+
+ # Actions hub decision
+ ss_sovereign_actions_decision:0 "Supreme Sovereign: Actions"
+ ss_sovereign_actions_decision_desc:0 "Open Sovereign Actions: claim lifestyle perk points, distribute titles to children, or reclaim titles from children.\n\nDone is always first. Actions on cooldown or gated stay hidden until ready."
+ ss_sovereign_actions_decision_tooltip:0 "Open Sovereign Actions for perk claims and title ops"
+ ss_sovereign_actions_decision_confirm:0 "Open Actions"
+ ss_sovereign_actions_decision_effect_tt:0 "Opens the Sovereign Actions hub"
+
+ # Actions hub event
+ ss_actions.1001.t:0 "Sovereign Actions"
+ ss_actions.1001.desc:0 "Choose a Sovereign action. Done closes the hub. Perk claims re-open this page after resolving; distribute and reclaim show their own summary."
+ ss_actions.1001.close:0 "Done"
+ ss_actions.1001.claim:0 "Claim Lifestyle Perk Points"
+ ss_actions.1001.claim_all:0 "Claim All Lifestyle Perk Points"
+ ss_actions.1001.distribute:0 "Distribute Titles to Children"
+ ss_actions.1001.reclaim:0 "Reclaim Titles from Children"
+ ss_actions.tt.close:0 "Close Sovereign Actions without taking an action."
+ ss_tt_actions_perk_cd_ready:0 "Perk gift cooldown is ready (one year between claims)"
+ ss_tt_actions_distribute_cd_ready:0 "Distribute Titles cooldown is ready (one year)"
+ ss_tt_actions_reclaim_cd_ready:0 "Reclaim Titles cooldown is ready (one year)"
+
  # Settings hub event (paged — keep option counts GUI-safe)
  ss_settings.1001.t:0 "Sovereign Settings (1/4)"
  ss_settings.1001.desc_intro:0 "Page 1 — core tiers. Click a setting to cycle; Done stays at the top."
  ss_settings.1001.desc_blank:0 "\n"
- ss_settings.1001.desc_footer:0 "More opens war, legacy, and empire pages. Perk claims stay on Decisions."
+ ss_settings.1001.desc_footer:0 "More opens war, legacy, and empire pages. Perk claims and title ops live under Sovereign Actions."
  ss_settings.1001.close:0 "Done"
  ss_settings.1001.more:0 "More…"
  ss_settings.1002.t:0 "Sovereign Settings (2/4)"
@@ -49,7 +72,7 @@
  ss_settings.tt.schemes:0 "Schemes — scheme success, secrecy, enemy-scheme defense, and max scheme slots.\n\nLow (1): +50 success/secrecy, −25 enemy success, +3 personal and hostile scheme slots.\nMedium (2): +100 success/secrecy, −50 enemy success, +5 slots each.\nHigh (3): +200 success/secrecy, −75 enemy success, +10 slots each.\n\nSlot counts are capped so concurrent schemes stay cheap to simulate. Click to cycle Low → Medium → High → Low. Your current tier is on the button."
  ss_settings.tt.influence:0 "Influence — monthly Influence currency (Roads to Power / All Under Heaven).\n\nOff (0): no Sovereign Influence gain.\nLow (1): +5 Influence / month.\nMedium (2): +15 Influence / month.\nHigh (3): +40 Influence / month.\n\nModifiers apply only when EP3 or TGP DLC is present. Spending Influence still requires a government that uses it (for example Administrative).\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
  ss_settings.tt.legacy:0 "Legacy Pulse — every five years: personal prestige, dynasty renown, and favor hooks on vassals or councillors.\n\nOff (0): no pulses.\nLow (1): modest prestige/renown, up to 1 favor hook.\nMedium (2): strong pulse, up to 2 hooks.\nHigh (3): massive pulse, up to 3 hooks.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
- ss_settings.tt.perk:0 "Perk Gift Size — free lifestyle perk points from Claim decisions on the Decisions menu (yearly cooldown).\n\nOff (0): claim decisions hidden.\n1 point (1): each claim grants 1 perk point.\n3 points (2): each claim grants 3; unlocks Claim All Lifestyles.\n5 points (3): each claim grants 5; Claim All remains available.\n\nClick to cycle Off → 1 → 3 → 5 → Off. Your current tier is on the button."
+ ss_settings.tt.perk:0 "Perk Gift Size — free lifestyle perk points from Sovereign Actions (yearly cooldown).\n\nOff (0): claim actions hidden.\n1 point (1): each claim grants 1 perk point.\n3 points (2): each claim grants 3; unlocks Claim All Lifestyles.\n5 points (3): each claim grants 5; Claim All remains available.\n\nClick to cycle Off → 1 → 3 → 5 → Off. Your current tier is on the button."
  ss_settings.tt.reshape:0 "Reshape Heir Power — once-per-lifetime character interaction on a child (does not grant Supreme Sovereign).\n\nOff (0): interaction hidden.\nXP only (1): large lifestyle XP to all five lifestyles.\nXP + claims (2): XP plus copies your claims onto the child.\nFull (3): XP, claims, and free perk points per lifestyle.\n\nClick to cycle Off → XP → XP+Claims → Full → Off. Your current tier is on the button."
  ss_settings.tt.empire_pulse:0 "Empire Pulse — every five years: dread and county control across your sub-realm.\n\nOff (0): no pulses.\nLow (1): +10 dread, +25 control on weak counties.\nMedium (2): +25 dread, +50 control.\nHigh (3): +50 dread, snap weak counties toward full control.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
  ss_settings.tt.languages:0 "All Languages — the Sovereign knows every culture language.\n\nOn (1): learn all languages on grant/refresh and when toggled On.\nOff (0): no auto-learn (already known languages stay).\n\nClick to cycle On ↔ Off. Your current value is on the button."
