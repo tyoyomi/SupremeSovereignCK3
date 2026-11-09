@@ -1,0 +1,50 @@
+# Supreme Sovereign — permanent house head (CM-48 / PHH)
+# Living path reasserts own house headship. Death path releases only (Ken lock).
+# Never set_house_head on a corpse; never force an unqualified heir.
+
+# this = living character — reassert own house headship when gates pass
+ss_reassert_house_head_effect = {
+	if = {
+		limit = { ss_can_reassert_house_head = yes }
+		house = { set_house_head = prev }
+		add_character_flag = ss_phh_asserted
+	}
+}
+
+# this = sovereign — hub On↔Off; On flip reasserts once; Off stops future reasserts only
+ss_cycle_permanent_house_head_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_permanent_house_head = 1 }
+		set_variable = { name = ss_cfg_permanent_house_head value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_permanent_house_head value = 1 }
+		ss_reassert_house_head_effect = yes
+	}
+}
+
+# root/this = dead character — hygiene + optional living wake; NEVER set_house_head here
+ss_on_death_release_house_head_effect = {
+	if = {
+		limit = { has_character_flag = ss_phh_asserted }
+		remove_character_flag = ss_phh_asserted
+	}
+	ss_schedule_living_ss_house_head_wake_effect = yes
+}
+
+# root/this = dead (or any) — days=1 silent wake for living same-house Sovereigns
+ss_schedule_living_ss_house_head_wake_effect = {
+	if = {
+		limit = { exists = house }
+		house = {
+			every_house_member = {
+				limit = {
+					is_alive = yes
+					has_trait = Supreme_Sovereign
+				}
+				trigger_event = { id = ss_head.1001 days = 1 }
+			}
+		}
+	}
+}

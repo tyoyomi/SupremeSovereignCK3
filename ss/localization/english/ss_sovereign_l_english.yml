@@ -9,7 +9,7 @@
 
  # Settings hub decision
  ss_manage_sovereign_settings_decision:0 "Manage Sovereign Settings"
- ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (4 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape. Page 4: Empire Pulse, All Languages.\n\nDone is always first. Click a setting to cycle its tier."
+ ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (4 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape. Page 4: Empire Pulse, House Head, All Languages.\n\nDone is always first. Click a setting to cycle its tier."
  ss_manage_sovereign_settings_decision_tooltip:0 "Open Sovereign Settings and view or cycle each tier"
  ss_manage_sovereign_settings_decision_confirm:0 "Open Settings"
  ss_manage_sovereign_settings_decision_effect_tt:0 "Opens the Sovereign Settings hub showing current tiers"
@@ -51,11 +51,11 @@
  ss_settings.1002.more:0 "More…"
  ss_settings.1003.t:0 "Sovereign Settings (3/4)"
  ss_settings.1003.desc_intro:0 "Page 3 — influence, legacy pulse, perk gift, reshape heir."
- ss_settings.1003.desc_footer:0 "More opens empire pulse and languages. Grant Sovereign and Reshape Heir are character interactions."
+ ss_settings.1003.desc_footer:0 "More opens empire pulse, house head, and languages. Grant Sovereign and Reshape Heir are character interactions."
  ss_settings.1003.close:0 "Done"
  ss_settings.1003.more:0 "More…"
  ss_settings.1004.t:0 "Sovereign Settings (4/4)"
- ss_settings.1004.desc_intro:0 "Page 4 — empire-wide dread/control pulse and languages."
+ ss_settings.1004.desc_intro:0 "Page 4 — empire pulse, permanent house head, and languages."
  ss_settings.1004.desc_footer:0 "Back returns to page 1."
  ss_settings.1004.close:0 "Done"
  ss_settings.1004.back:0 "Back"
@@ -75,6 +75,7 @@
  ss_settings.tt.perk:0 "Perk Gift Size — free lifestyle perk points from Sovereign Actions (yearly cooldown).\n\nOff (0): claim actions hidden.\n1 point (1): each claim grants 1 perk point.\n3 points (2): each claim grants 3; unlocks Claim All Lifestyles.\n5 points (3): each claim grants 5; Claim All remains available.\n\nClick to cycle Off → 1 → 3 → 5 → Off. Your current tier is on the button."
  ss_settings.tt.reshape:0 "Reshape Heir Power — once-per-lifetime character interaction on a child (does not grant Supreme Sovereign).\n\nOff (0): interaction hidden.\nXP only (1): large lifestyle XP to all five lifestyles.\nXP + claims (2): XP plus copies your claims onto the child.\nFull (3): XP, claims, and free perk points per lifestyle.\n\nClick to cycle Off → XP → XP+Claims → Full → Off. Your current tier is on the button."
  ss_settings.tt.empire_pulse:0 "Empire Pulse — every five years: dread and county control across your sub-realm.\n\nOff (0): no pulses.\nLow (1): +10 dread, +25 control on weak counties.\nMedium (2): +25 dread, +50 control.\nHigh (3): +50 dread, snap weak counties toward full control.\n\nClick to cycle Off → Low → Medium → High → Off. Your current tier is on the button."
+ ss_settings.tt.house_head:0 "House Head — while you live as Supreme Sovereign, reassert headship of your own house (dynasty head follows when the engine agrees).\n\nOn (1): reclaim own house headship on grant/refresh/yearly pulse and when toggled On. Does not steal from another living Sovereign who already heads the house.\nOff (0): no further reasserts (current headship left as-is).\n\nOn death, headship releases to normal succession — never stuck on a corpse; never forced onto an unqualified heir. The next living Sovereign reasserts only after they qualify.\n\nClick to cycle On ↔ Off. Your current value is on the button."
  ss_settings.tt.languages:0 "All Languages — the Sovereign knows every culture language.\n\nOn (1): learn all languages on grant/refresh and when toggled On.\nOff (0): no auto-learn (already known languages stay).\n\nClick to cycle On ↔ Off. Your current value is on the button."
  ss_settings.tt.close:0 "Close the Sovereign Settings hub without changing anything."
  ss_settings.tt.more:0 "Open the next settings page."
@@ -205,6 +206,12 @@
  ss_settings.opt.empire_pulse_1:0 "Empire Pulse: Low (1)"
  ss_settings.opt.empire_pulse_2:0 "Empire Pulse: Medium (2)"
  ss_settings.opt.empire_pulse_3:0 "Empire Pulse: High (3)"
+
+ # Permanent house head (0–1)
+ ss_settings.tier.house_head_0:0 "House Head: Off (0)"
+ ss_settings.tier.house_head_1:0 "House Head: On (1)"
+ ss_settings.opt.house_head_0:0 "House Head: Off (0)"
+ ss_settings.opt.house_head_1:0 "House Head: On (1)"
 
  # All languages (0–1)
  ss_settings.tier.languages_0:0 "All Languages: Off (0)"
