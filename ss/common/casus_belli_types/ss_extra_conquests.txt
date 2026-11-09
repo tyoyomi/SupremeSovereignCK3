@@ -278,6 +278,9 @@ ss_duchy_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
@@ -557,6 +560,9 @@ ss_empire_conquest_cb = {
 	use_de_jure_wargoal_only = yes
 
 	attacker_wargoal_percentage = 0.8
+
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
 
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
@@ -850,6 +856,9 @@ ss_faith_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
@@ -1112,6 +1121,9 @@ ss_realm_annex_cb = {
 	cb_name = "ss_REALM_ANNEX_CB_NAME"
 
 	interface_priority = 110
+
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
 
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
