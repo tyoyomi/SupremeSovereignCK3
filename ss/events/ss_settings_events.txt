@@ -661,7 +661,7 @@ ss_settings.1003 = {
 	}
 }
 
-# Page 4/4 — empire pulse / all languages
+# Page 4/4 — empire pulse / permanent house head / all languages
 ss_settings.1004 = {
 	type = character_event
 	title = ss_settings.1004.t
@@ -687,6 +687,17 @@ ss_settings.1004 = {
 				desc = ss_settings.tier.empire_pulse_3
 			}
 			desc = ss_settings.tier.empire_pulse_2
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_permanent_house_head = 0 }
+				desc = ss_settings.tier.house_head_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_permanent_house_head = 1 }
+				desc = ss_settings.tier.house_head_1
+			}
+			desc = ss_settings.tier.house_head_1
 		}
 		first_valid = {
 			triggered_desc = {
@@ -737,6 +748,27 @@ ss_settings.1004 = {
 		}
 		custom_tooltip = ss_settings.tt.empire_pulse
 		ss_cycle_empire_pulse_cfg_effect = yes
+		trigger_event = ss_settings.1004
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_permanent_house_head = 0 }
+						desc = ss_settings.opt.house_head_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_permanent_house_head = 1 }
+						desc = ss_settings.opt.house_head_1
+					}
+					desc = ss_settings.opt.house_head_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.house_head
+		ss_cycle_permanent_house_head_cfg_effect = yes
 		trigger_event = ss_settings.1004
 	}
 

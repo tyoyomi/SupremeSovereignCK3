@@ -96,6 +96,11 @@ ss_ensure_sovereign_defaults_effect = {
 		limit = { NOT = { exists = var:ss_cfg_all_languages } }
 		set_variable = { name = ss_cfg_all_languages value = 1 }
 	}
+	# Permanent house head (CM-48) — default On; missing = On via NAND gates
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_permanent_house_head } }
+		set_variable = { name = ss_cfg_permanent_house_head value = 1 }
+	}
 	# Hidden piggy bank pools (excess wealth/prestige; silent yearly drip)
 	if = {
 		limit = { NOT = { exists = var:ss_piggy_gold } }
@@ -435,6 +440,8 @@ ss_apply_sovereign_runtime_effects = {
 		ss_ensure_sovereign_defaults_effect = yes
 		ss_refresh_sovereign_modifiers = yes
 		ss_try_apply_all_languages_effect = yes
+		# Permanent house head — living reassert only (PHH5–PHH7)
+		ss_reassert_house_head_effect = yes
 	}
 }
 

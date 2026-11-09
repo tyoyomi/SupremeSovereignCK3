@@ -248,3 +248,30 @@ ss_can_reclaim_titles_from_children = {
 		ss_eligible_reclaim_child = yes
 	}
 }
+
+# --- Permanent house head (CM-48 / PHH) ---
+# Missing cfg = On (same NAND pattern as languages / kingdom CB).
+
+ss_permanent_house_head_enabled = {
+	NAND = {
+		exists = var:ss_cfg_permanent_house_head
+		var:ss_cfg_permanent_house_head = 0
+	}
+}
+
+# this = living character — qualify for set_house_head on own house
+ss_can_reassert_house_head = {
+	is_alive = yes
+	has_trait = Supreme_Sovereign
+	ss_permanent_house_head_enabled = yes
+	exists = house
+	is_house_head = no
+	# PHH9: do not steal from another living Sovereign who already heads the house
+	NAND = {
+		exists = house.house_head
+		house.house_head = {
+			is_alive = yes
+			has_trait = Supreme_Sovereign
+		}
+	}
+}

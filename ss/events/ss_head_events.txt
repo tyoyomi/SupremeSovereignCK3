@@ -1,0 +1,20 @@
+# Supreme Sovereign — permanent house head wake (CM-48 / PHH11)
+# Silent days=1 belt after a house peer dies; living qualify path only.
+
+namespace = ss_head
+
+# Silent — living same-house Sovereign may reassert after vanilla succession settles
+ss_head.1001 = {
+	type = character_event
+	hidden = yes
+
+	trigger = {
+		is_alive = yes
+		has_trait = Supreme_Sovereign
+		ss_can_reassert_house_head = yes
+	}
+
+	immediate = {
+		ss_reassert_house_head_effect = yes
+	}
+}
