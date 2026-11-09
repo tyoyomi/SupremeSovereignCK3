@@ -1,0 +1,97 @@
+namespace = ss_vault
+
+# Sovereign Vault — piggy visibility + emergency withdraw (CM-61)
+
+ss_vault.1001 = {
+	type = character_event
+	title = ss_vault.1001.t
+	theme = education
+
+	desc = {
+		desc = ss_vault.1001.desc_intro
+		desc = ss_vault.1001.desc_pools
+		desc = ss_vault.1001.desc_footer
+	}
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = ss_vault.1001.close
+		custom_tooltip = ss_vault.tt.close
+	}
+
+	option = {
+		name = ss_vault.1001.gold
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_vault_cd_ready
+				NOT = { exists = var:ss_cd_piggy_withdraw }
+			}
+			custom_tooltip = {
+				text = ss_tt_vault_gold_ready
+				exists = var:ss_piggy_gold
+				var:ss_piggy_gold >= 250
+			}
+		}
+		custom_tooltip = ss_vault.tt.gold
+		ss_piggy_withdraw_gold_effect = yes
+		trigger_event = ss_vault.1001
+	}
+
+	option = {
+		name = ss_vault.1001.prestige
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_vault_cd_ready
+				NOT = { exists = var:ss_cd_piggy_withdraw }
+			}
+			custom_tooltip = {
+				text = ss_tt_vault_prestige_ready
+				exists = var:ss_piggy_prestige
+				var:ss_piggy_prestige >= 200
+			}
+		}
+		custom_tooltip = ss_vault.tt.prestige
+		ss_piggy_withdraw_prestige_effect = yes
+		trigger_event = ss_vault.1001
+	}
+
+	option = {
+		name = ss_vault.1001.piety
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_vault_cd_ready
+				NOT = { exists = var:ss_cd_piggy_withdraw }
+			}
+			custom_tooltip = {
+				text = ss_tt_vault_piety_ready
+				exists = var:ss_piggy_piety
+				var:ss_piggy_piety >= 100
+			}
+		}
+		custom_tooltip = ss_vault.tt.piety
+		ss_piggy_withdraw_piety_effect = yes
+		trigger_event = ss_vault.1001
+	}
+
+	option = {
+		name = ss_vault.1001.dynasty
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_vault_cd_ready
+				NOT = { exists = var:ss_cd_piggy_withdraw }
+			}
+			custom_tooltip = {
+				text = ss_tt_vault_dynasty_ready
+				exists = dynasty
+				exists = var:ss_piggy_dynasty
+				var:ss_piggy_dynasty >= 2000
+			}
+		}
+		custom_tooltip = ss_vault.tt.dynasty
+		ss_piggy_withdraw_dynasty_effect = yes
+		trigger_event = ss_vault.1001
+	}
+}

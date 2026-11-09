@@ -101,6 +101,24 @@ ss_ensure_sovereign_defaults_effect = {
 		limit = { NOT = { exists = var:ss_cfg_permanent_house_head } }
 		set_variable = { name = ss_cfg_permanent_house_head value = 1 }
 	}
+	# Hegemony Conquest (CM-61) — default On; missing = On via NAND gates
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_hegemony_conquest } }
+		set_variable = { name = ss_cfg_hegemony_conquest value = 1 }
+	}
+	# Vassal Kids polish prefs (CM-61)
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_seat_cap } }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_land_mode } }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_opinion_gift } }
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 1 }
+	}
 	# Hidden piggy bank pools (excess wealth/prestige; silent yearly drip)
 	if = {
 		limit = { NOT = { exists = var:ss_piggy_gold } }
@@ -227,6 +245,181 @@ ss_piggy_yearly_effect = {
 		limit = { has_trait = Supreme_Sovereign }
 		ss_piggy_deposit_effect = yes
 		ss_piggy_drip_effect = yes
+	}
+}
+
+# --- Piggy emergency withdraw (CM-61) — caps per click; shared 365d CD ---
+
+ss_piggy_withdraw_mark_cd_effect = {
+	set_variable = {
+		name = ss_cd_piggy_withdraw
+		value = 1
+		days = ss_piggy_withdraw_cooldown_days
+	}
+}
+
+ss_piggy_withdraw_gold_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_gold
+			var:ss_piggy_gold >= 250
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_gold_withdraw_value
+		}
+		add_gold = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_gold
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_gold_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_prestige_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_prestige
+			var:ss_piggy_prestige >= 200
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_prestige_withdraw_value
+		}
+		add_prestige = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_prestige
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_prestige_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_piety_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_piety
+			var:ss_piggy_piety >= 100
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_piety_withdraw_value
+		}
+		add_piety = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_piety
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_piety_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_dynasty_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = dynasty
+			exists = var:ss_piggy_dynasty
+			var:ss_piggy_dynasty >= 2000
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		if = {
+			limit = { var:ss_piggy_dynasty >= 5000 }
+			dynasty = { add_dynasty_prestige = 2000 }
+			change_variable = { name = ss_piggy_dynasty subtract = 2000 }
+			set_variable = { name = ss_piggy_withdraw_amount value = 2000 }
+		}
+		else = {
+			dynasty = { add_dynasty_prestige = 500 }
+			change_variable = { name = ss_piggy_dynasty subtract = 500 }
+			set_variable = { name = ss_piggy_withdraw_amount value = 500 }
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_dynasty_tt
+		}
+	}
+}
+
+ss_cycle_hegemony_conquest_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_hegemony_conquest = 1 }
+		set_variable = { name = ss_cfg_hegemony_conquest value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_hegemony_conquest value = 1 }
+	}
+}
+
+# Vassal Kids seat cap: 0 → 2 → 4 → 6 → 0
+ss_cycle_vassal_kids_seat_cap_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 0 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 2 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 4 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 4 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 6 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 0 }
+	}
+}
+
+# Land mode: 0 All → 1 Duchies → 2 Counties → 0
+ss_cycle_vassal_kids_land_mode_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_land_mode = 0 }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_land_mode = 1 }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 2 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 0 }
+	}
+}
+
+ss_cycle_vassal_kids_opinion_gift_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_opinion_gift = 1 }
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 1 }
 	}
 }
 

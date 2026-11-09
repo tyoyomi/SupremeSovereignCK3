@@ -508,6 +508,25 @@ ss_dist_build_children_effect = {
 		name = ss_dist_child_total
 		value = var:ss_dist_next_order
 	}
+	# CM-61 seat cap: truncate ring to first N (heir-first order preserved)
+	if = {
+		limit = {
+			exists = var:ss_cfg_vassal_kids_seat_cap
+			var:ss_cfg_vassal_kids_seat_cap > 0
+			var:ss_dist_child_total > var:ss_cfg_vassal_kids_seat_cap
+		}
+		every_child = {
+			limit = {
+				exists = var:ss_dist_order
+				var:ss_dist_order >= scope:ss_dist_actor.var:ss_cfg_vassal_kids_seat_cap
+			}
+			remove_variable = ss_dist_order
+		}
+		set_variable = {
+			name = ss_dist_child_total
+			value = var:ss_cfg_vassal_kids_seat_cap
+		}
+	}
 	set_variable = {
 		name = ss_dist_seat
 		value = 0
@@ -765,8 +784,19 @@ ss_dist_assign_title_to_ring_effect = {
 			scope:ss_dist_seat_title = {
 				if = {
 					limit = { tier = tier_duchy }
-					ss_dist_queue_duchy_bundle_effect = yes
-					ss_dist_land_first_correction_effect = yes
+					# CM-61 duchies-only: grant the duchy alone (no county steal / bundle)
+					if = {
+						limit = {
+							scope:ss_dist_actor = {
+								ss_vassal_kids_duchies_only_mode = yes
+							}
+						}
+						ss_dist_queue_title_grant_effect = yes
+					}
+					else = {
+						ss_dist_queue_duchy_bundle_effect = yes
+						ss_dist_land_first_correction_effect = yes
+					}
 				}
 				else_if = {
 					limit = { tier = tier_county }
@@ -775,7 +805,15 @@ ss_dist_assign_title_to_ring_effect = {
 				else = {
 					# empire / kingdom (and any unexpected higher seat title)
 					ss_dist_queue_title_grant_effect = yes
-					ss_dist_land_first_correction_effect = yes
+					# No land-first county steal in duchies-only mode
+					if = {
+						limit = {
+							scope:ss_dist_actor = {
+								NOT = { ss_vassal_kids_duchies_only_mode = yes }
+							}
+						}
+						ss_dist_land_first_correction_effect = yes
+					}
 				}
 			}
 			scope:ss_dist_actor = {
@@ -872,9 +910,30 @@ ss_distribute_titles_to_children_effect = {
 			ss_dist_process_tier_effect = { TIER = tier_county }
 
 			resolve_title_and_vassal_change = scope:ss_dist_change
+
+			# CM-61 optional mild opinion gift (before clearing received flags)
+			if = {
+				limit = {
+					OR = {
+						NOT = { exists = var:ss_cfg_vassal_kids_opinion_gift }
+						var:ss_cfg_vassal_kids_opinion_gift = 1
+					}
+				}
+				every_child = {
+					limit = { has_character_flag = ss_dist_received }
+					add_opinion = {
+						target = scope:ss_dist_actor
+						modifier = ss_vassal_kids_gift_opinion
+					}
+					add_character_modifier = {
+						modifier = ss_vassal_kids_gift_modifier
+						years = 5
+					}
+				}
+			}
 		}
 
-		# Cleanup transient markers (counts kept for toast)
+		# Cleanup transient markers (counts kept for toast; count = queued grants only)
 		ss_dist_clear_child_markers_effect = yes
 		clear_variable_list = ss_dist_queued_titles
 		clear_variable_list = ss_dist_tier_pool

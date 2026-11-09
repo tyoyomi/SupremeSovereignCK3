@@ -28,8 +28,12 @@ ss_has_sovereign_cfg_vars = {
 	exists = var:ss_cfg_unlimited_titles
 	exists = var:ss_cfg_kingdom_conquest
 	exists = var:ss_cfg_extra_conquests
+	exists = var:ss_cfg_hegemony_conquest
 	exists = var:ss_cfg_military
 	exists = var:ss_cfg_schemes
+	exists = var:ss_cfg_vassal_kids_seat_cap
+	exists = var:ss_cfg_vassal_kids_land_mode
+	exists = var:ss_cfg_vassal_kids_opinion_gift
 }
 
 # Kingdom Conquest CB — player Sovereign, hub On (missing cfg = default On)
@@ -54,6 +58,51 @@ ss_can_use_extra_conquests_cb = {
 		exists = var:ss_cfg_extra_conquests
 		var:ss_cfg_extra_conquests = 0
 	}
+}
+
+# Hegemony Conquest — own hub toggle; soft TGP gate (hegemony tier)
+ss_can_use_hegemony_conquest_cb = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	NOT = { government_has_flag = government_is_landless_adventurer }
+	has_tgp_dlc_trigger = yes
+	NAND = {
+		exists = var:ss_cfg_hegemony_conquest
+		var:ss_cfg_hegemony_conquest = 0
+	}
+}
+
+# Influence spend board / interactions (CM-61)
+ss_can_spend_sovereign_influence = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+	government_has_flag = government_has_influence
+	OR = {
+		has_ep3_dlc_trigger = yes
+		has_tgp_dlc_trigger = yes
+	}
+	NAND = {
+		exists = var:ss_cfg_influence
+		var:ss_cfg_influence = 0
+	}
+}
+
+ss_can_open_influence_board = {
+	ss_can_spend_sovereign_influence = yes
+}
+
+ss_can_admin_god_moment = {
+	ss_can_spend_sovereign_influence = yes
+	influence >= ss_influence_admin_god_cost
+	NOT = { exists = var:ss_cd_admin_god }
+}
+
+ss_can_open_sovereign_vault = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
 }
 
 # Faith Conquest — defender faith is hostile or evil toward attacker (no holy-war doctrine stack)
@@ -135,6 +184,7 @@ ss_su_unity_choice_pending_on_self = {
 
 # this = title; root = actor
 # DTC15: never distribute titles at/above actor primary tier (avoids independent peers)
+# CM-61 land mode: 0=all below-tier · 1=duchies only · 2=counties only
 ss_is_distributable_title = {
 	exists = holder
 	holder = root
@@ -153,6 +203,27 @@ ss_is_distributable_title = {
 			county = root.capital_county
 		}
 	}
+	# Land mode filter (missing cfg = all)
+	OR = {
+		NOT = { exists = root.var:ss_cfg_vassal_kids_land_mode }
+		root.var:ss_cfg_vassal_kids_land_mode = 0
+		AND = {
+			exists = root.var:ss_cfg_vassal_kids_land_mode
+			root.var:ss_cfg_vassal_kids_land_mode = 1
+			tier = tier_duchy
+		}
+		AND = {
+			exists = root.var:ss_cfg_vassal_kids_land_mode
+			root.var:ss_cfg_vassal_kids_land_mode = 2
+			tier = tier_county
+		}
+	}
+}
+
+# Duchies-only mode — used to skip county steal / county bundles
+ss_vassal_kids_duchies_only_mode = {
+	exists = var:ss_cfg_vassal_kids_land_mode
+	var:ss_cfg_vassal_kids_land_mode = 1
 }
 
 # this = title already saved; root / scope:ss_dist_actor = actor
