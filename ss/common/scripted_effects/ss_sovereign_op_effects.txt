@@ -390,3 +390,811 @@ ss_reshape_heir_effect = {
 		}
 	}
 }
+
+# -----------------------------------------------------------------------------
+# Distribute titles to children (CM-35)
+# Keep: primary + capital county + baronies under capital.
+# Split: highest tier first; heir seat 0 then oldest→youngest; round-robin.
+# Hygiene: one create_title_and_vassal_change type=granted → resolve.
+# -----------------------------------------------------------------------------
+
+ss_dist_clear_child_markers_effect = {
+	# this = actor
+	every_child = {
+		if = {
+			limit = { exists = var:ss_dist_order }
+			remove_variable = ss_dist_order
+		}
+		if = {
+			limit = { has_character_flag = ss_dist_received }
+			remove_character_flag = ss_dist_received
+		}
+	}
+}
+
+ss_dist_advance_seat_effect = {
+	# this = actor
+	change_variable = {
+		name = ss_dist_seat
+		add = 1
+	}
+	if = {
+		limit = {
+			exists = var:ss_dist_child_total
+			var:ss_dist_seat >= var:ss_dist_child_total
+		}
+		set_variable = {
+			name = ss_dist_seat
+			value = 0
+		}
+	}
+}
+
+ss_dist_build_children_effect = {
+	# this / scope:ss_dist_actor = actor
+	ss_dist_clear_child_markers_effect = yes
+	set_variable = {
+		name = ss_dist_next_order
+		value = 0
+	}
+
+	# Seat 0: player_heir if eligible child, else primary_heir if eligible child
+	if = {
+		limit = {
+			exists = player_heir
+			player_heir = {
+				ss_eligible_distribute_child = yes
+			}
+		}
+		player_heir = {
+			set_variable = {
+				name = ss_dist_order
+				value = 0
+			}
+		}
+		set_variable = {
+			name = ss_dist_next_order
+			value = 1
+		}
+	}
+	else_if = {
+		limit = {
+			exists = primary_heir
+			primary_heir = {
+				ss_eligible_distribute_child = yes
+			}
+		}
+		primary_heir = {
+			set_variable = {
+				name = ss_dist_order
+				value = 0
+			}
+		}
+		set_variable = {
+			name = ss_dist_next_order
+			value = 1
+		}
+	}
+
+	# Remaining eligible children: oldest → youngest
+	# ordered_in_list defaults to FIRST entry only (vanilla ordered_* behavior).
+	# Without max, seat ring was heir + 1 oldest sibling (= 2 kids) — CM-43.
+	every_child = {
+		limit = {
+			ss_eligible_distribute_child = yes
+			NOT = { exists = var:ss_dist_order }
+		}
+		add_to_temporary_list = ss_dist_child_pool
+	}
+	ordered_in_list = {
+		list = ss_dist_child_pool
+		order_by = age
+		descending = yes
+		max = 100
+		check_range_bounds = no
+		set_variable = {
+			name = ss_dist_order
+			value = scope:ss_dist_actor.var:ss_dist_next_order
+		}
+		scope:ss_dist_actor = {
+			change_variable = {
+				name = ss_dist_next_order
+				add = 1
+			}
+		}
+	}
+
+	set_variable = {
+		name = ss_dist_child_total
+		value = var:ss_dist_next_order
+	}
+	# CM-61 seat cap: truncate ring to first N (heir-first order preserved)
+	if = {
+		limit = {
+			exists = var:ss_cfg_vassal_kids_seat_cap
+			var:ss_cfg_vassal_kids_seat_cap > 0
+			var:ss_dist_child_total > var:ss_cfg_vassal_kids_seat_cap
+		}
+		every_child = {
+			limit = {
+				exists = var:ss_dist_order
+				var:ss_dist_order >= scope:ss_dist_actor.var:ss_cfg_vassal_kids_seat_cap
+			}
+			remove_variable = ss_dist_order
+		}
+		set_variable = {
+			name = ss_dist_child_total
+			value = var:ss_cfg_vassal_kids_seat_cap
+		}
+	}
+	set_variable = {
+		name = ss_dist_seat
+		value = 0
+	}
+}
+
+ss_dist_pick_recipient_effect = {
+	# this = actor; sets scope:ss_dist_recipient from current seat
+	random_child = {
+		limit = {
+			ss_eligible_distribute_child = yes
+			exists = var:ss_dist_order
+			var:ss_dist_order = scope:ss_dist_actor.var:ss_dist_seat
+		}
+		save_scope_as = ss_dist_recipient
+	}
+}
+
+ss_dist_mark_recipient_effect = {
+	# scope:ss_dist_recipient / scope:ss_dist_actor
+	if = {
+		limit = {
+			exists = scope:ss_dist_recipient
+			scope:ss_dist_recipient = {
+				NOT = { has_character_flag = ss_dist_received }
+			}
+		}
+		scope:ss_dist_recipient = {
+			add_character_flag = ss_dist_received
+		}
+		scope:ss_dist_actor = {
+			change_variable = {
+				name = ss_distribute_child_count
+				add = 1
+			}
+		}
+	}
+}
+
+ss_dist_queue_title_grant_effect = {
+	# this = title; scopes: ss_dist_actor, ss_dist_recipient, ss_dist_change
+	if = {
+		limit = {
+			exists = scope:ss_dist_recipient
+			exists = scope:ss_dist_change
+			exists = scope:ss_dist_actor
+			holder = scope:ss_dist_actor
+			# DTC15 belt: never grant peer/higher crowns even if a pool path bypasses the trigger
+			exists = scope:ss_dist_actor.primary_title
+			tier < scope:ss_dist_actor.primary_title.tier
+			NOR = {
+				this = scope:ss_dist_actor.primary_title
+				AND = {
+					exists = scope:ss_dist_actor.capital_county
+					this = scope:ss_dist_actor.capital_county
+				}
+				AND = {
+					tier = tier_barony
+					exists = county
+					exists = scope:ss_dist_actor.capital_county
+					county = scope:ss_dist_actor.capital_county
+				}
+				# DTC16: county grant already carries capital barony; explicit grant spams error.log
+				is_capital_barony = yes
+			}
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		save_scope_as = ss_dist_title
+		change_title_holder = {
+			holder = scope:ss_dist_recipient
+			change = scope:ss_dist_change
+		}
+		scope:ss_dist_actor = {
+			add_to_variable_list = {
+				name = ss_dist_queued_titles
+				target = scope:ss_dist_title
+			}
+			change_variable = {
+				name = ss_distribute_title_count
+				add = 1
+			}
+		}
+		ss_dist_mark_recipient_effect = yes
+		if = {
+			limit = { scope:ss_dist_title = { tier = tier_county } }
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_wave_gave_county
+					value = 1
+				}
+			}
+		}
+	}
+}
+
+ss_dist_queue_county_bundle_effect = {
+	# this = county title — non-capital baronies ride via de jure hierarchy
+	# DTC16: skip capital baronies (county grant already carries them)
+	save_scope_as = ss_dist_county
+	ss_dist_queue_title_grant_effect = yes
+	every_in_de_jure_hierarchy = {
+		limit = {
+			tier = tier_barony
+			holder = scope:ss_dist_actor
+			NOT = { is_capital_barony = yes }
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		ss_dist_queue_title_grant_effect = yes
+	}
+}
+
+ss_dist_queue_duchy_bundle_effect = {
+	# this = duchy title — same recipient for held de jure counties (+ baronies)
+	save_scope_as = ss_dist_duchy
+	ss_dist_queue_title_grant_effect = yes
+	every_in_de_jure_hierarchy = {
+		limit = {
+			tier = tier_county
+			holder = scope:ss_dist_actor
+			NOR = {
+				this = scope:ss_dist_actor.primary_title
+				AND = {
+					exists = scope:ss_dist_actor.capital_county
+					this = scope:ss_dist_actor.capital_county
+				}
+			}
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		ss_dist_queue_county_bundle_effect = yes
+	}
+}
+
+ss_dist_land_first_correction_effect = {
+	# If this seat got no county yet, steal one spare county (+ baronies) for the same child
+	if = {
+		limit = {
+			exists = scope:ss_dist_actor
+			exists = scope:ss_dist_recipient
+			scope:ss_dist_actor = {
+				OR = {
+					NOT = { exists = var:ss_dist_wave_gave_county }
+					var:ss_dist_wave_gave_county = 0
+				}
+				any_held_title = {
+					tier = tier_county
+					NOR = {
+						this = scope:ss_dist_actor.primary_title
+						AND = {
+							exists = scope:ss_dist_actor.capital_county
+							this = scope:ss_dist_actor.capital_county
+						}
+					}
+					NOT = {
+						scope:ss_dist_actor = {
+							is_target_in_variable_list = {
+								name = ss_dist_queued_titles
+								target = prev
+							}
+						}
+					}
+				}
+			}
+		}
+		scope:ss_dist_actor = {
+			random_held_title = {
+				limit = {
+					tier = tier_county
+					NOR = {
+						this = scope:ss_dist_actor.primary_title
+						AND = {
+							exists = scope:ss_dist_actor.capital_county
+							this = scope:ss_dist_actor.capital_county
+						}
+					}
+					NOT = {
+						scope:ss_dist_actor = {
+							is_target_in_variable_list = {
+								name = ss_dist_queued_titles
+								target = prev
+							}
+						}
+					}
+				}
+				ss_dist_queue_county_bundle_effect = yes
+			}
+		}
+	}
+}
+
+ss_dist_assign_title_to_ring_effect = {
+	# this = seat title (empire / kingdom / duchy / county); try ring once around
+	scope:ss_dist_actor = {
+		set_variable = {
+			name = ss_dist_tries
+			value = 0
+		}
+		set_variable = {
+			name = ss_dist_assigned_ok
+			value = 0
+		}
+	}
+	save_scope_as = ss_dist_seat_title
+	while = {
+		limit = {
+			scope:ss_dist_actor = {
+				var:ss_dist_assigned_ok = 0
+				exists = var:ss_dist_child_total
+				var:ss_dist_child_total > 0
+				var:ss_dist_tries < var:ss_dist_child_total
+			}
+		}
+		scope:ss_dist_actor = {
+			ss_dist_pick_recipient_effect = yes
+		}
+		if = {
+			limit = {
+				exists = scope:ss_dist_recipient
+				scope:ss_dist_recipient = {
+					# Guard against stale recipient scope when random_child finds no match
+					exists = var:ss_dist_order
+					var:ss_dist_order = scope:ss_dist_actor.var:ss_dist_seat
+					OR = {
+						can_be_granted_titles_by = { RULER = scope:ss_dist_actor }
+						can_be_granted_theocratic_titles_by = { RULER = scope:ss_dist_actor }
+					}
+				}
+			}
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_wave_gave_county
+					value = 0
+				}
+			}
+			scope:ss_dist_seat_title = {
+				if = {
+					limit = { tier = tier_duchy }
+					# CM-61 duchies-only: grant the duchy alone (no county steal / bundle)
+					if = {
+						limit = {
+							scope:ss_dist_actor = {
+								ss_vassal_kids_duchies_only_mode = yes
+							}
+						}
+						ss_dist_queue_title_grant_effect = yes
+					}
+					else = {
+						ss_dist_queue_duchy_bundle_effect = yes
+						ss_dist_land_first_correction_effect = yes
+					}
+				}
+				else_if = {
+					limit = { tier = tier_county }
+					ss_dist_queue_county_bundle_effect = yes
+				}
+				else = {
+					# empire / kingdom (and any unexpected higher seat title)
+					ss_dist_queue_title_grant_effect = yes
+					# No land-first county steal in duchies-only mode
+					if = {
+						limit = {
+							scope:ss_dist_actor = {
+								NOT = { ss_vassal_kids_duchies_only_mode = yes }
+							}
+						}
+						ss_dist_land_first_correction_effect = yes
+					}
+				}
+			}
+			scope:ss_dist_actor = {
+				set_variable = {
+					name = ss_dist_assigned_ok
+					value = 1
+				}
+				ss_dist_advance_seat_effect = yes
+			}
+		}
+		else = {
+			scope:ss_dist_actor = {
+				ss_dist_advance_seat_effect = yes
+				change_variable = {
+					name = ss_dist_tries
+					add = 1
+				}
+			}
+		}
+	}
+}
+
+ss_dist_process_tier_effect = {
+	# this = actor; $TIER$ = tier_empire / tier_kingdom / tier_duchy / tier_county
+	# Variable list lives on the actor (not each title). every_held_title switches
+	# `this` to the title, so add_to_variable_list must run back on the actor with
+	# target = prev — otherwise the actor pool stays empty and 0 titles grant.
+	# Pool uses ss_is_distributable_title (DTC15 ceiling) so peer-tier waves no-op.
+	clear_variable_list = ss_dist_tier_pool
+	every_held_title = {
+		limit = {
+			tier = $TIER$
+			ss_is_distributable_title = yes
+			NOT = {
+				scope:ss_dist_actor = {
+					is_target_in_variable_list = {
+						name = ss_dist_queued_titles
+						target = prev
+					}
+				}
+			}
+		}
+		scope:ss_dist_actor = {
+			add_to_variable_list = {
+				name = ss_dist_tier_pool
+				target = prev
+			}
+		}
+	}
+	every_in_list = {
+		variable = ss_dist_tier_pool
+		ss_dist_assign_title_to_ring_effect = yes
+	}
+	clear_variable_list = ss_dist_tier_pool
+}
+
+ss_distribute_titles_to_children_effect = {
+	# this = player Sovereign
+	if = {
+		limit = { ss_can_distribute_titles_to_children = yes }
+		save_scope_as = ss_dist_actor
+		set_variable = {
+			name = ss_distribute_title_count
+			value = 0
+		}
+		set_variable = {
+			name = ss_distribute_child_count
+			value = 0
+		}
+		clear_variable_list = ss_dist_queued_titles
+		clear_variable_list = ss_dist_tier_pool
+
+		ss_dist_build_children_effect = yes
+
+		if = {
+			limit = {
+				exists = var:ss_dist_child_total
+				var:ss_dist_child_total > 0
+				any_held_title = {
+					tier >= tier_county
+					ss_is_distributable_title = yes
+				}
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = ss_dist_change
+				add_claim_on_loss = no
+			}
+
+			# Highest tier first; baronies ride with counties (never seat alone)
+			ss_dist_process_tier_effect = { TIER = tier_empire }
+			ss_dist_process_tier_effect = { TIER = tier_kingdom }
+			ss_dist_process_tier_effect = { TIER = tier_duchy }
+			ss_dist_process_tier_effect = { TIER = tier_county }
+
+			resolve_title_and_vassal_change = scope:ss_dist_change
+
+			# CM-61 optional mild opinion gift (before clearing received flags)
+			if = {
+				limit = {
+					OR = {
+						NOT = { exists = var:ss_cfg_vassal_kids_opinion_gift }
+						var:ss_cfg_vassal_kids_opinion_gift = 1
+					}
+				}
+				every_child = {
+					limit = { has_character_flag = ss_dist_received }
+					add_opinion = {
+						target = scope:ss_dist_actor
+						modifier = ss_vassal_kids_gift_opinion
+					}
+					add_character_modifier = {
+						modifier = ss_vassal_kids_gift_modifier
+						years = 5
+					}
+				}
+			}
+		}
+
+		# Cleanup transient markers (counts kept for toast; count = queued grants only)
+		ss_dist_clear_child_markers_effect = yes
+		clear_variable_list = ss_dist_queued_titles
+		clear_variable_list = ss_dist_tier_pool
+		if = {
+			limit = { exists = var:ss_dist_next_order }
+			remove_variable = ss_dist_next_order
+		}
+		if = {
+			limit = { exists = var:ss_dist_child_total }
+			remove_variable = ss_dist_child_total
+		}
+		if = {
+			limit = { exists = var:ss_dist_seat }
+			remove_variable = ss_dist_seat
+		}
+		if = {
+			limit = { exists = var:ss_dist_tries }
+			remove_variable = ss_dist_tries
+		}
+		if = {
+			limit = { exists = var:ss_dist_assigned_ok }
+			remove_variable = ss_dist_assigned_ok
+		}
+		if = {
+			limit = { exists = var:ss_dist_wave_gave_county }
+			remove_variable = ss_dist_wave_gave_county
+		}
+
+		trigger_event = ss_op.2101
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Reclaim titles from children (CM-41 / RTC1–RTC16)
+# Floor: each child keeps capital_county (baronies under it ride / skipped).
+# One granted take → compensate landless → swear_fealty belt when below tier.
+# -----------------------------------------------------------------------------
+
+ss_reclaim_clear_child_markers_effect = {
+	# this = actor
+	every_child = {
+		if = {
+			limit = { has_character_flag = ss_reclaim_lost_title }
+			remove_character_flag = ss_reclaim_lost_title
+		}
+	}
+}
+
+ss_reclaim_mark_child_effect = {
+	# this = child; scope:ss_reclaim_actor = actor
+	if = {
+		limit = {
+			NOT = { has_character_flag = ss_reclaim_lost_title }
+		}
+		add_character_flag = ss_reclaim_lost_title
+		scope:ss_reclaim_actor = {
+			change_variable = {
+				name = ss_reclaim_child_count
+				add = 1
+			}
+		}
+	}
+}
+
+ss_reclaim_queue_title_take_effect = {
+	# this = title; scopes: ss_reclaim_actor, ss_reclaim_change, ss_reclaim_child
+	if = {
+		limit = {
+			exists = scope:ss_reclaim_actor
+			exists = scope:ss_reclaim_change
+			exists = scope:ss_reclaim_child
+			holder = scope:ss_reclaim_child
+			ss_is_reclaimable_child_title = yes
+			NOR = {
+				is_capital_barony = yes
+				AND = {
+					exists = scope:ss_reclaim_child.capital_county
+					this = scope:ss_reclaim_child.capital_county
+				}
+			}
+		}
+		save_scope_as = ss_reclaim_title
+		change_title_holder = {
+			holder = scope:ss_reclaim_actor
+			change = scope:ss_reclaim_change
+		}
+		scope:ss_reclaim_actor = {
+			change_variable = {
+				name = ss_reclaim_title_count
+				add = 1
+			}
+		}
+		scope:ss_reclaim_child = {
+			ss_reclaim_mark_child_effect = yes
+		}
+	}
+}
+
+ss_reclaim_take_tier_from_child_effect = {
+	# this = child; $TIER$ = title tier; scopes actor + change
+	every_held_title = {
+		limit = {
+			tier = $TIER$
+			ss_is_reclaimable_child_title = yes
+		}
+		ss_reclaim_queue_title_take_effect = yes
+	}
+}
+
+ss_reclaim_compensate_child_effect = {
+	# this = child who lost titles; scope:ss_reclaim_actor = actor
+	# RTC15: spare county from actor (not actor capital) → else gold
+	save_scope_as = ss_reclaim_child
+	if = {
+		limit = {
+			OR = {
+				is_landed = no
+				NOR = {
+					any_held_title = { tier = tier_county }
+					any_held_title = { tier = tier_duchy }
+					any_held_title = { tier >= tier_kingdom }
+				}
+			}
+		}
+		if = {
+			limit = {
+				scope:ss_reclaim_actor = {
+					any_held_title = {
+						tier = tier_county
+						count >= 2
+						NOT = { this = scope:ss_reclaim_actor.capital_county }
+					}
+				}
+			}
+			scope:ss_reclaim_actor = {
+				random_held_title = {
+					limit = {
+						tier = tier_county
+						NOT = { this = scope:ss_reclaim_actor.capital_county }
+					}
+					save_scope_as = ss_reclaim_comp_county
+				}
+			}
+			if = {
+				limit = { exists = scope:ss_reclaim_comp_county }
+				create_title_and_vassal_change = {
+					type = granted
+					save_scope_as = ss_reclaim_comp_change
+					add_claim_on_loss = no
+				}
+				scope:ss_reclaim_comp_county = {
+					change_title_holder = {
+						holder = scope:ss_reclaim_child
+						change = scope:ss_reclaim_comp_change
+					}
+				}
+				resolve_title_and_vassal_change = scope:ss_reclaim_comp_change
+			}
+			else = {
+				scope:ss_reclaim_actor = {
+					if = {
+						limit = { gold >= ss_reclaim_child_gold_comp }
+						remove_short_term_gold = ss_reclaim_child_gold_comp
+					}
+				}
+				scope:ss_reclaim_child = {
+					add_gold = ss_reclaim_child_gold_comp
+				}
+			}
+		}
+		else = {
+			scope:ss_reclaim_actor = {
+				if = {
+					limit = { gold >= ss_reclaim_child_gold_comp }
+					remove_short_term_gold = ss_reclaim_child_gold_comp
+				}
+			}
+			scope:ss_reclaim_child = {
+				add_gold = ss_reclaim_child_gold_comp
+			}
+		}
+	}
+}
+
+ss_reclaim_vassalize_child_effect = {
+	# this = affected child; scope:ss_reclaim_actor = actor
+	# RTC11: swear_fealty when landed, not already vassal, and below actor tier
+	if = {
+		limit = {
+			is_alive = yes
+			is_landed = yes
+			NOT = { this = scope:ss_reclaim_actor }
+			NOT = { is_vassal_of = scope:ss_reclaim_actor }
+			highest_held_title_tier < scope:ss_reclaim_actor.highest_held_title_tier
+		}
+		create_title_and_vassal_change = {
+			type = swear_fealty
+			save_scope_as = ss_reclaim_vassal_change
+			add_claim_on_loss = no
+		}
+		change_liege = {
+			liege = scope:ss_reclaim_actor
+			change = scope:ss_reclaim_vassal_change
+		}
+		resolve_title_and_vassal_change = scope:ss_reclaim_vassal_change
+	}
+}
+
+ss_reclaim_titles_from_children_effect = {
+	# this = player Sovereign
+	if = {
+		limit = { ss_can_reclaim_titles_from_children = yes }
+		save_scope_as = ss_reclaim_actor
+		set_variable = {
+			name = ss_reclaim_title_count
+			value = 0
+		}
+		set_variable = {
+			name = ss_reclaim_child_count
+			value = 0
+		}
+		ss_reclaim_clear_child_markers_effect = yes
+
+		if = {
+			limit = {
+				any_child = {
+					ss_eligible_reclaim_child = yes
+				}
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = ss_reclaim_change
+				add_claim_on_loss = no
+			}
+
+			# Tier descending across all eligible children (one change object)
+			every_child = {
+				limit = { ss_eligible_reclaim_child = yes }
+				save_scope_as = ss_reclaim_child
+				ss_reclaim_take_tier_from_child_effect = { TIER = tier_empire }
+				ss_reclaim_take_tier_from_child_effect = { TIER = tier_kingdom }
+				ss_reclaim_take_tier_from_child_effect = { TIER = tier_duchy }
+				ss_reclaim_take_tier_from_child_effect = { TIER = tier_county }
+			}
+
+			resolve_title_and_vassal_change = scope:ss_reclaim_change
+		}
+
+		# Phase C — compensate children who lost titles and would be landless
+		every_child = {
+			limit = { has_character_flag = ss_reclaim_lost_title }
+			ss_reclaim_compensate_child_effect = yes
+		}
+
+		# Phase D — vassalize belt (RTC11)
+		every_child = {
+			limit = { has_character_flag = ss_reclaim_lost_title }
+			ss_reclaim_vassalize_child_effect = yes
+		}
+
+		ss_reclaim_clear_child_markers_effect = yes
+		trigger_event = ss_op.2102
+	}
+}
