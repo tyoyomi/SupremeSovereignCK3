@@ -127,3 +127,183 @@ ss_reshape_heir_interaction = {
 		base = 0
 	}
 }
+
+# --- Influence spend verbs (CM-61) — soft peer SSC: no hooks ---
+
+@ss_influence_loyalty_cost = 75
+@ss_influence_force_contract_cost = 100
+@ss_influence_buy_claim_cost = 150
+
+ss_buy_loyalty_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 68
+	common_interaction = yes
+
+	desc = ss_buy_loyalty_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 180 }
+
+	is_shown = {
+		scope:actor = {
+			ss_can_spend_sovereign_influence = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			NOT = { this = scope:actor }
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_can_spend_influence
+				ss_can_spend_sovereign_influence = yes
+			}
+			influence >= @ss_influence_loyalty_cost
+		}
+	}
+
+	cost = {
+		influence = @ss_influence_loyalty_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			ss_spend_influence_loyalty_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ss_force_contract_interaction = {
+	category = interaction_category_vassal
+	icon = council
+	interface_priority = 67
+	common_interaction = yes
+
+	desc = ss_force_contract_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 365 }
+
+	is_shown = {
+		scope:actor = {
+			ss_can_spend_sovereign_influence = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			is_landed = yes
+			is_vassal_of = scope:actor
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_can_spend_influence
+				ss_can_spend_sovereign_influence = yes
+			}
+			influence >= @ss_influence_force_contract_cost
+		}
+		scope:recipient = {
+			is_landed = yes
+			is_vassal_of = scope:actor
+		}
+	}
+
+	cost = {
+		influence = @ss_influence_force_contract_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			ss_spend_influence_force_contract_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ss_buy_claim_interaction = {
+	category = interaction_category_hostile
+	icon = icon_scheme_claim_throne
+	interface_priority = 66
+	common_interaction = yes
+
+	desc = ss_buy_claim_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 365 }
+
+	is_shown = {
+		scope:actor = {
+			ss_can_spend_sovereign_influence = yes
+		}
+		scope:recipient = {
+			is_alive = yes
+			NOT = { this = scope:actor }
+			exists = primary_title
+			primary_title = {
+				tier >= tier_county
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_can_spend_influence
+				ss_can_spend_sovereign_influence = yes
+			}
+			influence >= @ss_influence_buy_claim_cost
+			custom_tooltip = {
+				text = ss_tt_no_existing_claim
+				NOT = {
+					has_claim_on = scope:recipient.primary_title
+				}
+			}
+		}
+		scope:recipient = {
+			exists = primary_title
+			primary_title = {
+				tier >= tier_county
+			}
+		}
+	}
+
+	cost = {
+		influence = @ss_influence_buy_claim_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			ss_spend_influence_buy_claim_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

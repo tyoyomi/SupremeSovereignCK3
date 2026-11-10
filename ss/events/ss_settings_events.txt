@@ -661,7 +661,7 @@ ss_settings.1003 = {
 	}
 }
 
-# Page 4/4 — empire pulse / all languages
+# Page 4/5 — empire pulse / permanent house head / all languages / hegemony conquest
 ss_settings.1004 = {
 	type = character_event
 	title = ss_settings.1004.t
@@ -690,6 +690,17 @@ ss_settings.1004 = {
 		}
 		first_valid = {
 			triggered_desc = {
+				trigger = { var:ss_cfg_permanent_house_head = 0 }
+				desc = ss_settings.tier.house_head_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_permanent_house_head = 1 }
+				desc = ss_settings.tier.house_head_1
+			}
+			desc = ss_settings.tier.house_head_1
+		}
+		first_valid = {
+			triggered_desc = {
 				trigger = { var:ss_cfg_all_languages = 0 }
 				desc = ss_settings.tier.languages_0
 			}
@@ -698,6 +709,17 @@ ss_settings.1004 = {
 				desc = ss_settings.tier.languages_1
 			}
 			desc = ss_settings.tier.languages_1
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_hegemony_conquest = 0 }
+				desc = ss_settings.tier.hegemony_conquest_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_hegemony_conquest = 1 }
+				desc = ss_settings.tier.hegemony_conquest_1
+			}
+			desc = ss_settings.tier.hegemony_conquest_1
 		}
 		desc = ss_settings.1004.desc_footer
 	}
@@ -745,6 +767,27 @@ ss_settings.1004 = {
 			text = {
 				first_valid = {
 					triggered_desc = {
+						trigger = { var:ss_cfg_permanent_house_head = 0 }
+						desc = ss_settings.opt.house_head_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_permanent_house_head = 1 }
+						desc = ss_settings.opt.house_head_1
+					}
+					desc = ss_settings.opt.house_head_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.house_head
+		ss_cycle_permanent_house_head_cfg_effect = yes
+		trigger_event = ss_settings.1004
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
 						trigger = { var:ss_cfg_all_languages = 0 }
 						desc = ss_settings.opt.languages_0
 					}
@@ -762,8 +805,176 @@ ss_settings.1004 = {
 	}
 
 	option = {
-		name = ss_settings.1004.back
-		custom_tooltip = ss_settings.tt.back
-		trigger_event = ss_settings.1001
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_hegemony_conquest = 0 }
+						desc = ss_settings.opt.hegemony_conquest_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_hegemony_conquest = 1 }
+						desc = ss_settings.opt.hegemony_conquest_1
+					}
+					desc = ss_settings.opt.hegemony_conquest_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.hegemony_conquest
+		ss_cycle_hegemony_conquest_cfg_effect = yes
+		trigger_event = ss_settings.1004
+	}
+
+	option = {
+		name = ss_settings.1004.more
+		custom_tooltip = ss_settings.tt.more
+		trigger_event = ss_settings.1005
+	}
+}
+
+# Page 5/5 — Vassal Kids polish prefs (CM-61)
+ss_settings.1005 = {
+	type = character_event
+	title = ss_settings.1005.t
+	theme = education
+
+	desc = {
+		desc = ss_settings.1005.desc_intro
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_seat_cap = 0 }
+				desc = ss_settings.tier.vassal_kids_seat_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_seat_cap = 2 }
+				desc = ss_settings.tier.vassal_kids_seat_2
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_seat_cap = 4 }
+				desc = ss_settings.tier.vassal_kids_seat_4
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_seat_cap = 6 }
+				desc = ss_settings.tier.vassal_kids_seat_6
+			}
+			desc = ss_settings.tier.vassal_kids_seat_0
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_land_mode = 0 }
+				desc = ss_settings.tier.vassal_kids_land_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_land_mode = 1 }
+				desc = ss_settings.tier.vassal_kids_land_1
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_land_mode = 2 }
+				desc = ss_settings.tier.vassal_kids_land_2
+			}
+			desc = ss_settings.tier.vassal_kids_land_0
+		}
+		first_valid = {
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_opinion_gift = 0 }
+				desc = ss_settings.tier.vassal_kids_gift_0
+			}
+			triggered_desc = {
+				trigger = { var:ss_cfg_vassal_kids_opinion_gift = 1 }
+				desc = ss_settings.tier.vassal_kids_gift_1
+			}
+			desc = ss_settings.tier.vassal_kids_gift_1
+		}
+		desc = ss_settings.1005.desc_footer
+	}
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = ss_settings.1005.close
+		custom_tooltip = ss_settings.tt.close
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_seat_cap = 0 }
+						desc = ss_settings.opt.vassal_kids_seat_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_seat_cap = 2 }
+						desc = ss_settings.opt.vassal_kids_seat_2
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_seat_cap = 4 }
+						desc = ss_settings.opt.vassal_kids_seat_4
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_seat_cap = 6 }
+						desc = ss_settings.opt.vassal_kids_seat_6
+					}
+					desc = ss_settings.opt.vassal_kids_seat_0
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.vassal_kids_seat
+		ss_cycle_vassal_kids_seat_cap_cfg_effect = yes
+		trigger_event = ss_settings.1005
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_land_mode = 0 }
+						desc = ss_settings.opt.vassal_kids_land_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_land_mode = 1 }
+						desc = ss_settings.opt.vassal_kids_land_1
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_land_mode = 2 }
+						desc = ss_settings.opt.vassal_kids_land_2
+					}
+					desc = ss_settings.opt.vassal_kids_land_0
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.vassal_kids_land
+		ss_cycle_vassal_kids_land_mode_cfg_effect = yes
+		trigger_event = ss_settings.1005
+	}
+
+	option = {
+		name = {
+			text = {
+				first_valid = {
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_opinion_gift = 0 }
+						desc = ss_settings.opt.vassal_kids_gift_0
+					}
+					triggered_desc = {
+						trigger = { var:ss_cfg_vassal_kids_opinion_gift = 1 }
+						desc = ss_settings.opt.vassal_kids_gift_1
+					}
+					desc = ss_settings.opt.vassal_kids_gift_1
+				}
+			}
+		}
+		custom_tooltip = ss_settings.tt.vassal_kids_gift
+		ss_cycle_vassal_kids_opinion_gift_cfg_effect = yes
+		trigger_event = ss_settings.1005
+	}
+
+	option = {
+		name = ss_settings.1005.back
+		custom_tooltip = ss_settings.tt.back_page
+		trigger_event = ss_settings.1004
 	}
 }

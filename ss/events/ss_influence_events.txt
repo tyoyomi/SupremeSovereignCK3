@@ -1,0 +1,40 @@
+namespace = ss_influence
+
+# Influence Board — opened from Sovereign Actions (CM-61)
+# Done first; Admin God Moment is the self-spend. Targeted verbs are interactions.
+
+ss_influence.1001 = {
+	type = character_event
+	title = ss_influence.1001.t
+	theme = education
+
+	desc = ss_influence.1001.desc
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	option = {
+		name = ss_influence.1001.close
+		custom_tooltip = ss_influence.tt.close
+	}
+
+	option = {
+		name = ss_influence.1001.admin_god
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_can_admin_god
+				ss_can_admin_god_moment = yes
+			}
+		}
+		custom_tooltip = ss_influence.tt.admin_god
+		ss_spend_influence_admin_god_effect = yes
+		trigger_event = ss_influence.1001
+	}
+
+	option = {
+		name = ss_influence.1001.howto
+		custom_tooltip = ss_influence.tt.howto
+		trigger_event = ss_influence.1001
+	}
+}

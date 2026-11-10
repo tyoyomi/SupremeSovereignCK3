@@ -1,0 +1,60 @@
+# Supreme Sovereign — Influence spend verbs (CM-61)
+# Soft peer SSC: never add_hook / Demand Strong Hook.
+# Interaction costs deduct Influence via cost = { influence = … }; effects apply outcomes only.
+
+ss_spend_influence_loyalty_effect = {
+	# this = actor; scope:recipient = target (interaction scopes)
+	scope:recipient = {
+		add_opinion = {
+			target = scope:actor
+			modifier = ss_sovereign_loyalty_opinion
+		}
+		add_character_modifier = {
+			modifier = ss_sovereign_loyalty_modifier
+			years = 5
+		}
+	}
+}
+
+ss_spend_influence_force_contract_effect = {
+	# this = actor; scope:recipient = direct landed vassal
+	# Push obligations toward liege-desired levels (vanilla AI desire API).
+	scope:recipient = {
+		set_vassal_contract_modification_blocked = no
+		apply_ai_vassal_obligation_liege_most_desired = yes
+	}
+}
+
+ss_spend_influence_buy_claim_effect = {
+	# this = actor; scope:recipient = title holder
+	if = {
+		limit = {
+			exists = scope:recipient.primary_title
+			scope:recipient.primary_title = {
+				tier >= tier_county
+			}
+			NOT = {
+				has_claim_on = scope:recipient.primary_title
+			}
+		}
+		add_unpressed_claim = scope:recipient.primary_title
+	}
+}
+
+ss_spend_influence_admin_god_effect = {
+	# this = actor (self). Board path deducts Influence here (no interaction cost block).
+	change_influence = {
+		value = ss_influence_admin_god_cost
+		multiply = -1
+	}
+	add_character_modifier = {
+		modifier = ss_admin_god_modifier
+		years = 1
+	}
+	add_legitimacy = major_legitimacy_gain
+	set_variable = {
+		name = ss_cd_admin_god
+		value = 1
+		days = ss_influence_admin_god_cd_days
+	}
+}
