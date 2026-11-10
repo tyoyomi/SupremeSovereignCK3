@@ -1,0 +1,15 @@
+# Supreme Sovereign — opinion modifiers (CM-61)
+
+# Buy Loyalty — large temporary opinion of the Sovereign (no hook)
+ss_sovereign_loyalty_opinion = {
+	opinion = 80
+	years = 5
+	decaying = yes
+}
+
+# Vassal Kids mild thank-you after distribute
+ss_vassal_kids_gift_opinion = {
+	opinion = 25
+	years = 5
+	decaying = yes
+}

@@ -183,3 +183,18 @@ ss_schemes_high_modifier = {
 	max_personal_schemes_add = 10
 	max_hostile_schemes_add = 10
 }
+
+### Influence spend / Vassal Kids (CM-61) — temporary flavor markers
+# Opinion of the Sovereign is applied via opinion modifiers; these are visible package tags.
+ss_sovereign_loyalty_modifier = {
+	monthly_prestige = 1
+}
+ss_admin_god_modifier = {
+	monthly_influence = 10
+	monthly_county_control_growth_add = 5
+	monthly_prestige = 25
+	dread_baseline_add = 10
+}
+ss_vassal_kids_gift_modifier = {
+	monthly_prestige = 1
+}

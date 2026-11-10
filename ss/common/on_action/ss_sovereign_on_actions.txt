@@ -70,3 +70,22 @@ ss_empire_pulse_on_action = {
 		ss_empire_pulse_effect = yes
 	}
 }
+
+# Permanent house head — death release only (Ken lock). Append-only; never overwrite vanilla on_death.
+on_death = {
+	on_actions = { ss_on_death_house_head }
+}
+
+ss_on_death_house_head = {
+	trigger = {
+		OR = {
+			has_trait = Supreme_Sovereign
+			exists = var:ss_cfg_permanent_house_head
+			has_character_flag = ss_phh_asserted
+		}
+	}
+	effect = {
+		# Hygiene + optional living wake — NEVER set_house_head on dead / never force heir
+		ss_on_death_release_house_head_effect = yes
+	}
+}

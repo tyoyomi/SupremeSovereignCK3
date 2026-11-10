@@ -1,0 +1,166 @@
+namespace = ss_actions
+
+# Sovereign Actions hub — one page; Done first (CM-29 craft).
+# OP actions formerly major decisions. Cooldowns use timed character vars
+# (native decision cooldown retired with the wrappers).
+# Event options hide when gated / on CD (engine has no grey-out for event options).
+
+ss_actions.1001 = {
+	type = character_event
+	title = ss_actions.1001.t
+	theme = education
+
+	desc = ss_actions.1001.desc
+
+	immediate = {
+		ss_ensure_sovereign_defaults_effect = yes
+	}
+
+	# Done first — closes hub
+	option = {
+		name = ss_actions.1001.close
+		custom_tooltip = ss_actions.tt.close
+	}
+
+	# Claim perk points (current lifestyle / picker)
+	option = {
+		name = ss_actions.1001.claim
+		trigger = {
+			# Former decision is_shown
+			NAND = {
+				exists = var:ss_cfg_perk_gift
+				var:ss_cfg_perk_gift = 0
+			}
+			# Former is_valid + timed CD (shared with Claim All)
+			custom_tooltip = {
+				text = ss_tt_can_claim_perk_gift
+				ss_can_claim_perk_gift = yes
+			}
+			custom_tooltip = {
+				text = ss_tt_actions_perk_cd_ready
+				NOT = { exists = var:ss_cd_perk_gift }
+			}
+		}
+		custom_tooltip = ss_claim_lifestyle_perk_points_decision_effect_tt
+		ss_claim_current_lifestyle_perk_points_effect = yes
+		set_variable = {
+			name = ss_cd_perk_gift
+			value = 1
+			days = ss_perk_gift_cooldown_days
+		}
+		# Re-open hub when focus already set; lifestyle picker (ss_op.1001) owns the no-focus path
+		if = {
+			limit = {
+				OR = {
+					has_lifestyle = diplomacy_lifestyle
+					has_lifestyle = martial_lifestyle
+					has_lifestyle = stewardship_lifestyle
+					has_lifestyle = intrigue_lifestyle
+					has_lifestyle = learning_lifestyle
+				}
+			}
+			trigger_event = ss_actions.1001
+		}
+	}
+
+	# Claim all lifestyle perk points
+	option = {
+		name = ss_actions.1001.claim_all
+		trigger = {
+			# Former decision is_shown
+			OR = {
+				NOT = { exists = var:ss_cfg_perk_gift }
+				var:ss_cfg_perk_gift >= 2
+			}
+			# Former is_valid + shared perk CD
+			custom_tooltip = {
+				text = ss_tt_can_claim_all_perk_gifts
+				ss_can_claim_all_perk_gifts = yes
+			}
+			custom_tooltip = {
+				text = ss_tt_actions_perk_cd_ready
+				NOT = { exists = var:ss_cd_perk_gift }
+			}
+		}
+		custom_tooltip = ss_claim_all_lifestyle_perk_points_decision_effect_tt
+		ss_claim_all_lifestyle_perk_points_effect = yes
+		set_variable = {
+			name = ss_cd_perk_gift
+			value = 1
+			days = ss_perk_gift_cooldown_days
+		}
+		trigger_event = ss_actions.1001
+	}
+
+	# Distribute titles to children — toast ss_op.2101 owns next click (do not re-open)
+	option = {
+		name = ss_actions.1001.distribute
+		trigger = {
+			NOT = { government_has_flag = government_is_landless_adventurer }
+			custom_tooltip = {
+				text = ss_tt_can_distribute_titles_to_children
+				ss_can_distribute_titles_to_children = yes
+			}
+			custom_tooltip = {
+				text = ss_tt_actions_distribute_cd_ready
+				NOT = { exists = var:ss_cd_distribute_titles }
+			}
+		}
+		custom_tooltip = ss_distribute_titles_to_children_decision_effect_tt
+		ss_distribute_titles_to_children_effect = yes
+		set_variable = {
+			name = ss_cd_distribute_titles
+			value = 1
+			days = ss_distribute_titles_cooldown_days
+		}
+	}
+
+	# Reclaim titles from children — toast ss_op.2102 owns next click (do not re-open)
+	option = {
+		name = ss_actions.1001.reclaim
+		trigger = {
+			NOT = { government_has_flag = government_is_landless_adventurer }
+			custom_tooltip = {
+				text = ss_tt_can_reclaim_titles_from_children
+				ss_can_reclaim_titles_from_children = yes
+			}
+			custom_tooltip = {
+				text = ss_tt_actions_reclaim_cd_ready
+				NOT = { exists = var:ss_cd_reclaim_titles }
+			}
+		}
+		custom_tooltip = ss_reclaim_titles_from_children_decision_effect_tt
+		ss_reclaim_titles_from_children_effect = yes
+		set_variable = {
+			name = ss_cd_reclaim_titles
+			value = 1
+			days = ss_reclaim_titles_cooldown_days
+		}
+	}
+
+	# Influence Board (CM-61) — nested spend board; targeted verbs are interactions
+	option = {
+		name = ss_actions.1001.influence
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_can_open_influence_board
+				ss_can_open_influence_board = yes
+			}
+		}
+		custom_tooltip = ss_actions.tt.influence
+		trigger_event = ss_influence.1001
+	}
+
+	# Sovereign Vault (CM-61) — piggy readout + emergency withdraw
+	option = {
+		name = ss_actions.1001.vault
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_can_open_vault
+				ss_can_open_sovereign_vault = yes
+			}
+		}
+		custom_tooltip = ss_actions.tt.vault
+		trigger_event = ss_vault.1001
+	}
+}
