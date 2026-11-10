@@ -1,0 +1,7 @@
+# Supreme Sovereign — custom decision group (additive; does not replace vanilla major)
+
+ss_sovereign = {
+	sort_order = 195
+	gui_tags = { big_button }
+	important_decision_group = yes
+}

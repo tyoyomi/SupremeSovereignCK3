@@ -59,11 +59,17 @@ ss_duchy_conquest_cb = {
 	}
 
 	cost = {
-		piety = {
-			value = 0
+		gold = {
+			value = {
+				value = ss_duchy_conquest_gold_cost
+				desc = CB_BASE_COST
+			}
 		}
 		prestige = {
-			value = 0
+			value = {
+				value = ss_duchy_conquest_prestige_cost
+				desc = CB_BASE_COST
+			}
 		}
 	}
 
@@ -272,6 +278,9 @@ ss_duchy_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
@@ -333,11 +342,17 @@ ss_empire_conquest_cb = {
 	}
 
 	cost = {
-		piety = {
-			value = 0
+		gold = {
+			value = {
+				value = ss_empire_conquest_gold_cost
+				desc = CB_BASE_COST
+			}
 		}
 		prestige = {
-			value = 0
+			value = {
+				value = ss_empire_conquest_prestige_cost
+				desc = CB_BASE_COST
+			}
 		}
 	}
 
@@ -546,6 +561,9 @@ ss_empire_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
@@ -609,11 +627,17 @@ ss_faith_conquest_cb = {
 	}
 
 	cost = {
-		piety = {
-			value = 0
+		gold = {
+			value = {
+				value = ss_faith_conquest_gold_cost
+				desc = CB_BASE_COST
+			}
 		}
 		prestige = {
-			value = 0
+			value = {
+				value = ss_faith_conquest_prestige_cost
+				desc = CB_BASE_COST
+			}
 		}
 	}
 
@@ -832,6 +856,9 @@ ss_faith_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
@@ -889,11 +916,17 @@ ss_realm_annex_cb = {
 	}
 
 	cost = {
-		piety = {
-			value = 0
+		gold = {
+			value = {
+				value = ss_realm_annex_gold_cost
+				desc = CB_BASE_COST
+			}
 		}
 		prestige = {
-			value = 0
+			value = {
+				value = ss_realm_annex_prestige_cost
+				desc = CB_BASE_COST
+			}
 		}
 	}
 
@@ -1088,6 +1121,9 @@ ss_realm_annex_cb = {
 	cb_name = "ss_REALM_ANNEX_CB_NAME"
 
 	interface_priority = 110
+
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
 
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
