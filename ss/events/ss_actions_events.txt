@@ -137,4 +137,30 @@ ss_actions.1001 = {
 			days = ss_reclaim_titles_cooldown_days
 		}
 	}
+
+	# Influence Board (CM-61) — nested spend board; targeted verbs are interactions
+	option = {
+		name = ss_actions.1001.influence
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_can_open_influence_board
+				ss_can_open_influence_board = yes
+			}
+		}
+		custom_tooltip = ss_actions.tt.influence
+		trigger_event = ss_influence.1001
+	}
+
+	# Sovereign Vault (CM-61) — piggy readout + emergency withdraw
+	option = {
+		name = ss_actions.1001.vault
+		trigger = {
+			custom_tooltip = {
+				text = ss_tt_can_open_vault
+				ss_can_open_sovereign_vault = yes
+			}
+		}
+		custom_tooltip = ss_actions.tt.vault
+		trigger_event = ss_vault.1001
+	}
 }

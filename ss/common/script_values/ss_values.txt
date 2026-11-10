@@ -5,15 +5,20 @@
 #   ss_cfg_unlimited_titles: 0=Off, 1=On (default 1) — Keep All Titles domain/vassal package
 #   ss_cfg_kingdom_conquest: 0=Off, 1=On (default 1) — Kingdom Conquest CB availability
 #   ss_cfg_extra_conquests: 0=Off, 1=On (default 1) — Extra Conquests CBs (duchy/empire/realm annex/faith)
+#   ss_cfg_hegemony_conquest: 0=Off, 1=On (default 1) — Hegemony Conquest CB (beyond Extra)
 # Conquest CB declare costs (gold + prestige, scale by tier):
-#   duchy 500/500 · kingdom/faith 1000/1000 · empire 2000/2000 · realm annex 3000/3000
+#   duchy 500/500 · kingdom/faith 1000/1000 · empire 2000/2000 · realm annex 3000/3000 · hegemony 4000/4000
 #   ss_cfg_legacy_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
 #   ss_cfg_empire_pulse: 0=Off, 1=Low, 2=Med, 3=High (default 2)
 #   ss_cfg_all_languages: 0=Off, 1=On (default 1)
+#   ss_cfg_permanent_house_head: 0=Off, 1=On (default 1) — living SS reasserts own house headship; death releases
+#   ss_cfg_vassal_kids_seat_cap: 0=all, 2/4/6 = max children in distribute ring (default 0)
+#   ss_cfg_vassal_kids_land_mode: 0=all below-tier, 1=duchies only, 2=counties only (default 0)
+#   ss_cfg_vassal_kids_opinion_gift: 0=Off, 1=On (default 1)
 #   ss_cfg_perk_gift: 0=Off, 1=1pt, 2=3pts, 3=5pts (default 2)
 #   ss_cfg_reshape_heir: 0=Off, 1=XP, 2=XP+claims, 3=XP+claims+perks (default 2)
-# Hidden piggy (character vars, no hub): ss_piggy_gold / _prestige / _piety / _dynasty
-# Deposit + silent drip on ss_yearly_sovereign_refresh (see ss_piggy_yearly_effect).
+# Hidden piggy (character vars): ss_piggy_gold / _prestige / _piety / _dynasty
+# Deposit + silent drip yearly; emergency withdraw via Sovereign Vault (CM-61).
 
 ss_cfg_lifestyle_display_value = {
 	value = 0
@@ -136,3 +141,42 @@ ss_empire_conquest_gold_cost = 2000
 ss_empire_conquest_prestige_cost = 2000
 ss_realm_annex_gold_cost = 3000
 ss_realm_annex_prestige_cost = 3000
+ss_hegemony_conquest_gold_cost = 4000
+ss_hegemony_conquest_prestige_cost = 4000
+
+# --- Influence spend (CM-61) ---
+ss_influence_loyalty_cost = 75
+ss_influence_force_contract_cost = 100
+ss_influence_buy_claim_cost = 150
+ss_influence_admin_god_cost = 200
+ss_influence_loyalty_cd_days = 180
+ss_influence_force_contract_cd_days = 365
+ss_influence_buy_claim_cd_days = 365
+ss_influence_admin_god_cd_days = 365
+
+# --- Piggy emergency withdraw (CM-61) ---
+ss_piggy_withdraw_cooldown_days = 365
+ss_piggy_gold_withdraw_value = {
+	value = 0
+	if = {
+		limit = { exists = var:ss_piggy_gold }
+		value = var:ss_piggy_gold
+		max = 10000
+	}
+}
+ss_piggy_prestige_withdraw_value = {
+	value = 0
+	if = {
+		limit = { exists = var:ss_piggy_prestige }
+		value = var:ss_piggy_prestige
+		max = 5000
+	}
+}
+ss_piggy_piety_withdraw_value = {
+	value = 0
+	if = {
+		limit = { exists = var:ss_piggy_piety }
+		value = var:ss_piggy_piety
+		max = 2000
+	}
+}

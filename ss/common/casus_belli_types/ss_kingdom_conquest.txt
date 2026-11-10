@@ -284,6 +284,9 @@ ss_kingdom_conquest_cb = {
 
 	attacker_wargoal_percentage = 0.8
 
+	# CM-49: no defender ticking — multi-front travel/siege time cannot Enforce Demands alone
+	defender_ticking_warscore = 0
+
 	max_defender_score_from_occupation = 150
 	max_attacker_score_from_occupation = 150
 }
