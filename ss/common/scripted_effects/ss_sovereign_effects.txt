@@ -14,6 +14,9 @@ ss_clear_sovereign_modifiers_effect = {
 	remove_character_modifier = ss_prestige_low_modifier
 	remove_character_modifier = ss_prestige_med_modifier
 	remove_character_modifier = ss_prestige_high_modifier
+	remove_character_modifier = ss_influence_low_modifier
+	remove_character_modifier = ss_influence_med_modifier
+	remove_character_modifier = ss_influence_high_modifier
 	remove_character_modifier = ss_domain_vassal_low_modifier
 	remove_character_modifier = ss_domain_vassal_med_modifier
 	remove_character_modifier = ss_domain_vassal_high_modifier
@@ -44,12 +47,24 @@ ss_ensure_sovereign_defaults_effect = {
 		set_variable = { name = ss_cfg_prestige value = 3 }
 	}
 	if = {
+		limit = { NOT = { exists = var:ss_cfg_influence } }
+		set_variable = { name = ss_cfg_influence value = 3 }
+	}
+	if = {
 		limit = { NOT = { exists = var:ss_cfg_domain_vassal } }
 		set_variable = { name = ss_cfg_domain_vassal value = 3 }
 	}
 	if = {
 		limit = { NOT = { exists = var:ss_cfg_unlimited_titles } }
 		set_variable = { name = ss_cfg_unlimited_titles value = 1 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_kingdom_conquest } }
+		set_variable = { name = ss_cfg_kingdom_conquest value = 1 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_extra_conquests } }
+		set_variable = { name = ss_cfg_extra_conquests value = 1 }
 	}
 	if = {
 		limit = { NOT = { exists = var:ss_cfg_military } }
@@ -71,6 +86,340 @@ ss_ensure_sovereign_defaults_effect = {
 	if = {
 		limit = { NOT = { exists = var:ss_cfg_reshape_heir } }
 		set_variable = { name = ss_cfg_reshape_heir value = 2 }
+	}
+	# Expansion pack defaults
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_empire_pulse } }
+		set_variable = { name = ss_cfg_empire_pulse value = 2 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_all_languages } }
+		set_variable = { name = ss_cfg_all_languages value = 1 }
+	}
+	# Permanent house head (CM-48) — default On; missing = On via NAND gates
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_permanent_house_head } }
+		set_variable = { name = ss_cfg_permanent_house_head value = 1 }
+	}
+	# Hegemony Conquest (CM-61) — default On; missing = On via NAND gates
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_hegemony_conquest } }
+		set_variable = { name = ss_cfg_hegemony_conquest value = 1 }
+	}
+	# Vassal Kids polish prefs (CM-61)
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_seat_cap } }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_land_mode } }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_cfg_vassal_kids_opinion_gift } }
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 1 }
+	}
+	# Hidden piggy bank pools (excess wealth/prestige; silent yearly drip)
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_gold } }
+		set_variable = { name = ss_piggy_gold value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_prestige } }
+		set_variable = { name = ss_piggy_prestige value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_piety } }
+		set_variable = { name = ss_piggy_piety value = 0 }
+	}
+	if = {
+		limit = { NOT = { exists = var:ss_piggy_dynasty } }
+		set_variable = { name = ss_piggy_dynasty value = 0 }
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Virtual sovereign piggy bank — deposit capped OP excess; silent yearly drip
+# -----------------------------------------------------------------------------
+
+ss_piggy_deposit_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	# Wealth excess (legacy monthly − capped monthly) × 12
+	if = {
+		limit = { var:ss_cfg_wealth = 1 }
+		change_variable = { name = ss_piggy_gold add = 300 }
+		change_variable = { name = ss_piggy_piety add = 120 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_wealth = 2 }
+		change_variable = { name = ss_piggy_gold add = 600 }
+		change_variable = { name = ss_piggy_piety add = 300 }
+	}
+	else = {
+		change_variable = { name = ss_piggy_gold add = 1500 }
+		change_variable = { name = ss_piggy_piety add = 720 }
+	}
+	# Prestige excess — dynasty uses capped annual lumps (not full old×12)
+	if = {
+		limit = { var:ss_cfg_prestige = 1 }
+		change_variable = { name = ss_piggy_prestige add = 360 }
+		change_variable = { name = ss_piggy_dynasty add = 6000 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_prestige = 2 }
+		change_variable = { name = ss_piggy_prestige add = 1200 }
+		change_variable = { name = ss_piggy_dynasty add = 12000 }
+	}
+	else = {
+		change_variable = { name = ss_piggy_prestige add = 4800 }
+		change_variable = { name = ss_piggy_dynasty add = 24000 }
+	}
+}
+
+ss_piggy_drip_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	# Gold: floor 250, drip min(2000, pool/4) — silent (no toast)
+	if = {
+		limit = { var:ss_piggy_gold >= 250 }
+		add_gold = ss_piggy_gold_drip_value
+		change_variable = {
+			name = ss_piggy_gold
+			subtract = ss_piggy_gold_drip_value
+		}
+	}
+	# Piety: floor 100, drip min(500, pool/4)
+	if = {
+		limit = { var:ss_piggy_piety >= 100 }
+		add_piety = ss_piggy_piety_drip_value
+		change_variable = {
+			name = ss_piggy_piety
+			subtract = ss_piggy_piety_drip_value
+		}
+	}
+	# Prestige: floor 200, drip min(2000, pool/4)
+	if = {
+		limit = { var:ss_piggy_prestige >= 200 }
+		add_prestige = ss_piggy_prestige_drip_value
+		change_variable = {
+			name = ss_piggy_prestige
+			subtract = ss_piggy_prestige_drip_value
+		}
+	}
+	# Dynasty prestige: floor 500, bracketed drips (literals — dynasty scope has no ss_piggy_* vars)
+	if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 20000
+		}
+		dynasty = { add_dynasty_prestige = 5000 }
+		change_variable = { name = ss_piggy_dynasty subtract = 5000 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 8000
+		}
+		dynasty = { add_dynasty_prestige = 2000 }
+		change_variable = { name = ss_piggy_dynasty subtract = 2000 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 2000
+		}
+		dynasty = { add_dynasty_prestige = 500 }
+		change_variable = { name = ss_piggy_dynasty subtract = 500 }
+	}
+	else_if = {
+		limit = {
+			exists = dynasty
+			var:ss_piggy_dynasty >= 500
+		}
+		dynasty = { add_dynasty_prestige = 250 }
+		change_variable = { name = ss_piggy_dynasty subtract = 250 }
+	}
+}
+
+ss_piggy_yearly_effect = {
+	if = {
+		limit = { has_trait = Supreme_Sovereign }
+		ss_piggy_deposit_effect = yes
+		ss_piggy_drip_effect = yes
+	}
+}
+
+# --- Piggy emergency withdraw (CM-61) — caps per click; shared 365d CD ---
+
+ss_piggy_withdraw_mark_cd_effect = {
+	set_variable = {
+		name = ss_cd_piggy_withdraw
+		value = 1
+		days = ss_piggy_withdraw_cooldown_days
+	}
+}
+
+ss_piggy_withdraw_gold_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_gold
+			var:ss_piggy_gold >= 250
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_gold_withdraw_value
+		}
+		add_gold = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_gold
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_gold_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_prestige_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_prestige
+			var:ss_piggy_prestige >= 200
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_prestige_withdraw_value
+		}
+		add_prestige = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_prestige
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_prestige_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_piety_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = var:ss_piggy_piety
+			var:ss_piggy_piety >= 100
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		set_variable = {
+			name = ss_piggy_withdraw_amount
+			value = ss_piggy_piety_withdraw_value
+		}
+		add_piety = var:ss_piggy_withdraw_amount
+		change_variable = {
+			name = ss_piggy_piety
+			subtract = var:ss_piggy_withdraw_amount
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_piety_tt
+		}
+	}
+}
+
+ss_piggy_withdraw_dynasty_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = {
+			exists = dynasty
+			exists = var:ss_piggy_dynasty
+			var:ss_piggy_dynasty >= 2000
+			NOT = { exists = var:ss_cd_piggy_withdraw }
+		}
+		if = {
+			limit = { var:ss_piggy_dynasty >= 5000 }
+			dynasty = { add_dynasty_prestige = 2000 }
+			change_variable = { name = ss_piggy_dynasty subtract = 2000 }
+			set_variable = { name = ss_piggy_withdraw_amount value = 2000 }
+		}
+		else = {
+			dynasty = { add_dynasty_prestige = 500 }
+			change_variable = { name = ss_piggy_dynasty subtract = 500 }
+			set_variable = { name = ss_piggy_withdraw_amount value = 500 }
+		}
+		ss_piggy_withdraw_mark_cd_effect = yes
+		send_interface_toast = {
+			title = ss_vault_toast_title
+			left_icon = root
+			custom_tooltip = ss_vault_toast_dynasty_tt
+		}
+	}
+}
+
+ss_cycle_hegemony_conquest_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_hegemony_conquest = 1 }
+		set_variable = { name = ss_cfg_hegemony_conquest value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_hegemony_conquest value = 1 }
+	}
+}
+
+# Vassal Kids seat cap: 0 → 2 → 4 → 6 → 0
+ss_cycle_vassal_kids_seat_cap_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 0 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 2 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 4 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_seat_cap = 4 }
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 6 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_seat_cap value = 0 }
+	}
+}
+
+# Land mode: 0 All → 1 Duchies → 2 Counties → 0
+ss_cycle_vassal_kids_land_mode_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_land_mode = 0 }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_vassal_kids_land_mode = 1 }
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 2 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_land_mode value = 0 }
+	}
+}
+
+ss_cycle_vassal_kids_opinion_gift_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_vassal_kids_opinion_gift = 1 }
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_vassal_kids_opinion_gift value = 1 }
 	}
 }
 
@@ -169,6 +518,37 @@ ss_refresh_sovereign_modifiers = {
 			}
 		}
 
+		# Influence — Off skips; only apply when EP3/TGP DLC present (safe no-op otherwise)
+		if = {
+			limit = {
+				OR = {
+					has_ep3_dlc_trigger = yes
+					has_tgp_dlc_trigger = yes
+				}
+				NOT = { var:ss_cfg_influence = 0 }
+			}
+			if = {
+				limit = { var:ss_cfg_influence = 1 }
+				add_character_modifier = {
+					modifier = ss_influence_low_modifier
+					days = -1
+				}
+			}
+			else_if = {
+				limit = { var:ss_cfg_influence = 2 }
+				add_character_modifier = {
+					modifier = ss_influence_med_modifier
+					days = -1
+				}
+			}
+			else = {
+				add_character_modifier = {
+					modifier = ss_influence_high_modifier
+					days = -1
+				}
+			}
+		}
+
 		# Keep All Titles — On: extreme domain/vassal; Off: Domain & Vassals tiers
 		if = {
 			limit = { var:ss_cfg_unlimited_titles = 1 }
@@ -252,6 +632,9 @@ ss_apply_sovereign_runtime_effects = {
 		limit = { has_trait = Supreme_Sovereign }
 		ss_ensure_sovereign_defaults_effect = yes
 		ss_refresh_sovereign_modifiers = yes
+		ss_try_apply_all_languages_effect = yes
+		# Permanent house head — living reassert only (PHH5–PHH7)
+		ss_reassert_house_head_effect = yes
 	}
 }
 
@@ -347,6 +730,26 @@ ss_cycle_prestige_cfg_effect = {
 	ss_refresh_sovereign_modifiers = yes
 }
 
+ss_cycle_influence_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_influence = 0 }
+		set_variable = { name = ss_cfg_influence value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_influence = 1 }
+		set_variable = { name = ss_cfg_influence value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_influence = 2 }
+		set_variable = { name = ss_cfg_influence value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_influence value = 0 }
+	}
+	ss_refresh_sovereign_modifiers = yes
+}
+
 ss_cycle_domain_vassal_cfg_effect = {
 	ss_ensure_sovereign_defaults_effect = yes
 	if = {
@@ -373,6 +776,28 @@ ss_cycle_unlimited_titles_cfg_effect = {
 		set_variable = { name = ss_cfg_unlimited_titles value = 1 }
 	}
 	ss_refresh_sovereign_modifiers = yes
+}
+
+ss_cycle_kingdom_conquest_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_kingdom_conquest = 1 }
+		set_variable = { name = ss_cfg_kingdom_conquest value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_kingdom_conquest value = 1 }
+	}
+}
+
+ss_cycle_extra_conquests_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_extra_conquests = 1 }
+		set_variable = { name = ss_cfg_extra_conquests value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_extra_conquests value = 1 }
+	}
 }
 
 ss_cycle_military_cfg_effect = {

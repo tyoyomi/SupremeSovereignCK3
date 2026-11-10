@@ -1,11 +1,11 @@
-﻿# Supreme Sovereign Settings — single manage hub (player-only)
-# Cycles live in ss_settings.1001; claim actions stay in ss_sovereign_op_decisions.txt
+# Supreme Sovereign Settings — single manage hub (player-only)
+# Cycles live in ss_settings.1001-1004 (paged); OP actions live under Sovereign Actions hub
 
 ss_manage_sovereign_settings_decision = {
 	picture = {
 		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
 	}
-	decision_group_type = major
+	decision_group_type = ss_sovereign
 	desc = ss_manage_sovereign_settings_decision_desc
 	selection_tooltip = ss_manage_sovereign_settings_decision_tooltip
 	confirm_text = ss_manage_sovereign_settings_decision_confirm

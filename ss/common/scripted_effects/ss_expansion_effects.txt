@@ -1,0 +1,126 @@
+# Supreme Sovereign — expansion pack (empire pulse + all languages)
+
+@ss_empire_pulse_control_low = 25
+@ss_empire_pulse_control_med = 50
+@ss_empire_pulse_control_high = 100
+@ss_empire_pulse_dread_low = 10
+@ss_empire_pulse_dread_med = 25
+@ss_empire_pulse_dread_high = 50
+
+ss_cycle_empire_pulse_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_empire_pulse = 0 }
+		set_variable = { name = ss_cfg_empire_pulse value = 1 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_empire_pulse = 1 }
+		set_variable = { name = ss_cfg_empire_pulse value = 2 }
+	}
+	else_if = {
+		limit = { var:ss_cfg_empire_pulse = 2 }
+		set_variable = { name = ss_cfg_empire_pulse value = 3 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_empire_pulse value = 0 }
+	}
+}
+
+ss_cycle_all_languages_cfg_effect = {
+	ss_ensure_sovereign_defaults_effect = yes
+	if = {
+		limit = { var:ss_cfg_all_languages = 1 }
+		set_variable = { name = ss_cfg_all_languages value = 0 }
+	}
+	else = {
+		set_variable = { name = ss_cfg_all_languages value = 1 }
+		ss_learn_all_languages_effect = yes
+	}
+}
+
+# this = sovereign — learn every culture language (OP polyglot)
+ss_learn_all_languages_effect = {
+	if = {
+		limit = {
+			is_alive = yes
+			has_trait = Supreme_Sovereign
+		}
+		save_scope_as = ss_polyglot
+		every_culture_global = {
+			save_temporary_scope_as = ss_lang_culture
+			scope:ss_polyglot = {
+				if = {
+					limit = {
+						NOT = { knows_language_of_culture = scope:ss_lang_culture }
+					}
+					learn_language_of_culture = scope:ss_lang_culture
+				}
+			}
+		}
+		add_character_flag = ss_all_languages_applied
+	}
+}
+
+ss_try_apply_all_languages_effect = {
+	if = {
+		limit = {
+			has_trait = Supreme_Sovereign
+			OR = {
+				AND = {
+					exists = var:ss_cfg_all_languages
+					var:ss_cfg_all_languages = 1
+				}
+				NOT = { exists = var:ss_cfg_all_languages }
+			}
+		}
+		ss_learn_all_languages_effect = yes
+	}
+}
+
+ss_empire_pulse_apply_control_effect = {
+	# $AMOUNT$ = control gain per county under 100
+	every_sub_realm_county = {
+		limit = { county_control < 100 }
+		change_county_control = $AMOUNT$
+	}
+}
+
+ss_empire_pulse_effect = {
+	if = {
+		limit = { ss_can_empire_pulse = yes }
+		ss_ensure_sovereign_defaults_effect = yes
+		if = {
+			limit = { var:ss_cfg_empire_pulse = 1 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_empire_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_empire_pulse_toast_tt
+				add_dread = @ss_empire_pulse_dread_low
+				ss_empire_pulse_apply_control_effect = { AMOUNT = @ss_empire_pulse_control_low }
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_empire_pulse = 2 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_empire_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_empire_pulse_toast_tt
+				add_dread = @ss_empire_pulse_dread_med
+				ss_empire_pulse_apply_control_effect = { AMOUNT = @ss_empire_pulse_control_med }
+			}
+		}
+		else_if = {
+			limit = { var:ss_cfg_empire_pulse = 3 }
+			send_interface_toast = {
+				type = event_toast_effect_good
+				title = ss_empire_pulse_toast_title
+				left_icon = root
+				custom_tooltip = ss_empire_pulse_toast_tt
+				add_dread = @ss_empire_pulse_dread_high
+				ss_empire_pulse_apply_control_effect = { AMOUNT = @ss_empire_pulse_control_high }
+			}
+		}
+	}
+}
