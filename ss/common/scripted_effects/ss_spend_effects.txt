@@ -1,0 +1,73 @@
+# Supreme Sovereign — live currency spend verbs (CM-116)
+# Interaction cost blocks deduct actor gold/prestige/piety/influence.
+# Effects only GRANT to recipient (or apply Fund Court package).
+# Never use add_* = var:intermediate — always script values / literals.
+
+ss_sovereign_gift_effect = {
+	# this unused; scopes: actor, recipient + exclusive send_option flags
+	scope:recipient = {
+		add_gold = ss_sovereign_gift_gold_cost
+		add_opinion = {
+			target = scope:actor
+			modifier = ss_sovereign_gift_opinion
+		}
+	}
+	scope:actor = {
+		send_interface_toast = {
+			title = ss_sovereign_gift_toast_title
+			left_icon = scope:recipient
+			custom_tooltip = ss_sovereign_gift_toast_tt
+		}
+	}
+}
+
+ss_bestow_prestige_effect = {
+	scope:recipient = {
+		add_prestige = ss_bestow_prestige_cost
+	}
+	scope:actor = {
+		send_interface_toast = {
+			title = ss_bestow_prestige_toast_title
+			left_icon = scope:recipient
+			custom_tooltip = ss_bestow_prestige_toast_tt
+		}
+	}
+}
+
+ss_piety_blessing_effect = {
+	scope:recipient = {
+		add_piety = ss_piety_blessing_cost
+	}
+	scope:actor = {
+		send_interface_toast = {
+			title = ss_piety_blessing_toast_title
+			left_icon = scope:recipient
+			custom_tooltip = ss_piety_blessing_toast_tt
+		}
+	}
+}
+
+ss_fund_court_effect = {
+	# this = actor; scope:recipient = funded court
+	scope:recipient = {
+		add_prestige = ss_fund_court_prestige_splash
+		add_character_modifier = {
+			modifier = ss_fund_court_modifier
+			years = 5
+		}
+		if = {
+			limit = {
+				is_landed = yes
+				exists = primary_title
+			}
+			add_legitimacy = minor_legitimacy_gain
+		}
+	}
+	scope:actor = {
+		send_interface_toast = {
+			title = ss_fund_court_toast_title
+			left_icon = scope:recipient
+			custom_tooltip = ss_fund_court_toast_tt
+		}
+	}
+}

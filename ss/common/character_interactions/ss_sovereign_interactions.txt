@@ -367,3 +367,349 @@ ss_buy_claim_interaction = {
 		base = 0
 	}
 }
+
+# --- Live currency spend (CM-116) — tiered presets; broad living targets ---
+
+ss_sovereign_gift_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 72
+	common_interaction = yes
+
+	desc = ss_sovereign_gift_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 180 }
+
+	send_options_exclusive = yes
+
+	send_option = {
+		flag = ss_gift_modest
+		localization = ss_gift_modest
+		is_valid = {
+			scope:actor = {
+				gold >= ss_sovereign_gift_modest_value
+			}
+		}
+		starts_enabled = {
+			scope:recipient = { gold >= 0 }
+		}
+	}
+
+	send_option = {
+		flag = ss_gift_large
+		localization = ss_gift_large
+		is_valid = {
+			scope:actor = {
+				gold >= ss_sovereign_gift_large_value
+			}
+		}
+	}
+
+	send_option = {
+		flag = ss_gift_vast
+		localization = ss_gift_vast
+		is_valid = {
+			scope:actor = {
+				gold >= ss_sovereign_gift_vast_value
+			}
+		}
+	}
+
+	send_option = {
+		flag = ss_gift_ruinous
+		localization = ss_gift_ruinous
+		is_valid = {
+			scope:actor = {
+				gold >= ss_sovereign_gift_ruinous_value
+			}
+		}
+	}
+
+	send_option = {
+		flag = ss_gift_bailout
+		localization = ss_gift_bailout
+		is_shown = {
+			scope:recipient = { gold < 0 }
+		}
+		is_valid = {
+			scope:actor = {
+				gold >= ss_sovereign_gift_bailout_value
+			}
+		}
+		starts_enabled = {
+			scope:recipient = { gold < 0 }
+		}
+	}
+
+	is_shown = {
+		scope:actor = {
+			ss_can_actor_currency_spend = yes
+		}
+		scope:recipient = {
+			ss_can_receive_currency_spend = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_currency_spend
+				ss_can_actor_currency_spend = yes
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_currency_spend
+				ss_can_receive_currency_spend = yes
+			}
+		}
+	}
+
+	cost = {
+		gold = ss_sovereign_gift_gold_cost
+	}
+
+	on_accept = {
+		ss_sovereign_gift_effect = yes
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ss_bestow_prestige_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 65
+	common_interaction = yes
+
+	desc = ss_bestow_prestige_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 180 }
+
+	send_options_exclusive = yes
+
+	send_option = {
+		flag = ss_bestow_prestige_modest
+		localization = ss_bestow_prestige_modest
+		is_valid = {
+			scope:actor = {
+				prestige >= ss_bestow_prestige_modest_value
+			}
+		}
+		starts_enabled = { always = yes }
+	}
+
+	send_option = {
+		flag = ss_bestow_prestige_large
+		localization = ss_bestow_prestige_large
+		is_valid = {
+			scope:actor = {
+				prestige >= ss_bestow_prestige_large_value
+			}
+		}
+	}
+
+	send_option = {
+		flag = ss_bestow_prestige_vast
+		localization = ss_bestow_prestige_vast
+		is_valid = {
+			scope:actor = {
+				prestige >= ss_bestow_prestige_vast_value
+			}
+		}
+	}
+
+	is_shown = {
+		scope:actor = {
+			ss_can_actor_currency_spend = yes
+		}
+		scope:recipient = {
+			ss_can_receive_currency_spend = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_currency_spend
+				ss_can_actor_currency_spend = yes
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_currency_spend
+				ss_can_receive_currency_spend = yes
+			}
+		}
+	}
+
+	cost = {
+		prestige = ss_bestow_prestige_cost
+	}
+
+	on_accept = {
+		ss_bestow_prestige_effect = yes
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+ss_piety_blessing_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 64
+	common_interaction = yes
+
+	desc = ss_piety_blessing_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 180 }
+
+	send_options_exclusive = yes
+
+	send_option = {
+		flag = ss_piety_blessing_modest
+		localization = ss_piety_blessing_modest
+		is_valid = {
+			scope:actor = {
+				piety >= ss_piety_blessing_modest_value
+			}
+		}
+		starts_enabled = { always = yes }
+	}
+
+	send_option = {
+		flag = ss_piety_blessing_large
+		localization = ss_piety_blessing_large
+		is_valid = {
+			scope:actor = {
+				piety >= ss_piety_blessing_large_value
+			}
+		}
+	}
+
+	send_option = {
+		flag = ss_piety_blessing_vast
+		localization = ss_piety_blessing_vast
+		is_valid = {
+			scope:actor = {
+				piety >= ss_piety_blessing_vast_value
+			}
+		}
+	}
+
+	is_shown = {
+		scope:actor = {
+			ss_can_actor_currency_spend = yes
+		}
+		scope:recipient = {
+			ss_can_receive_currency_spend = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_currency_spend
+				ss_can_actor_currency_spend = yes
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_currency_spend
+				ss_can_receive_currency_spend = yes
+			}
+		}
+	}
+
+	cost = {
+		piety = ss_piety_blessing_cost
+	}
+
+	on_accept = {
+		ss_piety_blessing_effect = yes
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
+@ss_fund_court_influence_cost = 125
+
+ss_fund_court_interaction = {
+	category = interaction_category_friendly
+	icon = council
+	interface_priority = 63
+	common_interaction = yes
+
+	desc = ss_fund_court_interaction_desc
+
+	auto_accept = yes
+
+	cooldown_against_recipient = { days = 180 }
+
+	is_shown = {
+		scope:actor = {
+			ss_can_spend_sovereign_influence = yes
+		}
+		scope:recipient = {
+			ss_can_receive_currency_spend = yes
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_can_spend_influence
+				ss_can_spend_sovereign_influence = yes
+			}
+			influence >= @ss_fund_court_influence_cost
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_receive_currency_spend
+				ss_can_receive_currency_spend = yes
+			}
+		}
+	}
+
+	cost = {
+		influence = @ss_fund_court_influence_cost
+	}
+
+	on_accept = {
+		scope:actor = {
+			ss_fund_court_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}

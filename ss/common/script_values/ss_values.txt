@@ -159,6 +159,103 @@ ss_influence_force_contract_cd_days = 365
 ss_influence_buy_claim_cd_days = 365
 ss_influence_admin_god_cd_days = 365
 
+# --- Sovereign currency spend (CM-116) — live wallet gifts / transfers ---
+# Gold tiers (literals + bailout script value). Never grant via intermediate vars.
+ss_sovereign_gift_modest_value = 500
+ss_sovereign_gift_large_value = 2000
+ss_sovereign_gift_vast_value = 10000
+ss_sovereign_gift_ruinous_value = 50000
+ss_sovereign_gift_bailout_buffer = 500
+ss_sovereign_gift_cd_days = 180
+
+# Bail Out = abs(recipient.gold) + buffer when recipient is in debt
+ss_sovereign_gift_bailout_value = {
+	value = ss_sovereign_gift_bailout_buffer
+	if = {
+		limit = {
+			exists = scope:recipient
+			scope:recipient = { gold < 0 }
+		}
+		value = scope:recipient.gold
+		multiply = -1
+		add = ss_sovereign_gift_bailout_buffer
+	}
+}
+
+# Selected send_option → gold cost / grant amount (same value both sides)
+ss_sovereign_gift_gold_cost = {
+	value = 0
+	if = {
+		limit = { scope:ss_gift_modest = yes }
+		value = ss_sovereign_gift_modest_value
+	}
+	else_if = {
+		limit = { scope:ss_gift_large = yes }
+		value = ss_sovereign_gift_large_value
+	}
+	else_if = {
+		limit = { scope:ss_gift_vast = yes }
+		value = ss_sovereign_gift_vast_value
+	}
+	else_if = {
+		limit = { scope:ss_gift_ruinous = yes }
+		value = ss_sovereign_gift_ruinous_value
+	}
+	else_if = {
+		limit = { scope:ss_gift_bailout = yes }
+		value = ss_sovereign_gift_bailout_value
+	}
+}
+
+# Bestow Prestige presets
+ss_bestow_prestige_modest_value = 1000
+ss_bestow_prestige_large_value = 5000
+ss_bestow_prestige_vast_value = 25000
+ss_bestow_prestige_cd_days = 180
+
+ss_bestow_prestige_cost = {
+	value = 0
+	if = {
+		limit = { scope:ss_bestow_prestige_modest = yes }
+		value = ss_bestow_prestige_modest_value
+	}
+	else_if = {
+		limit = { scope:ss_bestow_prestige_large = yes }
+		value = ss_bestow_prestige_large_value
+	}
+	else_if = {
+		limit = { scope:ss_bestow_prestige_vast = yes }
+		value = ss_bestow_prestige_vast_value
+	}
+}
+
+# Piety Blessing presets
+ss_piety_blessing_modest_value = 500
+ss_piety_blessing_large_value = 2000
+ss_piety_blessing_vast_value = 10000
+ss_piety_blessing_cd_days = 180
+
+ss_piety_blessing_cost = {
+	value = 0
+	if = {
+		limit = { scope:ss_piety_blessing_modest = yes }
+		value = ss_piety_blessing_modest_value
+	}
+	else_if = {
+		limit = { scope:ss_piety_blessing_large = yes }
+		value = ss_piety_blessing_large_value
+	}
+	else_if = {
+		limit = { scope:ss_piety_blessing_vast = yes }
+		value = ss_piety_blessing_vast_value
+	}
+}
+
+# Fund Court Influence sink
+ss_fund_court_influence_cost = 125
+ss_fund_court_cd_days = 180
+ss_fund_court_prestige_splash = 250
+
 # --- Piggy emergency withdraw (CM-61) ---
 ss_piggy_withdraw_cooldown_days = 365
 ss_piggy_gold_withdraw_value = {

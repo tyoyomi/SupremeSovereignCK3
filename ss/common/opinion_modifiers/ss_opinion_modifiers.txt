@@ -13,3 +13,10 @@ ss_vassal_kids_gift_opinion = {
 	years = 5
 	decaying = yes
 }
+
+# Sovereign Gift — mild thank-you (gold is the fantasy, not Buy Loyalty)
+ss_sovereign_gift_opinion = {
+	opinion = 20
+	years = 3
+	decaying = yes
+}
