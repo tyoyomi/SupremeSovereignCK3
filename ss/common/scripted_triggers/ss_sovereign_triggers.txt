@@ -131,6 +131,26 @@ ss_can_open_sovereign_vault = {
 	has_trait = Supreme_Sovereign
 }
 
+# --- Currency spend (CM-116) — broad living targets; lag-safe portrait O(1) ---
+
+ss_can_actor_currency_spend = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+}
+
+# Anybody living except self (Ken lock: not children-only)
+ss_can_receive_currency_spend = {
+	is_alive = yes
+	exists = scope:actor
+	NOT = { this = scope:actor }
+}
+
+ss_recipient_in_gold_debt = {
+	exists = scope:recipient
+	scope:recipient = { gold < 0 }
+}
+
 # Faith Conquest — defender faith is hostile or evil toward attacker (no holy-war doctrine stack)
 ss_defender_faith_hostile_or_evil_trigger = {
 	scope:attacker.faith = {

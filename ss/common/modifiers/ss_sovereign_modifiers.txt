@@ -198,3 +198,9 @@ ss_admin_god_modifier = {
 ss_vassal_kids_gift_modifier = {
 	monthly_prestige = 1
 }
+
+# Fund Court — temporary court grandeur / prestige package (CM-116)
+ss_fund_court_modifier = {
+	court_grandeur_baseline_add = 12
+	monthly_prestige = 5
+}
