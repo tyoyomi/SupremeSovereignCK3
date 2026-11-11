@@ -1,0 +1,46 @@
+# Supreme Sovereign — Meditate on the Mantle (CM-118 / issue #26)
+# Player without the trait claims Supreme Sovereign once per character (piety cost).
+# Shown in ss_sovereign fold XOR Settings/Actions (trait gate). AI fully off.
+
+@ss_meditate_piety_cost = 1000
+
+ss_meditate_supreme_sovereign_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	}
+	decision_group_type = ss_sovereign
+	desc = ss_meditate_supreme_sovereign_decision_desc
+	selection_tooltip = ss_meditate_supreme_sovereign_decision_tooltip
+	confirm_text = ss_meditate_supreme_sovereign_decision_confirm
+
+	ai_check_interval = 0
+
+	is_shown = {
+		is_alive = yes
+		is_ai = no
+		NOT = { has_trait = Supreme_Sovereign }
+		NOT = { has_character_flag = ss_used_meditate_sovereign }
+	}
+
+	is_valid = {
+		is_alive = yes
+		custom_tooltip = {
+			text = ss_tt_can_meditate_for_sovereign
+			ss_can_meditate_for_sovereign = yes
+		}
+		piety >= @ss_meditate_piety_cost
+	}
+
+	cost = {
+		piety = @ss_meditate_piety_cost
+	}
+
+	effect = {
+		custom_tooltip = ss_meditate_supreme_sovereign_decision_effect_tt
+		add_character_flag = ss_used_meditate_sovereign
+		ss_grant_supreme_sovereign_effect = yes
+	}
+
+	ai_potential = { always = no }
+	ai_will_do = { base = 0 }
+}

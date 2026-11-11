@@ -40,6 +40,11 @@ ss_grant_prestige_cost_value = {
 	value = 500
 }
 
+# Meditate on the Mantle (CM-118) — piety cost; TEST may tune
+ss_meditate_piety_cost_value = {
+	value = 1000
+}
+
 # --- OP pass: legacy pulse prestige ---
 ss_legacy_pulse_prestige_low_value = 200
 ss_legacy_pulse_prestige_med_value = 500

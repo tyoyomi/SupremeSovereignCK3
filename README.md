@@ -14,7 +14,7 @@ The Supreme Sovereign mod is a custom trait for Crusader Kings 3 that grants the
 4. Click 'Play' to start the game with the mod activated.
 
 ## Usage
-Once the mod is installed and enabled, a player Supreme Sovereign can **Grant Supreme Sovereign** to a living direct child (right-click character interaction). Use **Revoke Supreme Sovereign** on yourself or a direct child who holds the trait to strip it. The trait can also be added through the console or during character creation.
+Once the mod is installed and enabled, a player Supreme Sovereign can **Grant Supreme Sovereign** to a living direct child (right-click character interaction). Use **Revoke Supreme Sovereign** on yourself or a direct child who holds the trait to strip it. If you play an ungifted heir (or any player without the trait), open the **Supreme Sovereign** decisions fold and take **Meditate on the Mantle** once (costs piety) to claim it yourself. The trait can also be added through the console or during character creation.
 
 ## Troubleshooting
 If you encounter any issues while using the mod, please check the following:
