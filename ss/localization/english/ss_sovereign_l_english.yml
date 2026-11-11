@@ -7,6 +7,14 @@
  ss_tt_actor_may_grant:0 "You are a Supreme Sovereign and may grant the blessing"
  ss_tt_can_receive_sovereign:0 "Target is your living child without Supreme Sovereign"
 
+ # Revoke interaction (CM-112)
+ ss_revoke_supreme_sovereign_interaction:0 "Revoke Supreme Sovereign"
+ ss_revoke_supreme_sovereign_interaction_desc:0 "Take the Supreme Sovereign mantle back from [recipient.GetShortUIName]. They lose Sovereign powers — Settings, Actions, and the blessing itself."
+ ss_revoke_supreme_sovereign_interaction_extra_icon:0 "$ss_revoke_supreme_sovereign_interaction$"
+
+ ss_tt_actor_may_revoke:0 "You are a Supreme Sovereign and may revoke the blessing"
+ ss_tt_can_revoke_sovereign:0 "Target holds Supreme Sovereign and is you or your living child"
+
  # Settings hub decision
  ss_manage_sovereign_settings_decision:0 "Manage Sovereign Settings"
  ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (5 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape. Page 4: Empire Pulse, House Head, Languages, Hegemony CB. Page 5: Vassal Kids seat/land/gift.\n\nDone is always first. Click a setting to cycle its tier."

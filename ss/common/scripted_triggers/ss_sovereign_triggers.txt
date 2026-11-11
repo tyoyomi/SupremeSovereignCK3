@@ -19,6 +19,24 @@ ss_can_receive_sovereign = {
 	is_child_of = scope:actor
 }
 
+# Actor may revoke: living player Sovereign (same fantasy as grant)
+ss_can_actor_revoke_sovereign = {
+	is_alive = yes
+	is_ai = no
+	has_trait = Supreme_Sovereign
+}
+
+# Recipient: living Sovereign who is the actor or a direct child
+ss_can_receive_revoke_sovereign = {
+	is_alive = yes
+	has_trait = Supreme_Sovereign
+	exists = scope:actor
+	OR = {
+		this = scope:actor
+		is_child_of = scope:actor
+	}
+}
+
 ss_has_sovereign_cfg_vars = {
 	exists = var:ss_cfg_lifestyle
 	exists = var:ss_cfg_longevity

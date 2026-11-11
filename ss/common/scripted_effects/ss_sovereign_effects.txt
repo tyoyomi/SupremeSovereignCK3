@@ -661,6 +661,26 @@ ss_grant_supreme_sovereign_effect = {
 	}
 }
 
+# Revoke: this = recipient — clear mods → drop PHH flag → remove_trait → house wake
+# Keeps cfg/piggy/vault/reshape/cd vars for re-grant continuity (CM-112 / R4)
+ss_revoke_supreme_sovereign_silent_effect = {
+	ss_clear_sovereign_modifiers_effect = yes
+	if = {
+		limit = { has_character_flag = ss_phh_asserted }
+		remove_character_flag = ss_phh_asserted
+	}
+	if = {
+		limit = { has_trait = Supreme_Sovereign }
+		remove_trait = Supreme_Sovereign
+	}
+	# After strip so another living same-house Sovereign can reassert (death-path helper)
+	ss_schedule_living_ss_house_head_wake_effect = yes
+}
+
+ss_revoke_supreme_sovereign_effect = {
+	ss_revoke_supreme_sovereign_silent_effect = yes
+}
+
 # Cycle helpers — this = sovereign character
 ss_cycle_lifestyle_cfg_effect = {
 	ss_ensure_sovereign_defaults_effect = yes
