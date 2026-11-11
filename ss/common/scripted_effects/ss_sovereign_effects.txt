@@ -266,14 +266,11 @@ ss_piggy_withdraw_gold_effect = {
 			var:ss_piggy_gold >= 250
 			NOT = { exists = var:ss_cd_piggy_withdraw }
 		}
-		set_variable = {
-			name = ss_piggy_withdraw_amount
-			value = ss_piggy_gold_withdraw_value
-		}
-		add_gold = var:ss_piggy_withdraw_amount
+		# Grant/subtract via script value directly (drip pattern) — var intermediate grants 0
+		add_gold = ss_piggy_gold_withdraw_value
 		change_variable = {
 			name = ss_piggy_gold
-			subtract = var:ss_piggy_withdraw_amount
+			subtract = ss_piggy_gold_withdraw_value
 		}
 		ss_piggy_withdraw_mark_cd_effect = yes
 		send_interface_toast = {
@@ -292,14 +289,10 @@ ss_piggy_withdraw_prestige_effect = {
 			var:ss_piggy_prestige >= 200
 			NOT = { exists = var:ss_cd_piggy_withdraw }
 		}
-		set_variable = {
-			name = ss_piggy_withdraw_amount
-			value = ss_piggy_prestige_withdraw_value
-		}
-		add_prestige = var:ss_piggy_withdraw_amount
+		add_prestige = ss_piggy_prestige_withdraw_value
 		change_variable = {
 			name = ss_piggy_prestige
-			subtract = var:ss_piggy_withdraw_amount
+			subtract = ss_piggy_prestige_withdraw_value
 		}
 		ss_piggy_withdraw_mark_cd_effect = yes
 		send_interface_toast = {
@@ -318,14 +311,10 @@ ss_piggy_withdraw_piety_effect = {
 			var:ss_piggy_piety >= 100
 			NOT = { exists = var:ss_cd_piggy_withdraw }
 		}
-		set_variable = {
-			name = ss_piggy_withdraw_amount
-			value = ss_piggy_piety_withdraw_value
-		}
-		add_piety = var:ss_piggy_withdraw_amount
+		add_piety = ss_piggy_piety_withdraw_value
 		change_variable = {
 			name = ss_piggy_piety
-			subtract = var:ss_piggy_withdraw_amount
+			subtract = ss_piggy_piety_withdraw_value
 		}
 		ss_piggy_withdraw_mark_cd_effect = yes
 		send_interface_toast = {
