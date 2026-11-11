@@ -64,13 +64,73 @@ ss_grant_supreme_sovereign_interaction = {
 	}
 }
 
+# Revoke from self or direct child who holds the trait (CM-112)
+ss_revoke_supreme_sovereign_interaction = {
+	category = interaction_category_hostile
+	icon = council
+	interface_priority = 69
+	common_interaction = yes
+
+	desc = ss_revoke_supreme_sovereign_interaction_desc
+
+	auto_accept = yes
+
+	cooldown = { days = 365 }
+	cooldown_against_recipient = { days = 3650 }
+
+	is_shown = {
+		scope:actor = {
+			is_alive = yes
+			is_ai = no
+			has_trait = Supreme_Sovereign
+		}
+		scope:recipient = {
+			is_alive = yes
+			has_trait = Supreme_Sovereign
+			OR = {
+				this = scope:actor
+				is_child_of = scope:actor
+			}
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		scope:actor = {
+			custom_tooltip = {
+				text = ss_tt_actor_may_revoke
+				ss_can_actor_revoke_sovereign = yes
+			}
+		}
+		scope:recipient = {
+			custom_tooltip = {
+				text = ss_tt_can_revoke_sovereign
+				ss_can_receive_revoke_sovereign = yes
+			}
+		}
+	}
+
+	on_accept = {
+		scope:recipient = {
+			ss_revoke_supreme_sovereign_effect = yes
+		}
+	}
+
+	ai_frequency = 0
+	ai_potential = {
+		always = no
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+
 # Once-per-lifetime reshape heir (OP pass) — does NOT grant Supreme_Sovereign
 @ss_reshape_heir_prestige_cost = 1000
 
 ss_reshape_heir_interaction = {
 	category = interaction_category_friendly
 	icon = council
-	interface_priority = 69
+	interface_priority = 68
 	common_interaction = yes
 
 	desc = ss_reshape_heir_interaction_desc
