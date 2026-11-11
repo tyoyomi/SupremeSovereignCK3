@@ -15,6 +15,14 @@
  ss_tt_actor_may_revoke:0 "You are a Supreme Sovereign and may revoke the blessing"
  ss_tt_can_revoke_sovereign:0 "Target holds Supreme Sovereign and is you or your living child"
 
+ # Meditate on the Mantle (CM-118)
+ ss_meditate_supreme_sovereign_decision:0 "Meditate on the Mantle"
+ ss_meditate_supreme_sovereign_decision_desc:0 "Through prayer and quiet resolve, claim the Supreme Sovereign mantle yourself.\n\nUse this when no living parent granted the blessing. Costs piety. You may meditate only once — Revoke does not restore this path; a living parent can still Grant it later."
+ ss_meditate_supreme_sovereign_decision_tooltip:0 "Spend piety to claim Supreme Sovereign once"
+ ss_meditate_supreme_sovereign_decision_confirm:0 "Begin meditation"
+ ss_meditate_supreme_sovereign_decision_effect_tt:0 "You become a Supreme Sovereign"
+ ss_tt_can_meditate_for_sovereign:0 "You are a living player without Supreme Sovereign and have not already meditated"
+
  # Settings hub decision
  ss_manage_sovereign_settings_decision:0 "Manage Sovereign Settings"
  ss_manage_sovereign_settings_decision_desc:0 "Open the Sovereign Settings hub (5 pages). Page 1: Lifestyle, Longevity, Wealth, Prestige, Domain. Page 2: Keep Titles, Kingdom CB, Extra Conquests, Military, Schemes. Page 3: Influence, Legacy, Perk Gift, Reshape. Page 4: Empire Pulse, House Head, Languages, Hegemony CB. Page 5: Vassal Kids seat/land/gift.\n\nDone is always first. Click a setting to cycle its tier."

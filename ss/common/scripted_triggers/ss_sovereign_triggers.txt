@@ -19,6 +19,14 @@ ss_can_receive_sovereign = {
 	is_child_of = scope:actor
 }
 
+# Player may Meditate on the Mantle (CM-118) — once per character; no trait; O(1) on root
+ss_can_meditate_for_sovereign = {
+	is_alive = yes
+	is_ai = no
+	NOT = { has_trait = Supreme_Sovereign }
+	NOT = { has_character_flag = ss_used_meditate_sovereign }
+}
+
 # Actor may revoke: living player Sovereign (same fantasy as grant)
 ss_can_actor_revoke_sovereign = {
 	is_alive = yes
